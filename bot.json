@@ -1,0 +1,6 @@
+{
+  "name": "ParistonsZeugenBot",
+  "description": "Bot for Discord",
+  "repository": "https://github.com/xPariston/ParistonsZeugenBot.git",
+  "keywords": ["discord", "bot", "python", "heroku"]
+}
