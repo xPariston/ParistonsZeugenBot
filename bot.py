@@ -2,7 +2,7 @@ from discord.ext.commands import Bot
 import random
 
 BOT_PREFIX = ("?","!","")
-#Token = "NDQwNTM3NDg1MDM1MTc1OTM2.DcjKdA.J4xpMIXR_3JZ5Pb3HgyzwlPham8"
+BOT_TOKEN = "NDQwNTM3NDg1MDM1MTc1OTM2.DcjKdA.J4xpMIXR_3JZ5Pb3HgyzwlPham8"
 
 client = Bot(command_prefix=BOT_PREFIX)
 
