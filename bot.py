@@ -73,6 +73,7 @@ async def Game(context):
     if context.message.author == client.user:
         return
 
+    
     if context.message.content.startswith('!Check'):
         channel = discord.utils.get(client.get_all_channels(), server__name='Paristons Zeugen')
         print(channel)
@@ -80,11 +81,14 @@ async def Game(context):
         print(role.id)
         #await client.add_roles(message.author,'Halle11')
     elif context.message.content.startswith('!Start'):
-        roleID = discord.utils.get(context.message.server.roles, name="Halle1")
-        channel = discord.utils.get(client.get_all_channels(), server__name='Paristons Zeugen',name='halle1')
-        await client.add_roles(context.message.author,roleID)
-        await client.send_message(channel, content= 'Willkommen in der ersten Halle des Paristons, Bruder ' + context.message.author.mention + '. Löse das Rätsel und rücke vor von Halle zu Halle bis du die Halle der glorreichen Zeugen erreichst! Nun denn, das 1.Rätsel: Wer wacht über dich tagein tagaus? Für eine Antwort schreibe !Antwort DEINE ANTWORT . Beginne stehts mit einem Großbuchstaben. Viel Spaß!')
-
+        if context.message.channel.name == 'game-lobby':
+          roleID = discord.utils.get(context.message.server.roles, name="Halle1")
+          channel = discord.utils.get(client.get_all_channels(), server__name='Paristons Zeugen',name='halle1')
+          await client.add_roles(context.message.author,roleID)
+          await client.send_message(channel, content= 'Willkommen in der ersten Halle des Paristons, Bruder ' + context.message.author.mention + '. Löse das Rätsel und rücke vor von Halle zu Halle bis du die Halle der glorreichen Zeugen erreichst! Nun denn, das 1.Rätsel: Wer wacht über dich tagein tagaus? Für eine Antwort schreibe !Antwort DEINE ANTWORT . Beginne stehts mit einem Großbuchstaben. Viel Spaß!')
+        else: 
+          await client.say('Um das Spiel zu starten, führe diesen Befehl bitte in der Game-Lobby aus.')
+          
     elif context.message.content.startswith('!Antwort'):
         #Halle 1
         if context.message.channel.name == 'halle1':
