@@ -1,7 +1,7 @@
 from discord.ext.commands import Bot
 import random
 
-BOT_PREFIX = ("?","!","")
+BOT_PREFIX = ("?","!")
 BOT_TOKEN = "NDQwNTM3NDg1MDM1MTc1OTM2.DcjKdA.J4xpMIXR_3JZ5Pb3HgyzwlPham8"
 
 client = Bot(command_prefix=BOT_PREFIX)
@@ -37,7 +37,7 @@ async def Huldigung(context):
         'Manchmal frag ich mich, ob die Freizeitzeugen einfach nur cool sein wollen mit dem Zeugennamen dahinter. Dann sag ich mir, es sind sicher nur stumme Glaubensbrüder.',
 
     ]
-    await client.say(random.choice(possible_responses) +  ', Bruder ' + context.message.author.mention)
+    await client.say('Lieber Bruder ' + context.message.author.mention + ': ' + random.choice(possible_responses))
 
 
 
