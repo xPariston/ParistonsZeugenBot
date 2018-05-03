@@ -33,7 +33,7 @@ async def Huldigung(context):
         'Was wären wir ohne Pariston, meine Brüder?',
         'Ritualmeister Nico macht einen zufriedenstellenden Job.',
         'Die letzte Ausgabe vom Leuchtturm hat mir ser gefallen.',
-        'Für mich ist Zeuge der Woche Adir. Er präsentiert uns im Chat wie kein anderer.',
+        'Für mich ist Zeuge der Woche Raion. Er präsentiert uns in den Artikeln wie kein anderer.',
         'Riecht es für euch hier auch nach Heiligtum?',
         'Schließe deine Augen und erinnere dich an die letzten Worte Paristons. Welche waren diese?',
         'Manchmal werde ich gefragt ob Kuras heilig wäre. Natürlich ist er das, er ist Kaiser in Gnaden Paristons.',
@@ -43,14 +43,50 @@ async def Huldigung(context):
         'Goldenes Haar, pinker Anzug, Zeuge na klar, alles andere wär Unfug.',
         'Willst du mit mir Klinken putzen?',
         'Meine Brüder, ihr müsst euch jeden Tag fragen: Was habe ich heute bereits für Pariston getan?',
-        'Angelo muss endlich mal Spenden einsammeln. Wie ssonst sollen wir das Gold für Pariston finanzieren?',
         'Wer denkst wer du bist, hier auf dem Server nicht mal deine Schuhe auszuziehen?',
         'Gibt es was zu tun, mein Bruder?',
         'Essen? Trinken? Frauen? Ich brauch nur eins im Leben und das ist der große Pariston. Parsem mein Bruder',
         'Manchmal frag ich mich, ob die Freizeitzeugen einfach nur cool sein wollen mit dem Zeugennamen dahinter. Dann sag ich mir, es sind sicher nur stumme Glaubensbrüder.',
+        'Entsagt allem weltlichen und dem Streben nach Macht, damit ihr euch komplett auf die Liebe zu unserem Heiland und Erlöser konzentrieren könnt.',
+        'Vertraut auf Pariston unseren Herren. Er wird uns alle auf den richtigen Weg und in das Paradies führen.',
+        'Das ewige Licht des Leuchtturms leuchte euch den Weg in die Arme unseres Erlösers.',
+        'Rosen sind rot, Veilchen sind blau. Bist du kein Zeuge, wanderst du in den Bau.',
+        'Vater Pariston im Himmel. Geheiligt werde deine Herrlichkeit. Dein Reich expandiere, Dein Wille geschehe. Wie bei den Zeugen, So überall auf Erden. Und vergib uns unsere Schuld, Wie auch wir vergeben unseren Schuldigern. Führe uns nicht in Kuras Arme,Sondern erlöse uns von dem Bösen. Denn du bist allwissend, gutaussehend und wunderbar. In Ewigkeit, Parsem.',
+        'Ich werde nie vergessen wie Raion durch die Hallen des Paristons als erstes in wenigen Minuten durchmaschiert ist. So viel Wissen über unseren Erleuchter hätte ich auch gern.',
+        'Hast du schonmal von Knäckebrot gehört? Guter Glaubensbruder.',
+        'Viele Neulinge finden grad zum echten Glauben, ich denke uns stehen rosige Zeiten bevor.',
+        'Es war dieser einer Tag in der Dusche. Ich hatte wieder Überstunden bei McDonalds machen müssen und Streß weil alle HappyMeal Spielzeuge alle waren. Komplett kaputt zu hause unter der Dusche dachte ich dann: Pariston, falls es dich gibt, gib mir ein Zeichen! Durch das Fenster am Duschvorhang vorbei wichen die Wolken der Berührung Paristons. Meine Haut erschien in seinem Anlitz und es wurde überall warm. Da war mir bewusst, es gibt ihn wirklich.',
+        'Habt ihr schon eure Tipps für Tippspiel abgeben. Unser große Pariston weisten uns nur selten so deutlich den Weg, meine Brüder.',
+        'Mal rein hypothetisch wir hätten Ungläubige hier: Düfrte ich ihren Account auf Discord sperren? Ich frag für ein Freund.',
+        'Meine Zeugennummer werde ich nie vergessen. Pariston gab sie mir persönlich - in Hexadezimal <3',
+        'Paristons Taten versetzen mich immer wieder ins Staunen. Mit welch einer Ausdauer und Liebe er sich seinen Söhnen und Töchtern widmet ist für mich jeden Tag aufs Neue ein Wunder.',
+        'Ich kann mir gar nicht vorstellen, dass unser Pariston einst ein berühmter Bierpirat war. Sugoi!',
+        'Psst, soll ich dir n Geheimnis erzählen? Der Parteiführer der BDD Barash. Das ist auch n Zeuge. Aber Undercover. Genauso wie Kuras und Daryl. Letztere können aber bei weiterm besser schauspielern.',
+        'Holt Areon hierher, er soll die Leistungsträger im Chat waschen! - Oh falsche Zeit, oder?',
+        'Manchmal frage ich mich, ob es schonmal Tage gab, an denen Didam und Schwüppe nicht grumpy waren. Dann denke ich mir, dass unser Pariston sicher auch mit ihnen ein höheren Plan verfolgt.',
+        'Weißt du wer den Reifen erfunden hat? Ich auch nicht. Aber Pariston weiß es.',
+        'Ich hab gehört Pariston kann mit einem Fingerwink Bilder,Texte und Personen bannen. Er muss ein Gott sein!',
+        'Sorry hab grad n bisschen gedöst, was möchtest du?',
+        'Treffen sich Costa, Kuras und Pariston beim Döner. Sagt Pariston:"Ich lad euch ein meine Söhne". Happy End.',
+        'Hätte Pariston in Game of Thrones mit gespielt, wäre schon längst ein Zeuge auf dem Eisernen Thron.',
+        'Hab letztens Hunter X Hunter geschaut, finde es toll wie außerordentlich clever sie Pariston dort darstellen.',
+        'Julie - Der perfekte Zeuge: Das ist der perfekte Zeuge, das ist der perfekte Mann, lass dich einfach von ihm missionieren, schon bist du in Paristons Bann.',
+        'Haftbefehl - Zeugen wissen wer die Gottheit ist: Zeugen wissen, wer die Gottheit ist, Gotti Pari ist der, der in Sänfte und im Himmel sitzt, Mosambik Gold Rich, Wissen, wer Safari ritzt.',
+        'Scorpions - Wind of Pariston: Take me to the only true belief, in the whole world, where the zeugen of tomorrow pray ahead, in the wind of Pariston.',
+        'Frei Wild - Land der Paristoten: Das ist das Land der Paristoten, die denken Gottes Plan hat noch viel parat, wir sind reine Glaubensbrüder und keine Kurasisten, wir kenn einfach den echten Weg, Parsem.',
 
     ]
     await client.say('Lieber Bruder ' + context.message.author.mention + ': ' + random.choice(possible_responses))
+
+@client.command(name='Ave',
+                description="Freundliche Begrüßung",
+                brief='Ave Pariston',
+                aliases=['Ave Pariston'],
+                pass_context=True)
+
+async def Ave(context):
+    await client.say('Ave Pariston!')
+
 
 #add_roles(member,*roles)
 #remove_roles(member,*roles)
@@ -73,7 +109,6 @@ async def Game(context):
     if context.message.author == client.user:
         return
 
-    
     if context.message.content.startswith('!Check'):
         channel = discord.utils.get(client.get_all_channels(), server__name='Paristons Zeugen')
         print(channel)
@@ -81,14 +116,11 @@ async def Game(context):
         print(role.id)
         #await client.add_roles(message.author,'Halle11')
     elif context.message.content.startswith('!Start'):
-        if context.message.channel.name == 'game-lobby':
-          roleID = discord.utils.get(context.message.server.roles, name="Halle1")
-          channel = discord.utils.get(client.get_all_channels(), server__name='Paristons Zeugen',name='halle1')
-          await client.add_roles(context.message.author,roleID)
-          await client.send_message(channel, content= 'Willkommen in der ersten Halle des Paristons, Bruder ' + context.message.author.mention + '. Löse das Rätsel und rücke vor von Halle zu Halle bis du die Halle der glorreichen Zeugen erreichst! Nun denn, das 1.Rätsel: Wer wacht über dich tagein tagaus? Für eine Antwort schreibe !Antwort DEINE ANTWORT . Beginne stehts mit einem Großbuchstaben. Viel Spaß!')
-        else: 
-          await client.say('Um das Spiel zu starten, führe diesen Befehl bitte in der Game-Lobby aus.')
-          
+        roleID = discord.utils.get(context.message.server.roles, name="Halle1")
+        channel = discord.utils.get(client.get_all_channels(), server__name='Paristons Zeugen',name='halle1')
+        await client.add_roles(context.message.author,roleID)
+        await client.send_message(channel, content= 'Willkommen in der ersten Halle des Paristons, Bruder ' + context.message.author.mention + '. Löse das Rätsel und rücke vor von Halle zu Halle bis du die Halle der glorreichen Zeugen erreichst! Nun denn, das 1.Rätsel: Wer wacht über dich tagein tagaus? Für eine Antwort schreibe !Antwort DEINE ANTWORT . Beginne stehts mit einem Großbuchstaben. Viel Spaß!')
+
     elif context.message.content.startswith('!Antwort'):
         #Halle 1
         if context.message.channel.name == 'halle1':
@@ -245,6 +277,10 @@ async def Game(context):
                 await client.remove_roles(context.message.author, roleID1)
             else:
                 await client.say('Leider die falsche Antwort, Bruder ' + context.message.author.mention)
+
+
+
+
 
 
 
