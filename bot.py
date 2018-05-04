@@ -4,7 +4,6 @@ import random
 import asyncio
 
 BOT_PREFIX = ("?","!")
-BOT_TOKEN = "NDQwNTM3NDg1MDM1MTc1OTM2.DcjKdA.J4xpMIXR_3JZ5Pb3HgyzwlPham8"
 
 client = Bot(command_prefix=BOT_PREFIX)
 
