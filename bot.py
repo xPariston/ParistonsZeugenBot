@@ -42,7 +42,10 @@ async def Jukebox(context):
         'The Cranberries - Pariston: With their love and their prays, and their prays and their words, in your head in your head he`s seeing youuuu. In your heaaaaad, in your hee heeaadd, Pariston, Pariston, Pariston, ton, ton. He`s in your heaaaad, in your heee heeead! Pariston, Pariston, Pariston, ton, ton, ton oh Par Par Par Par Par Paaaar.',
         'Rabauken - Was wollen wir beten?: Was wollen wir beten, für Pariston man, was wollen wir beten, unser Gott!',
         'Comedian Harmonists - Mein kleiner frommer Zeuge: Ein kleiner frommer Zeuge, steht draußen vor der Tür, Holari, holari, holaro! Was wird er mir wohl sagen? Was bin ich schon nervös. Holari, Holari, Holaro! Nun öffne ich dir Klink, steht Paristons gutes Kind, holt einmal ganz tief Luft, und er spricht, spricht, spricht. Ein kleiner frommer Zeuge, steht draußen vor der Tür, Holari, holari, hollaro!',
-        
+        'Lynard Skynard - Sweet Home bei den Zeugen: Big wheels keep on turning. Carry me home to see my Pariston. Singing songs about the Zeugen. I miss Pariston once again. And I think its a sin, yes. Well I heard the Zeugen sing about him Well, I heard ol` Nico put him up Well, I hope every Zeuge will remember A Zeugen-man always needs him around, anyhow. Sweet home bei den Zeugen. Where the skies are so blue. Sweet Home bei den Zeugen. Pariston, I`m coming home to you!',
+        'Fürstenfeld - S.T.S.: I brauch kan Gürtel i brauch kan Ring, I will z`ruck hintern Pariston. I brauch nur des bissl Göid Für die Fahrt zu Pariston. I will wieder ham, fühl mi do so allan. I brauch ka grosse Welt, i will ham zu Pariston. I will wieder ham, fühl mi do so allan. I brauch ka grosse Welt, i will ham zu Pariston.'
+        ' Laudato si, o-mi Pariston. Laudato si, o-mi Pariston. Laudato si, o-mi Pariston. Laudato si, o-mi Pariston. Sei gepriesen, du hast die Welt erschaffen. Sei gepriesen, für Sonne, Mond und Sterne. Sei gepriesen, für Meer und Kontinente. Sei gepriesen, denn du bist wunderbar, Herr!'
+
     
     ]
     await client.say(random.choice(possible_responses))
