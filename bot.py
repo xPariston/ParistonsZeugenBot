@@ -33,7 +33,17 @@ async def Jukebox(context):
         'Frei Wild - Land der Paristoten: Das ist das Land der Paristoten, die denken Gottes Plan hat noch viel parat, wir sind reine Glaubensbrüder und keine Kurasisten, wir kenn einfach den echten Weg, Parsem.',
         'Sportfreunde Stiller - Parsem Parsem: Parsem Parsem, auf deinen Glauben, er stieg hinauf, und er wacht, Parsem Parsem, Für seine Art mich zu missionieren, Hör niemals damit auf! Pariston mein Herr, hör bitte niemals damit auf.',
         'Feine Sahne Fischfilet - Ich bin komplett im Bann: Ich bin komplett im Bann, Pariston wacht über mich, Ich bin komplett im Bann, Er hat ein Plan wie es weiter geht. Ich bin komplett im Bann. Noch mehr Zeugen wünsch ich mir, Ich bin komplett im Bann, will sofort alle missionieren.',
+        'Cro - Meinen Bann: Alles was ich brauch ist meinen Bann, meinen Bann, denn keiner kennt mich so wie Pariston, Pariston, Wirf deine Blicke ind die Luft! (Pahar sem Pahar sem) Bin schon lange Zeuge und hoffe du auch, auch, auch!',
+        'Trailerpark - Beten kannst du überall: Junge, du sitzt immer nur zu Hause vorm Pc, Geh doch auch mal raus für Gebete. (okay) Beten kannst du überall! Morgens beim Warten im Bus, andere liegen beim heiligen Gruß NO PRAY NO LIFE!',
+        'Rammstein - Käse: Eins, hier kommt der Käse. Zwei, hier kommt der Käse. Drei, Er ist der klebrigste Käse von allen. Vier, hier kommt der Käse.'
+        'Helene Fischer - Pariston auch in der Nacht: Pariston auch in der Nacht, der Erlöser über uns wacht, Pariston unser Haus, Seine Famile nimmt dich auf, Pariston auch in der Nacht, spüre was sein Wort mit dir macht.',
+        'Alligatoah - Willst du?: Willst du mit mir Klinken putzen? Dann wird uns Pariston beschützen. Missionieren ist unser größter Nutzen. Willst du mit mir Klinken putzen?',
+        'Kraftklub - Songs an Pariston: Wenn du betest, sreibt Dean wieder Songs an Pariston. Wenn du betest! Wenn du betest, komm unsere Freunde zurück aus TSE. Wenn du betest! Wenn du betest, dann allein oder wollen wir beide? Wenn du betest!',
+        'The Cranberries - Pariston: With their love and their prays, and their prays and their words, in your head in your head he`s seeing youuuu. In your heaaaaad, in your hee heeaadd, Pariston, Pariston, Pariston, ton, ton. He`s in your heaaaad, in your heee heeead! Pariston, Pariston, Pariston, ton, ton, ton oh Par Par Par Par Par Paaaar.',
+        'Rabauken - Was wollen wir beten?: Was wollen wir beten, für Pariston man, was wollen wir beten, unser Gott!',
+        'Comedian Harmonists - Mein kleiner frommer Zeuge: Ein kleiner frommer Zeuge, steht draußen vor der Tür, Holari, holari, holaro! Was wird er mir wohl sagen? Was bin ich schon nervös. Holari, Holari, Holaro! Nun öffne ich dir Klink, steht Paristons gutes Kind, holt einmal ganz tief Luft, und er spricht, spricht, spricht. Ein kleiner frommer Zeuge, steht draußen vor der Tür, Holari, holari, hollaro!',
         
+    
     ]
     await client.say(random.choice(possible_responses))
 
