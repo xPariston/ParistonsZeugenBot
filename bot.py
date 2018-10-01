@@ -320,6 +320,6 @@ async def on_ready():
 
 
 
-client.run(BOT_TOKEN)
+client.run(os.getenv('TOKEN')
 
 
