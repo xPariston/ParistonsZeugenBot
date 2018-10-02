@@ -29,9 +29,9 @@ async def Vote(context):
     time= context.message.timestamp.strftime("%Y-%m-%d %H:%M:%S")
     msg= msg.replace("!Vote ","")
     autor= context.message.author.mention
-    output= "Neuer Gesetzesvorschlag \n" + autor + " möchte folgendes zur Wahl stellen:\n" + msg + "\n Die Wahl geht bis " + time
+    output= "Neuer Gesetzesvorschlag \n" + autor + " möchte folgendes zur Wahl stellen:\n" + msg + "\nDie Wahl geht bis " + time
     newmsg_id = await client.say(output)
-    await client.add_reaction(newmsg_id,:thumbsup:)
+    await client.add_reaction(newmsg_id,emoji=":thumbsup:")
 
 @client.command(name='Jukebox',
                 description="Best of Pariston Songs",
