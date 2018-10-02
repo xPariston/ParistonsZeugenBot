@@ -4,7 +4,7 @@ import random
 import asyncio
 import os
 
-BOT_PREFIX = ("!","-")
+BOT_PREFIX = ("!")
 
 client = Bot(command_prefix=BOT_PREFIX)
 
@@ -26,7 +26,7 @@ Antwort10='Pirat' #Früheres Leben
                 pass_context=True)
 
 async def Vote(context):
-    await client.say(context.message)
+    await client.say(context.message.content)
 
 @client.command(name='Jukebox',
                 description="Best of Pariston Songs",
