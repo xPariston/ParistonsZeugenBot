@@ -47,7 +47,7 @@ async def vote_background_task():
                     content= m.content
                     reactions= m.reactions
                 await client.send_message(client.get_channel('496734924854919178'), "Ende der Abstimmung\n" + content + "\n" + reactions )
-
+                await client.delete_message(m)
             except:
                 raise
 
