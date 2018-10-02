@@ -26,7 +26,7 @@ Antwort10='Pirat' #Früheres Leben
 
 async def Vote(context):
     msg= context.message.content
-    msg= msg[6:-1]
+    msg= msg[6:0]
     await client.say(msg)
 
 @client.command(name='Jukebox',
