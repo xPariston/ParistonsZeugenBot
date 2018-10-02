@@ -5,7 +5,7 @@ import asyncio
 import os
 
 BOT_PREFIX = ("!")
-
+#
 client = Bot(command_prefix=BOT_PREFIX)
 
 Antwort1='Pariston' #Wer wacht über dich tagein tagaus?
