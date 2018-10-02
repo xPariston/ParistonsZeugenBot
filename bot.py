@@ -26,8 +26,11 @@ Antwort10='Pirat' #Früheres Leben
 
 async def Vote(context):
     msg= context.message.content
-    msg= msg[6:0]
-    await client.say(msg)
+    time= context.message.timestamp
+    msg= msg.replace("!Vote ","")
+    autor= context.message.author
+    output= "Neuer Gesetzesvorschlag /n" + autor + " möchte folgendes zur Wahl stellen:/n" + msg + "/n Die Wahl geht bis " + time
+    await client.say(output)
 
 @client.command(name='Jukebox',
                 description="Best of Pariston Songs",
