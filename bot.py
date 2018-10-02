@@ -26,7 +26,8 @@ Antwort10='Pirat' #Früheres Leben
 
 async def Vote(context):
     msg= context.message.content
-    time= context.message.timestamp.strftime("%Y-%m-%d %H:%M:%S")
+    time= context.message.timestamp + 86400
+    time= time.strftime("%Y-%m-%d %H:%M:%S")
     msg= msg.replace("!Vote ","")
     autor= context.message.author.mention
     output= "Neuer Gesetzesvorschlag \n" + autor + " möchte folgendes zur Wahl stellen:\n" + msg + "\nDie Wahl geht bis " + time
