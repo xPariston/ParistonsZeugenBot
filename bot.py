@@ -46,7 +46,20 @@ async def vote_background_task():
                 if m.timestamp + datetime.timedelta(hours=3) >= now :
                     content= m.content
                     reaction= m.reactions
-                await client.send_message(client.get_channel('496734924854919178'), "Ende der Abstimmung\n" + content + "\n" + reaction.emoji )
+                    ups=0
+                    downs=0
+                    for n in reaction:
+                        if n.emoji=='👍':
+                            ups=n.count
+                        if n.emoji=='👎':
+                            downs=n.count
+
+                    if ups > downs:
+                        Ausgang= "Vorschlag angenommen mit %d zu %d Stimmen!" % (ups,downs)
+                    else:
+                        Ausgang= "Vorschlag abgelehnt mit %d zu %d Stimmen" % (ups,downs)
+
+                await client.send_message(client.get_channel('496734924854919178'), Ausgang + "\n" + content )
                 await client.delete_message(m)
             except:
                 raise
