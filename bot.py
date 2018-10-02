@@ -28,7 +28,7 @@ async def Vote(context):
     msg= context.message.content
     time= context.message.timestamp
     msg= msg.replace("!Vote ","")
-    autor= context.message.author
+    autor= context.message.author.mention
     output= "Neuer Gesetzesvorschlag /n" + autor + " möchte folgendes zur Wahl stellen:/n" + msg + "/n Die Wahl geht bis " + time
     await client.say(output)
 
