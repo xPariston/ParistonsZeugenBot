@@ -26,7 +26,7 @@ Antwort10='Pirat' #Früheres Leben
 
 async def Vote(context):
     msg= context.message.content
-    time= context.message.timestamp + 86400
+    time= context.message.timestamp + datetime.timedelta(hours=24)
     time= time.strftime("%Y-%m-%d %H:%M:%S")
     msg= msg.replace("!Vote ","")
     autor= context.message.author.mention
