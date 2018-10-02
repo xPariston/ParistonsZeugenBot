@@ -45,8 +45,8 @@ async def vote_background_task():
             try:
                 if m.timestamp + datetime.timedelta(hours=3) >= now :
                     content= m.content
-                    reactions= m.reactions
-                await client.send_message(client.get_channel('496734924854919178'), "Ende der Abstimmung\n" + content + "\n" + reactions )
+                    reaction= m.reactions
+                await client.send_message(client.get_channel('496734924854919178'), "Ende der Abstimmung\n" + content + "\n" + reaction.emoji )
                 await client.delete_message(m)
             except:
                 raise
