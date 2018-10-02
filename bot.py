@@ -26,7 +26,7 @@ Antwort10='Pirat' #Früheres Leben
                 pass_context=True)
 
 async def Vote(context):
-    await client.say(Message)
+    await client.say(context.message)
 
 @client.command(name='Jukebox',
                 description="Best of Pariston Songs",
