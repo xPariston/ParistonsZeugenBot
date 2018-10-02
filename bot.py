@@ -36,6 +36,16 @@ async def Vote(context):
     await client.add_reaction(newmsg_id,emoji='👍')
     await client.add_reaction(newmsg_id,emoji='👎')
 
+async def vote_background_task():
+    await client.wait_until_ready()
+    counter = 0
+    channel = discord.Object(id='496295597632913410')
+    while not client.is_closed:
+        counter += 1
+        await client.send_message(channel, counter)
+        await asyncio.sleep(60) # task runs every 60 seconds
+
+
 @client.event
 async def on_member_join(member):
     server = member.server
@@ -345,7 +355,7 @@ async def on_ready():
 
 
 
-
+client.loop.create_task(vote_background_task())
 client.run(os.getenv('TOKEN'))
 
 
