@@ -29,7 +29,7 @@ async def Vote(context):
     time= context.message.timestamp.strftime("%Y-%m-%d %H:%M:%S")
     msg= msg.replace("!Vote ","")
     autor= context.message.author.mention
-    output= "Neuer Gesetzesvorschlag /n" + autor + " möchte folgendes zur Wahl stellen:/n" + msg + "/n Die Wahl geht bis " + time
+    output= "Neuer Gesetzesvorschlag \n" + autor + " möchte folgendes zur Wahl stellen:\n" + msg + "\n Die Wahl geht bis " + time
     await client.say(output)
 
 @client.command(name='Jukebox',
