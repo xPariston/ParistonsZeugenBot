@@ -4,7 +4,7 @@ import random
 import asyncio
 import os
 
-BOT_PREFIX = ("!")
+BOT_PREFIX = ("!","-")
 
 client = Bot(command_prefix=BOT_PREFIX)
 
