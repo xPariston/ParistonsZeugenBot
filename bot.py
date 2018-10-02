@@ -36,11 +36,19 @@ async def Vote(context):
     await client.add_reaction(newmsg_id,emoji='👍')
     await client.add_reaction(newmsg_id,emoji='👎')
 
+@client.event
+async def on_member_join(member):
+    server = member.server
+    fmt = 'Willkommen {0.mention} auf dem Server des Staatenbundes! Um verifiziert zu werden poste bitte ein Screenshot deines RR Profils. Akzeptiert werden alle Bürger des Staatenbundes. Eines unserer Teammitglieder wird sich dann die Daten genauer prüfen und dich bei erfolgreicher Prüfung auf dem Server verifizieren.'
+    await client.send_message(server, fmt.format(member, server))
+
 @client.command(name='Jukebox',
                 description="Best of Pariston Songs",
                 brief='Lass mich zu Pariston singen.',
                 aliases=['Musik','Music','Song'],
                 pass_context=True)
+
+
 
 async def Jukebox(context):
     possible_responses = [
