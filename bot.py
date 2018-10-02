@@ -32,6 +32,7 @@ async def Vote(context):
     output= "Neuer Gesetzesvorschlag \n" + autor + " möchte folgendes zur Wahl stellen:\n" + msg + "\nDie Wahl geht bis " + time
     newmsg_id = await client.say(output)
     await newmsg_id.add_reaction(emoji=":thumbsup:")
+    await newmsg_id.add_reaction(emoji=":thumbsdown:")
 
 @client.command(name='Jukebox',
                 description="Best of Pariston Songs",
