@@ -31,7 +31,7 @@ async def Vote(context):
     time= time.strftime("%d.%m.%Y %H:%M:%S")
     msg= msg.replace("!Vote ","")
     autor= context.message.author.mention
-    output= "Gesetzesvorschlag von" + autor + "\n" + msg + "\nDie Wahl geht bis " + time
+    output= "Gesetzesvorschlag von " + autor + ":\n" + msg + "\nDie Wahl geht bis " + time
     newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
     await client.add_reaction(newmsg_id,emoji='👍')
     await client.add_reaction(newmsg_id,emoji='👎')
@@ -43,7 +43,7 @@ async def vote_background_task():
         now= datetime.datetime.now()
         async for m in client.logs_from(channel,100):
             try:
-                if m.timestamp + datetime.timedelta(hours=3) >= now :
+                if m.timestamp + datetime.timedelta(hours=26) <= now :
                     content= m.content
                     reaction= m.reactions
                     ups=0
