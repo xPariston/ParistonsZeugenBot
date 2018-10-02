@@ -38,11 +38,20 @@ async def Vote(context):
 
 async def vote_background_task():
     await client.wait_until_ready()
-    counter = 0
     channel = discord.Object(id='496295597632913410')
     while not client.is_closed:
-        counter += 1
-        await client.send_message(channel, counter)
+        now= datetime.datetime
+        async for m in client.logs_from(channel,100):
+            try:
+                if m.timestamp + datetime.timedelta(hours=3)  >= now :
+                    content= m.content
+                    reactions= m.reactions
+                await client.send_message(client.get_channel('496734924854919178'), "Ende der Abstimmung\n" + content + "\n" + reactions )
+
+            except:
+                raise
+
+
         await asyncio.sleep(60) # task runs every 60 seconds
 
 
