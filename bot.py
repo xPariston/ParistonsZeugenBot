@@ -22,11 +22,12 @@ Antwort10='Pirat' #Früheres Leben
 @client.command(name='Vote',
                 description='Stelle etwas zur Wahl',
                 brief='Stelle etwas zur Wahl',
-                aliases=['Gesetz','Wahl'],
                 pass_context=True)
 
 async def Vote(context):
-    await client.say(context.message.content)
+    msg= context.message.content
+    msg= msg[6:-1]
+    await client.say(msg)
 
 @client.command(name='Jukebox',
                 description="Best of Pariston Songs",
