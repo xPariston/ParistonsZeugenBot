@@ -28,11 +28,11 @@ Antwort10='Pirat' #Früheres Leben
 async def Vote(context):
     msg= context.message.content
     time= context.message.timestamp + datetime.timedelta(hours=26)
-    time= time.strftime("%d-%m-%Y %H:%M:%S")
+    time= time.strftime("%d.%m.%Y %H:%M:%S")
     msg= msg.replace("!Vote ","")
     autor= context.message.author.mention
     output= "Neuer Gesetzesvorschlag \n" + autor + " möchte folgendes zur Wahl stellen:\n" + msg + "\nDie Wahl geht bis " + time
-    newmsg_id = await client.say(output)
+    newmsg_id = await client.send_message(channel='p-wahlen' output)
     await client.add_reaction(newmsg_id,emoji='👍')
     await client.add_reaction(newmsg_id,emoji='👎')
 
