@@ -2,6 +2,7 @@ from discord.ext.commands import Bot
 import discord
 import random
 import asyncio
+import datetime
 import os
 
 BOT_PREFIX = ("!")
