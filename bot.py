@@ -48,6 +48,7 @@ async def vote_background_task():
                     reaction= m.reactions
                     ups=0
                     downs=0
+                    Ausgang=""
                     for n in reaction:
                         if n.emoji=='👍':
                             ups=n.count
@@ -59,8 +60,8 @@ async def vote_background_task():
                     else:
                         Ausgang= "Vorschlag abgelehnt mit %d zu %d Stimmen" % (ups,downs)
 
-                await client.send_message(client.get_channel('496734924854919178'), Ausgang + "\n" + content )
-                await client.delete_message(m)
+                    await client.send_message(client.get_channel('496734924854919178'), Ausgang + "\n" + content )
+                    await client.delete_message(m)
             except:
                 raise
 
