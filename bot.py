@@ -43,7 +43,7 @@ async def WarAnalyse(context):
     for j in partydictRawDmg:
         Msg2 += j + ":" + rrDamage.MakeNumber2PrettyString(partydictRawDmg[j])+ '\n'
     for i in partydictPerDmg:
-        Msg3 += i + ":" + partydictPerDmg[i] + "%\n"
+        Msg3 += i + ":" + str(partydictPerDmg[i]) + "%\n"
     await client.say(Msg1 + Msg2 + Msg3)
 
 
