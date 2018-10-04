@@ -183,9 +183,8 @@ async def StateAndListWars():
     for i in partydictPerDmg:
         Msg3 += i + ": " + str(round(partydictPerDmg[i], 2)) + "%\n"
 
-
     for s in Kriegssitze:
-        Kriegssitze[s] = Kriegssitze[s] / 100 * WarProzent, 2
+        Kriegssitze[s] = Kriegssitze[s] / 100 * WarProzent
 
     for o in Kriegssitze:
         Msg4 += o + ": " + str(round(Kriegssitze[o],2)) + "%\n"
