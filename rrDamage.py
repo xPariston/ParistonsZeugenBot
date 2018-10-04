@@ -74,7 +74,7 @@ def MultiWar(urllist,partylist):
         Gesamtdamage += PartDamage
 
         for i in PartRawDmg:
-            if i in PartRawDmg:
+            if i in partydictRawDmg:
                 partydictRawDmg[i] += PartRawDmg[i]
             else:
                 partydictRawDmg[i] = PartRawDmg[i]
@@ -83,7 +83,7 @@ def MultiWar(urllist,partylist):
         Percent = partydictRawDmg[i]/Gesamtdamage * 100
         partydictPerDmg[i]=Percent
 
-    return Gesamtdamage,partydictRawDmg,partydictPerDm
+    return Gesamtdamage,partydictRawDmg,partydictPerDmg
 
 
 
