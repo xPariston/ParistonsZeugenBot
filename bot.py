@@ -7,8 +7,12 @@ import os
 import rrDamage
 
 BOT_PREFIX = ("!")
-#
+
 client = Bot(command_prefix=BOT_PREFIX)
+
+WarProzent= 30.
+SpendenProzent = 30.
+WahlProzent = 40.
 
 Antwort1='Pariston' #Wer wacht über dich tagein tagaus?
 Antwort2='Leuchtturm' #
@@ -168,14 +172,22 @@ async def StateAndListWars():
         else:
             partydictPerDmg[i] = partydictPerDmg2[i]
 
+    Kriegssitze=partydictPerDmg
+
+    for s in Kriegssitze:
+        Kriegssitze[s]=Kriegssitze[s]/100*WarProzent,2
+
     Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen während der letzten 7 Tage und aus der Kriegsliste (insgesamt:%d): "%TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
     Msg2 = "Roher Schaden der Parteien:\n"
     Msg3 = "\nProzentualer Schaden der Parteien:\n"
+    Msg4 = "\nAufteilung der Sitze nach Schaden im Parlament (%d% nach Schaden verteilen):\n"%WarProzent
     for j in partydictRawDmg:
         Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[j]) + '\n'
     for i in partydictPerDmg:
         Msg3 += i + ": " + str(round(partydictPerDmg[i], 2)) + "%\n"
-    await client.say(Msg1 + Msg2 + Msg3)
+    for o in Kriegssitze:
+        Msg4 += o + ": " + str(round(Kriegssitze[o], 2)) + "%\n"
+    await client.say(Msg1 + Msg2 + Msg3 + Msg4)
 
 
 
