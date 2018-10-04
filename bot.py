@@ -188,7 +188,7 @@ async def StateAndListWars():
         Kriegssitze[s] = Kriegssitze[s] / 100 * WarProzent, 2
 
     for o in Kriegssitze:
-        Msg4 += o + ": " + str(round(Kriegssitze[o], 2)) + "%\n"
+        Msg4 += o + ": " + str(Kriegssitze[o]) + "%\n"
     await client.say(Msg1 + Msg2 + Msg3 + Msg4)
 
 
