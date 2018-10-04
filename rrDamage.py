@@ -144,7 +144,7 @@ def getStateWars7d(stateid):
                 todaycounter += 1
                 warcounter +=1
 
-        print(todaycounter)
+
         for q in datelist:
             if q > siebenDays:
                 warcounter += 1

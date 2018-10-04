@@ -103,7 +103,7 @@ async def StateWars7d():
             Totalwarurllist.append(warurl)
             TotalWars+=1
 
-    GesamtDamage, partydictRawDmg, partydictPerDmg = rrDamage.MultiWar(warliste, parteiliste)
+    GesamtDamage, partydictRawDmg, partydictPerDmg = rrDamage.MultiWar(Totalwarurllist, parteiliste)
 
     Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen(%d) während der letzten 8 Tage: "%TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
     Msg2 = "Roher Schaden der Parteien:\n"
