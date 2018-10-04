@@ -4,6 +4,7 @@ import random
 import asyncio
 import datetime
 import os
+import rrDamage
 
 BOT_PREFIX = ("!")
 #
@@ -19,6 +20,20 @@ Antwort7='Mecklenburg-Vorpommern'
 Antwort8='Kuras'
 Antwort9='Niemand' #Vorbild
 Antwort10='Pirat' #Früheres Leben
+
+@client.command(name="WarAnalyse",
+                description='Analysiere einen Krieg auf Teilnahme unserer Parteien. Poste dafür den Link des Krieges hinter dem Befehl.',
+                brief='Einzelkrieganalyse',
+                pass_context=True)
+
+async def WarAnalyse(context):
+    parteienchannel= discord.Object(id='497356738492629013')
+    parteiliste= []
+    async for m in client.logs_from(channel, 100):
+        parteiliste.append(m)
+    await client.say(parteiliste)
+
+
 
 @client.command(name='Vote',
                 description='Stelle etwas zur Wahl',
@@ -67,6 +82,9 @@ async def vote_background_task():
 
 
         await asyncio.sleep(60) # task runs every 60 seconds
+
+
+
 
 
 @client.event
