@@ -160,19 +160,19 @@ async def StateAndListWars():
     GesamtDamage2, partydictRawDmg2, partydictPerDmg2 = rrDamage.MultiWar(Totalwarurllist, parteiliste)
     GesamtDamage += GesamtDamage2
 
-    for i in partydictRawDmg:
+    for i in partydictRawDmg2:
         if i in partydictRawDmg:
             partydictRawDmg[i] += partydictRawDmg2[i]
         else:
             partydictRawDmg[i] = partydictRawDmg2[i]
 
-    for i in partydictRawDmg:
-        if i in partydictRawDmg:
-            partydictPerDmg[i] += partydictPerDmg2[i]
+    for i in partydictPerDmg2:
+        if i in partydictPerDmg:
+            partydictPerDmg[i] = partydictRawDmg[i]/GesamtDamage*100
         else:
-            partydictPerDmg[i] = partydictPerDmg2[i]
+            partydictPerDmg[i] = partydictPerDmg2[i]/GesamtDamage*100
 
-
+    Kriegssitze = partydictPerDmg
 
     Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen während der letzten 7 Tage und aus der Kriegsliste (insgesamt:%d): "%TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
     Msg2 = "Roher Schaden der Parteien:\n"
@@ -183,12 +183,12 @@ async def StateAndListWars():
     for i in partydictPerDmg:
         Msg3 += i + ": " + str(round(partydictPerDmg[i], 2)) + "%\n"
 
-    Kriegssitze = partydictPerDmg
+
     for s in Kriegssitze:
         Kriegssitze[s] = Kriegssitze[s] / 100 * WarProzent, 2
 
     for o in Kriegssitze:
-        Msg4 += o + ": " + str(Kriegssitze[o]) + "%\n"
+        Msg4 += o + ": " + str(round(Kriegssitze[o],2)) + "%\n"
     await client.say(Msg1 + Msg2 + Msg3 + Msg4)
 
 
