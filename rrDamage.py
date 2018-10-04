@@ -64,14 +64,22 @@ def RefineDamage(url,partylist):
 
     return Gesamtdamage,partydictRawDmg,partydictPerDmg
 
+def MakeNumber2PrettyString(number):
+    number = str(number)
+    length = len(number)
+    newnumber = ""
+    counter = 0
+    for x in range(length):
+        if counter % 3 == 0 and counter != 0:
+            newnumber+= "."+number[length-x-1]
+            counter+=1
+        else:
+            newnumber+= number[length-x-1]
+            counter +=1
 
-partyliste=["Haus Wittelsbach", "Nord Germanischer Bund", "Haus Hohenzollern", "Haus von Stauffenberg", "Vereinigte Bürgerinitiative"]
-url= "http://rivalregions.com/#war/details/180306"
+    newLength=len(newnumber)
+    finalnumber=''
+    for i in range(newLength):
+        finalnumber += newnumber[newLength-i-1]
 
-#RefineDamage(url, partyliste)
-
-string= " Haus Wittelsbach,Haus Hohenzollern,Haus Irgendwas;http://rivalregions.com/#war/details/180306"
-string= string.strip()
-Parteiliste,url=string.split(";")
-Parteiliste=Parteiliste.split(",")
-#print(Parteiliste,url)
+    return finalnumber

@@ -37,9 +37,14 @@ async def WarAnalyse(context):
 
     GesamtDamage,partydictRawDmg,partydictPerDmg = rrDamage.RefineDamage(warurl,parteiliste)
 
-    await client.say("Gesamtschaden des Staatenbundes: " + str(GesamtDamage))
-    await client.say(partydictRawDmg)
-    await client.say(partydictPerDmg)
+    Msg1= "Gesamtschaden des Staatenbundes: " + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n"
+    Msg2= "Roher Schaden der Parteien:\n"
+    Msg3= "Prozentualer Schaden der Parteien:\n"
+    for j in partydictRawDmg:
+        Msg2 += j + ":" + rrDamage.MakeNumber2PrettyString(partydictRawDmg[j])+ '\n'
+    for i in partydictPerDmg:
+        Msg3 += i + ":" + partydictPerDmg[i] + "%\n"
+    await client.say(Msg1 + Msg2 + Msg3)
 
 
 
