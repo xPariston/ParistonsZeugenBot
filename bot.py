@@ -180,7 +180,7 @@ async def StateAndListWars():
     Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen während der letzten 7 Tage und aus der Kriegsliste (insgesamt:%d): "%TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
     Msg2 = "Roher Schaden der Parteien:\n"
     Msg3 = "\nProzentualer Schaden der Parteien:\n"
-    Msg4 = "\nAufteilung der Sitze nach Schaden im Parlament (%d% nach Schaden verteilen):\n"%WarProzent
+    Msg4 = "\nAufteilung der Sitze nach Schaden im Parlament (%d Prozent nach Schaden verteilen):\n" %WarProzent
     for j in partydictRawDmg:
         Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[j]) + '\n'
     for i in partydictPerDmg:
