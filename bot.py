@@ -31,8 +31,14 @@ async def WarAnalyse(context):
     parteiliste= []
     async for m in client.logs_from(parteienchannel, 100):
         parteiliste.append(m.content)
-    await client.say(parteiliste)
-    await client.say(context.message.content)
+    warurl = context.message.content
+    warurl = warurl.replace('!WarAnalyse','')
+    warurl = warurl.strip()
+
+    GesamtDamage,partydictRawDmg,partydictPerDmg = rrDamage.RefineDamage(warurl,parteiliste)
+
+    await client.say("Gesamtschaden des Staatenbundes: " + str(GesamtDamage))
+    await client.say(partydictPerDmg)
 
 
 
@@ -43,7 +49,7 @@ async def WarAnalyse(context):
 
 async def Vote(context):
     msg= context.message.content
-    time= context.message.timestamp + datetime.timedelta(hours=26)
+    time= context.message.timestamp + datetime.timedelta(hours=24)
     time= time.strftime("%d.%m.%Y %H:%M:%S")
     msg= msg.replace("!Vote ","")
     autor= context.message.author.mention

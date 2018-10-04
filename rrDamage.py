@@ -74,4 +74,4 @@ string= " Haus Wittelsbach,Haus Hohenzollern,Haus Irgendwas;http://rivalregions.
 string= string.strip()
 Parteiliste,url=string.split(";")
 Parteiliste=Parteiliste.split(",")
-print(Parteiliste,url)
+#print(Parteiliste,url)
