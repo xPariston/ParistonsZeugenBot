@@ -97,7 +97,7 @@ async def StateWars7d():
     TotalWars=0
     Totalwarurllist=[]
     for id in stateids:
-        warlist= getStateWars7d(id)
+        warlist= rrDamage.getStateWars7d(id)
         for war in warlist:
             warurl= warbase + war
             Totalwarurllist.append(warurl)
