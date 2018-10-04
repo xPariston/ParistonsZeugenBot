@@ -29,7 +29,7 @@ Antwort10='Pirat' #Früheres Leben
 async def WarAnalyse(context):
     parteienchannel= discord.Object(id='497356738492629013')
     parteiliste= []
-    async for m in client.logs_from(channel, 100):
+    async for m in client.logs_from(parteienchannel, 100):
         parteiliste.append(m)
     await client.say(parteiliste)
 
