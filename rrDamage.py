@@ -64,6 +64,30 @@ def RefineDamage(url,partylist):
 
     return Gesamtdamage,partydictRawDmg,partydictPerDmg
 
+def MultiWar(urllist,partylist):
+    Gesamtdamage = 0
+    partydictRawDmg = {}
+    partydictPerDmg = {}
+
+    for x in urllist:
+        PartDamage,PartRawDmg,PartPerDmg = RefineDamage(x,partylist)
+        Gesamtdamage += PartDamage
+
+        for i in PartRawDmg:
+            if i in PartRawDmg:
+                partydictRawDmg[i] += PartRawDmg[i]
+            else:
+                partydictRawDmg[i] = PartRawDmg[i]
+
+    for i in partydictRawDmg:
+        Percent = partydictRawDmg[i]/Gesamtdamage * 100
+        partydictPerDmg[i]=Percent
+
+    return Gesamtdamage,partydictRawDmg,partydictPerDm
+
+
+
+
 def MakeNumber2PrettyString(number):
     number = str(number)
     length = len(number)

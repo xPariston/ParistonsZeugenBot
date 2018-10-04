@@ -46,7 +46,32 @@ async def WarAnalyse(context):
         Msg3 += i + ": " + str(round(partydictPerDmg[i],2)) + "%\n"
     await client.say(Msg1 + Msg2 + Msg3)
 
+@client.command(name="AllWarAnalyse",
+                description='Analysiere Kriege aus Datenbank auf Teilnahme unserer Parteien.',
+                brief='Kriegsanalyse von allen Kriegen',
+                pass_context=True)
 
+async def AllWarAnalyse(context):
+    parteienchannel= discord.Object(id='497356738492629013')
+    parteiliste= []
+    async for m in client.logs_from(parteienchannel, 100):
+        parteiliste.append(m.content)
+
+    warchannel = discord.Object(id='497356837679529994')
+    warliste = []
+    async for n in client.logs_from(warchannel, 100):
+        warliste.append(n.content)
+
+    GesamtDamage,partydictRawDmg,partydictPerDmg = rrDamage.MultiWar(warliste,parteiliste)
+
+    Msg1= "Gesamtschaden des Staatenbundes: " + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
+    Msg2= "Roher Schaden der Parteien:\n"
+    Msg3= "\nProzentualer Schaden der Parteien:\n"
+    for j in partydictRawDmg:
+        Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[j])+ '\n'
+    for i in partydictPerDmg:
+        Msg3 += i + ": " + str(round(partydictPerDmg[i],2)) + "%\n"
+    await client.say(Msg1 + Msg2 + Msg3)
 
 @client.command(name='Vote',
                 description='Stelle etwas zur Wahl',
