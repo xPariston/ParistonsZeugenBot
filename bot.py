@@ -73,6 +73,52 @@ async def AllWarAnalyse(context):
         Msg3 += i + ": " + str(round(partydictPerDmg[i],2)) + "%\n"
     await client.say(Msg1 + Msg2 + Msg3)
 
+@client.command(name="StateWars7d",
+                description='Analysiere Kriege der letzten 7 Tage in unseren Regionen auf Teilnahme unserer Parteien.',
+                brief='Kriegsanalyse von allen Kriegen in unseren Regionen',
+                pass_context=True)
+
+
+async def StateWars7d():
+    parteienchannel = discord.Object(id='497356738492629013')
+    parteiliste = []
+    async for m in client.logs_from(parteienchannel, 100):
+        parteiliste.append(m.content)
+
+    stateschannel = discord.Object(id='497356879840935936')
+    stateids = []
+    async for n in client.logs_from(stateschannel, 100):
+        n=n.content
+        n=n.split(":")
+        n=n[1].strip()
+        stateids.append(n)
+
+    warbase= "http://rivalregions.com/#listed/partydamage/"
+    TotalWars=0
+    Totalwarurllist=[]
+    for id in stateids:
+        warlist= getStateWars7d(id)
+        for war in warlist:
+            warurl= warbase + war
+            Totalwarurllist.append(warurl)
+            TotalWars+=1
+
+    GesamtDamage, partydictRawDmg, partydictPerDmg = rrDamage.MultiWar(warliste, parteiliste)
+
+    Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen(%d) während der letzten 8 Tage: "%TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
+    Msg2 = "Roher Schaden der Parteien:\n"
+    Msg3 = "\nProzentualer Schaden der Parteien:\n"
+    for j in partydictRawDmg:
+        Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[j]) + '\n'
+    for i in partydictPerDmg:
+        Msg3 += i + ": " + str(round(partydictPerDmg[i], 2)) + "%\n"
+    await client.say(Msg1 + Msg2 + Msg3)
+
+
+
+
+
+
 @client.command(name='Vote',
                 description='Stelle etwas zur Wahl',
                 brief='Stelle etwas zur Wahl',
