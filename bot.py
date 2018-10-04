@@ -31,7 +31,7 @@ async def WarAnalyse(context):
     parteiliste= []
     async for m in client.logs_from(parteienchannel, 100):
         parteiliste.append(m)
-    await client.say(parteiliste)
+    await client.say(parteiliste.content + context)
 
 
 
