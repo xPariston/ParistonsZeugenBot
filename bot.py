@@ -93,7 +93,7 @@ async def StateWars7d():
         n=n[1].strip()
         stateids.append(n)
 
-    warbase= "http://rivalregions.com/#listed/partydamage/"
+    warbase= "http://rivalregions.com/listed/partydamage/"
     TotalWars=0
     Totalwarurllist=[]
     for id in stateids:
