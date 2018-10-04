@@ -41,9 +41,9 @@ async def WarAnalyse(context):
     Msg2= "Roher Schaden der Parteien:\n"
     Msg3= "\nProzentualer Schaden der Parteien:\n"
     for j in partydictRawDmg:
-        Msg2 += j + ":" + rrDamage.MakeNumber2PrettyString(partydictRawDmg[j])+ '\n'
+        Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[j])+ '\n'
     for i in partydictPerDmg:
-        Msg3 += i + ":" + str(round(partydictPerDmg[i],2)) + "%\n"
+        Msg3 += i + ": " + str(round(partydictPerDmg[i],2)) + "%\n"
     await client.say(Msg1 + Msg2 + Msg3)
 
 
