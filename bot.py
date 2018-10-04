@@ -30,8 +30,8 @@ async def WarAnalyse(context):
     parteienchannel= discord.Object(id='497356738492629013')
     parteiliste= []
     async for m in client.logs_from(parteienchannel, 100):
-        parteiliste.append(m)
-    await client.say(parteiliste.content + context)
+        parteiliste.append(m.content)
+    await client.say(parteiliste + context)
 
 
 
