@@ -306,7 +306,7 @@ def getRegionDonations(regionid, partylist,profildict):
     if datebool[listcounter]==True:
         adder += 25
         regionid = regionid + "/" + str(adder)
-        partydict = getRegionDonations(regionid,partylist)
+        partydict = getRegionDonations(regionid,partylist,profildict)
         for x in partydict:
             if x in Partydonations:
                 Partydonations[x]+=partydict[x]
