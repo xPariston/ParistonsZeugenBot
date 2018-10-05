@@ -125,7 +125,7 @@ async def StateWars7d():
                 pass_context=True)
 
 
-async def AllDonations7d():
+async def AllDonations7d(context):
     parteienchannel = discord.Object(id='497356738492629013')
     parteiliste = []
     async for m in client.logs_from(parteienchannel, 100):
@@ -143,7 +143,7 @@ async def AllDonations7d():
     counter=1
     Gesamtspendenvolumen=0
     for state in stateids:
-        print("Staat Nr.%d" %counter + state)
+        print("Staat Nr.%d: " %counter + state)
         tempdict = rrDamage.getStateDonations(state,parteiliste,profildict)
         print("Staat beendet")
         counter +=1
@@ -178,7 +178,7 @@ async def AllDonations7d():
 
     print("Jetzt müsst er was sagen")
     print(Msg1 + Msg2 + Msg3 + Msg4)
-    await client.say(Msg1 + Msg2 + Msg3 + Msg4)
+    await client.send_message(context.message.channel, Msg1 + Msg2 + Msg3 + Msg4)
 
 
 @client.command(name="StateAndListWars",
