@@ -334,9 +334,9 @@ def getStateDonations(stateid,partylist,profildict):
         id = ids[2]
 
         regionlist.append(id)
-
+    counter= 1
     for region in regionlist:
-        print("region: " + region)
+        print("region nr. %d: " %counter + region)
         tempdonations= getRegionDonations(region,partylist,profildict)
         for p in tempdonations:
             if p in partydonations:
