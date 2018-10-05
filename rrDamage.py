@@ -317,15 +317,15 @@ async def getRegionDonations(regionid, partylist,profildict, session):
             if counter % 2 == 1:
                 donation = donation.get_text()
                 if Partybool == True:
-                    print(Party)
+                    #print(Party)
                     if Party in Partydonations:
-                        print(Partydonations[Party])
+                        #print(Partydonations[Party])
                         Partydonations[Party] = Partydonations[Party] + await RessToMoney(donation)
                     else:
                         Partydonations[Party] = await RessToMoney(donation)
-                        print(RessToMoney(donation))
+                        #print(RessToMoney(donation))
         counter+=1
-        print(Partydonations)
+        #print(Partydonations)
     if datebool[listcounter]==True:
         adder += 25
         regionid = regionid + "/" + str(adder)
