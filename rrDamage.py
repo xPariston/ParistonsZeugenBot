@@ -175,3 +175,165 @@ def MakeNumber2PrettyString(number):
         finalnumber += newnumber[newLength-i-1]
 
     return finalnumber
+
+
+def RessToMoney(Ress):
+
+    amount,TypeOfRess= Ress.split(' ')
+
+    amount = int(amount.replace('.',''))
+
+    PriceStateMoney = 1
+    PriceStateGold = 500000
+    PriceOil = 150
+    PriceOre = 150
+    PriceDiamonds = 840000
+    PriceUranium = 1300
+
+    Value = 0
+
+    if "$" in TypeOfRess:
+        Value = PriceStateMoney * amount
+    if "G" in TypeOfRess:
+        Value = PriceStateGold * amount
+    if "kg" in TypeOfRess:
+        Value = PriceOre * amount
+    if "bbl" in TypeOfRess:
+        Value = PriceOil * amount
+    if "pcs" in TypeOfRess:
+        Value = PriceDiamonds * amount
+    if "g" in TypeOfRess:
+        Value = PriceUranium * amount
+
+    return Value
+
+def getProfilParty(profilid):
+    BaseUrl = "http://rivalregions.com/slide/profile/"
+    url = BaseUrl + profilid
+    r = requests.get(url, headers=myheader)
+    r = r.content
+    soup = bs4.BeautifulSoup(r, 'html.parser')
+
+    counter = 1
+    for party in soup.find_all(attrs={"class": "header_buttons_hover slide_profile_link tc"}):
+        if counter == 2:
+            party = party.get_text()
+            print(party)
+        counter +=1
+
+    return party
+
+parties = ["Haus Wittelsbach","Haus Hohenzollern", "Vereinigte Bürgerinitiative", "Deutsche Spätzle Koalition"]
+
+
+def getRegionDonations(regionid, partylist):
+
+    try:
+        id,adder = regionid.split("/")
+        adder = int(adder)
+    except:
+        adder = 0
+
+    BaseUrl = "http://rivalregions.com/listed/donated_regions/"
+    url = BaseUrl + regionid
+    r = requests.get(url, headers=myheader)
+    r = r.content
+    soup = bs4.BeautifulSoup(r, 'html.parser')
+
+    now = datetime.datetime.now()
+    siebenDays = now + datetime.timedelta(days=-7)
+    datebool=[]
+
+    for dates in soup.find_all(attrs={"class": "list_avatar pointer small"}):
+        date = dates.get_text()
+        try:
+            date = datetime.datetime.strptime(date, "%d %B %Y %H:%M")
+            if date > siebenDays:
+                datebool.append(True)
+            else:
+                datebool.append(False)
+        except:
+            datebool.append(True)
+
+    Party=""
+    Partybool=False
+    Partydonations={}
+
+
+    counter = 0
+    listcounter = 0
+    for donation in soup.find_all(attrs={"class": "list_avatar pointer imp"}):
+
+        if counter % 2 == 0 and counter != 0: listcounter += 1
+        if datebool[listcounter]== True:
+
+            if counter % 2 == 0:
+                x = str(donation)
+                x = x.split(" ")
+                y = x[1].split("=")
+                z = y[1].replace('"', '')
+                ids = z.split("/")
+                id = ids[2]
+
+                Party = getProfilParty(id)
+                Party = Party.strip()
+                if Party in partylist:
+                    Partybool = True
+                else:
+                    Partybool = False
+
+            if counter % 2 == 1:
+                donation = donation.get_text()
+                if Partybool == True:
+                    if Party in Partydonations:
+                        Partydonations[Party] += RessToMoney(donation)
+                    else:
+                        Partydonations[Party] = RessToMoney(donation)
+        counter+=1
+        #print(Partydonations)
+    if datebool[listcounter]==True:
+        adder += 25
+        regionid = regionid + "/" + str(adder)
+        partydict = getRegionDonations(regionid,partylist)
+        for x in partydict:
+            if x in Partydonations:
+                Partydonations[x]+=partydict[x]
+            else:
+                Partydonations[x] = partydict[x]
+
+    return Partydonations
+
+def getStateDonations(stateid,partylist):
+    regionlist = []
+    StateUrl = "http://rivalregions.com/listed/state/"
+    url = StateUrl + stateid
+    r = requests.get(url, headers=myheader)
+    r = r.content
+    soup = bs4.BeautifulSoup(r, 'html.parser')
+
+    partydonations={}
+
+    for e in soup.find_all(attrs={"class": "list_name pointer small"}):
+        x = str(e)
+        x = x.split(" ")
+        y = x[1].split("=")
+        z = y[1].replace('"', '')
+        ids = z.split("/")
+        id = ids[2]
+
+        regionlist.append(id)
+
+    for region in regionlist:
+        tempdonations= getRegionDonations(region,partylist)
+        for p in tempdonations:
+            if p in partydonations:
+                partydonations[p]+=tempdonations[p]
+            else:
+                partydonations[p]=tempdonations[p]
+
+    return partydonations
+
+
+
+
+

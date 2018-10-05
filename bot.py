@@ -118,6 +118,59 @@ async def StateWars7d():
         Msg3 += i + ": " + str(round(partydictPerDmg[i], 2)) + "%\n"
     await client.say(Msg1 + Msg2 + Msg3)
 
+@client.command(name="AllDonations7d",
+                description='Analysiere alle Spenden in unseren Regionen in den letzten 7 Tagen.',
+                brief='Spendenanalyse aller Regionen in den letzten 7 Tagen',
+                pass_context=True)
+
+
+async def AllDonations7d():
+    parteienchannel = discord.Object(id='497356738492629013')
+    parteiliste = []
+    async for m in client.logs_from(parteienchannel, 100):
+        parteiliste.append(m.content)
+
+    stateschannel = discord.Object(id='497356879840935936')
+    stateids = []
+    async for n in client.logs_from(stateschannel, 100):
+        n=n.content
+        n=n.split(":")
+        n=n[1].strip()
+        stateids.append(n)
+
+    partydon={}
+    Gesamtspendenvolumen=0
+    for state in stateids:
+        tempdict = rrDamage.getStateDonations(state,parteiliste)
+        for p in tempdict:
+            Gesamtspendenvolumen+=tempdict[p]
+            if p in partydon:
+                partydon[p]+= tempdict[p]
+            else:
+                partydon[p] = tempdict[p]
+    partydonPro={}
+
+    Msg1 = "Gesamtspenden des Staatenbundes während der letzten 7 Tage: " + rrDamage.MakeNumber2PrettyString(Gesamtspendenvolumen) + "\n\n"
+    Msg2 = "Spendenvolumen der Parteien:\n"
+    Msg3 = "\nProzentuale Spenden der Parteien:\n"
+    for j in partydon:
+        Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydon[j]) + '\n'
+    for i in partydon:
+        partydonPro[i] = partydon[i]/Gesamtspendenvolumen * 100
+        Msg3 += i + ": " + str(round(partydonPro[i], 2)) + "%\n"
+
+    Spendensitze = partydonPro
+
+    Msg4 = "\nAufteilung der Sitze nach Spenden im Parlament (%d Prozent nach Spenden verteilen):\n" %SpendenProzent
+
+    for s in Spendensitze:
+        Spendensitze[s] = Spendensitze[s] / 100 * SpendenProzent
+
+    for o in Spendensitze:
+        Msg4 += o + ": " + str(round(Spendensitze[o],2)) + "%\n"
+    await client.say(Msg1 + Msg2 + Msg3 + Msg4)
+
+
 @client.command(name="StateAndListWars",
                 description='Analysiere Kriege die in den letzten 7 Tage beendet wurden in unseren Regionen und alle Links aus der Datenbank.',
                 brief='Kriegsanalyse von allen Kriegen in unseren Regionen letzten 7 Tage und aus der Datenbank',
