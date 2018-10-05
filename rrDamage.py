@@ -340,7 +340,7 @@ async def getStateDonations(stateid,partylist,profildict):
     counter= 1
     for region in regionlist:
         print("region nr. %d: " %counter + region)
-        tempdonations= getRegionDonations(region,partylist,profildict)
+        tempdonations= await getRegionDonations(region,partylist,profildict)
         for p in tempdonations:
             if p in partydonations:
                 partydonations[p]+=tempdonations[p]
