@@ -3,6 +3,7 @@ import requests
 import datetime
 import asyncio
 import aiohttp
+import async_timeout
 
 myheader = \
     {
@@ -179,7 +180,18 @@ def MakeNumber2PrettyString(number):
     return finalnumber
 
 
-def RessToMoney(Ress):
+async def fetch(session, url):
+    async with async_timeout.timeout(10):
+        async with session.get(url) as response:
+            return await response.text()
+
+async def soup_d(html, display_result=False):
+    soup = bs4.BeautifulSoup(html, 'html.parser')
+    if display_result:
+        print(soup.prettify())
+    return soup
+
+async def RessToMoney(Ress):
 
     amount,TypeOfRess= Ress.split(' ')
 
@@ -209,13 +221,18 @@ def RessToMoney(Ress):
 
     return Value
 
-def getProfilParty(profilid):
+async def getProfilParty(profilid,session):
     BaseUrl = "http://rivalregions.com/slide/profile/"
     url = BaseUrl + profilid
-    r = requests.get(url, headers=myheader)
-    r = r.content
-    soup = bs4.BeautifulSoup(r, 'html.parser')
 
+
+    html = await fetch(session, url)
+    soup = await soup_d(html)
+
+    #r = requests.get(url, headers=myheader)
+    #r = r.content
+    #soup = bs4.BeautifulSoup(r, 'html.parser')
+    party = ""
     counter = 1
     for party in soup.find_all(attrs={"class": "header_buttons_hover slide_profile_link tc"}):
         if counter == 2:
@@ -228,7 +245,7 @@ def getProfilParty(profilid):
     return party
 
 
-async def getRegionDonations(regionid, partylist,profildict):
+async def getRegionDonations(regionid, partylist,profildict, session):
 
     try:
         id,adder = regionid.split("/")
@@ -238,12 +255,12 @@ async def getRegionDonations(regionid, partylist,profildict):
 
     BaseUrl = "http://rivalregions.com/listed/donated_regions/"
     url = BaseUrl + regionid
-    r = 0
-    async with aiohttp.ClientSession(headers=myheader) as session:
-        async with session.request(url) as r:
 
-            #r = requests.get(url, headers=myheader)
-            soup = bs4.BeautifulSoup(r)
+    html = await fetch(session, url)
+    soup = await soup_d(html)
+
+    #r = requests.get(url, headers=myheader)
+    #soup = bs4.BeautifulSoup(r)
 
     now = datetime.datetime.now()
     siebenDays = now + datetime.timedelta(days=-7)
@@ -284,7 +301,7 @@ async def getRegionDonations(regionid, partylist,profildict):
                     Party = profildict[id]
                     #print(Party + "aus Profildict")
                 else:
-                    Party = getProfilParty(id)
+                    Party = await getProfilParty(id,session)
                     profildict[id]=Party
 
                 try:
@@ -309,7 +326,7 @@ async def getRegionDonations(regionid, partylist,profildict):
     if datebool[listcounter]==True:
         adder += 25
         regionid = regionid + "/" + str(adder)
-        partydict = getRegionDonations(regionid,partylist,profildict)
+        partydict = await getRegionDonations(regionid,partylist,profildict,session)
         for x in partydict:
             if x in Partydonations:
                 Partydonations[x]+=partydict[x]
@@ -319,36 +336,41 @@ async def getRegionDonations(regionid, partylist,profildict):
     return Partydonations
 
 async def getStateDonations(stateid,partylist,profildict):
-    regionlist = []
-    StateUrl = "http://rivalregions.com/listed/state/"
-    url = StateUrl + stateid
-    r = requests.get(url, headers=myheader)
-    r = r.content
-    soup = bs4.BeautifulSoup(r, 'html.parser')
 
-    partydonations={}
+    async with aiohttp.ClientSession(headers=myheader) as session:
 
-    for e in soup.find_all(attrs={"class": "list_name pointer small"}):
-        x = str(e)
-        x = x.split(" ")
-        y = x[1].split("=")
-        z = y[1].replace('"', '')
-        ids = z.split("/")
-        id = ids[2]
+        regionlist = []
+        StateUrl = "http://rivalregions.com/listed/state/"
+        url = StateUrl + stateid
+        html = await fetch(session, url)
+        soup = await soup_d(html)
+        # r = requests.get(url, headers=myheader)
+        # r = r.content
+        # soup = bs4.BeautifulSoup(r, 'html.parser')
 
-        regionlist.append(id)
-    counter= 1
-    for region in regionlist:
-        print("region nr. %d: " %counter + region)
-        tempdonations= await getRegionDonations(region,partylist,profildict)
-        for p in tempdonations:
-            if p in partydonations:
-                partydonations[p]+=tempdonations[p]
-            else:
-                partydonations[p]=tempdonations[p]
-        counter+=1
+        partydonations={}
 
-    return partydonations
+        for e in soup.find_all(attrs={"class": "list_name pointer small"}):
+            x = str(e)
+            x = x.split(" ")
+            y = x[1].split("=")
+            z = y[1].replace('"', '')
+            ids = z.split("/")
+            id = ids[2]
+
+            regionlist.append(id)
+        counter= 1
+        for region in regionlist:
+            print("region nr. %d: " %counter + region)
+            tempdonations = await getRegionDonations(region,partylist,profildict,session)
+            for p in tempdonations:
+                if p in partydonations:
+                    partydonations[p]+=tempdonations[p]
+                else:
+                    partydonations[p]=tempdonations[p]
+            counter+=1
+
+        return partydonations
 
 
 

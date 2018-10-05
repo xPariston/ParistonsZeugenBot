@@ -150,7 +150,7 @@ async def AllDonations7d(context):
         tempdict = await rrDamage.getStateDonations(state,parteiliste,profildict)
         print("Staat beendet")
         counter +=1
-        for p in await tempdict:
+        for p in tempdict:
             Gesamtspendenvolumen+=tempdict[p]
             if p in partydon:
                 partydon[p]+= tempdict[p]
