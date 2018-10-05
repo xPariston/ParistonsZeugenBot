@@ -1,6 +1,7 @@
 import bs4
 import requests
 import datetime
+import asyncio
 
 myheader = \
     {
@@ -313,7 +314,7 @@ def getRegionDonations(regionid, partylist,profildict):
 
     return Partydonations
 
-def getStateDonations(stateid,partylist,profildict):
+async def getStateDonations(stateid,partylist,profildict,client):
     regionlist = []
     StateUrl = "http://rivalregions.com/listed/state/"
     url = StateUrl + stateid
@@ -334,6 +335,7 @@ def getStateDonations(stateid,partylist,profildict):
         regionlist.append(id)
     counter= 1
     for region in regionlist:
+        await client.say("region nr. %d: " %counter + region)
         print("region nr. %d: " %counter + region)
         tempdonations= getRegionDonations(region,partylist,profildict)
         for p in tempdonations:

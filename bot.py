@@ -147,7 +147,7 @@ async def AllDonations7d(context):
     for state in stateids:
         await client.say("Analysiere Staat %d"%counter)
         print("Staat Nr.%d: " %counter + state)
-        tempdict = rrDamage.getStateDonations(state,parteiliste,profildict)
+        tempdict = rrDamage.getStateDonations(state,parteiliste,profildict,client)
         print("Staat beendet")
         counter +=1
         for p in tempdict:
