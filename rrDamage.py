@@ -277,8 +277,7 @@ def getRegionDonations(regionid, partylist):
                 Party = getProfilParty(id)
                 try: Party = Party.strip()
                 except:
-                    print("ErrorTime")
-                    raise
+                    print(id)
 
                 if Party in partylist:
                     Partybool = True
