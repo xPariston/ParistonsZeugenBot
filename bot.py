@@ -142,7 +142,10 @@ async def AllDonations7d(context):
     partydon={}
     counter=1
     Gesamtspendenvolumen=0
+
+    await client.say("Starte Analyse")
     for state in stateids:
+        await client.say("Analysiere Staat %d"%counter)
         print("Staat Nr.%d: " %counter + state)
         tempdict = rrDamage.getStateDonations(state,parteiliste,profildict)
         print("Staat beendet")
@@ -153,7 +156,7 @@ async def AllDonations7d(context):
                 partydon[p]+= tempdict[p]
             else:
                 partydon[p] = tempdict[p]
-
+    await client.say("Analyse abgeschlossen")
     print("Alle Staaten beendet")
     partydonPro={}
 
