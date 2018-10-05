@@ -151,9 +151,9 @@ async def AllDonations7d(context):
         print("Staat beendet")
         counter +=1
         for p in tempdict:
-            Gesamtspendenvolumen+=tempdict[p]
+            Gesamtspendenvolumen= Gesamtspendenvolumen + tempdict[p]
             if p in partydon:
-                partydon[p]+= tempdict[p]
+                partydon[p] = partydon[p] + tempdict[p]
             else:
                 partydon[p] = tempdict[p]
     await client.say("Analyse abgeschlossen")

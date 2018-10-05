@@ -318,7 +318,7 @@ async def getRegionDonations(regionid, partylist,profildict, session):
                 donation = donation.get_text()
                 if Partybool == True:
                     if Party in Partydonations:
-                        Partydonations[Party] += RessToMoney(donation)
+                        Partydonations[Party] = Partydonations[Party] + RessToMoney(donation)
                     else:
                         Partydonations[Party] = RessToMoney(donation)
         counter+=1
@@ -329,7 +329,7 @@ async def getRegionDonations(regionid, partylist,profildict, session):
         partydict = await getRegionDonations(regionid,partylist,profildict,session)
         for x in partydict:
             if x in Partydonations:
-                Partydonations[x]+=partydict[x]
+                Partydonations[x] = Partydonations[x] + partydict[x]
             else:
                 Partydonations[x] = partydict[x]
 
@@ -365,7 +365,7 @@ async def getStateDonations(stateid,partylist,profildict):
             tempdonations = await getRegionDonations(region,partylist,profildict,session)
             for p in tempdonations:
                 if p in partydonations:
-                    partydonations[p]+=tempdonations[p]
+                    partydonations[p] = partydonations[p] + tempdonations[p]
                 else:
                     partydonations[p]=tempdonations[p]
             counter+=1
