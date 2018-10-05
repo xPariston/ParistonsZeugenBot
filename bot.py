@@ -178,7 +178,7 @@ async def AllDonations7d(context):
 
     print("Jetzt müsst er was sagen")
     print(Msg1 + Msg2 + Msg3 + Msg4)
-    await client.send_message(context.message.channel, Msg1 + Msg2 + Msg3 + Msg4)
+    await asyncio.shield(client.send_message(context.message.channel, Msg1 + Msg2 + Msg3 + Msg4))
 
 
 @client.command(name="StateAndListWars",
