@@ -238,6 +238,7 @@ async def getRegionDonations(regionid, partylist,profildict):
 
     BaseUrl = "http://rivalregions.com/listed/donated_regions/"
     url = BaseUrl + regionid
+    r = 0
     async with aiohttp.get(url, header =myheader) as r:
 
         #r = requests.get(url, headers=myheader)
