@@ -239,11 +239,12 @@ async def getRegionDonations(regionid, partylist,profildict):
     BaseUrl = "http://rivalregions.com/listed/donated_regions/"
     url = BaseUrl + regionid
     r = 0
-    async with aiohttp.get(url, header =myheader) as r:
+    async with aiohttp.ClientSession(headers=myheader) as session:
+        async with session.get(url) as r:
 
-        #r = requests.get(url, headers=myheader)
-        r = r.content
-        soup = bs4.BeautifulSoup(r, 'html.parser')
+            #r = requests.get(url, headers=myheader)
+            r = r.content
+            soup = bs4.BeautifulSoup(r, 'html.parser')
 
     now = datetime.datetime.now()
     siebenDays = now + datetime.timedelta(days=-7)
