@@ -10,6 +10,7 @@ BOT_PREFIX = ("!")
 
 client = Bot(command_prefix=BOT_PREFIX)
 
+profildict={}
 WarProzent= 30.
 SpendenProzent = 30.
 WahlProzent = 40.
@@ -141,7 +142,7 @@ async def AllDonations7d():
     partydon={}
     Gesamtspendenvolumen=0
     for state in stateids:
-        tempdict = rrDamage.getStateDonations(state,parteiliste)
+        tempdict = rrDamage.getStateDonations(state,parteiliste,profildict)
         for p in tempdict:
             Gesamtspendenvolumen+=tempdict[p]
             if p in partydon:

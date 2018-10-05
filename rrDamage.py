@@ -216,8 +216,9 @@ def getProfilParty(profilid):
 
     counter = 1
     for party in soup.find_all(attrs={"class": "header_buttons_hover slide_profile_link tc"}):
-        print(party)
         if counter == 2:
+            party = party.get_text()
+        if counter == 3:
             party = party.get_text()
         counter +=1
     party = party.replace("Ã¼","ü")
@@ -227,7 +228,7 @@ def getProfilParty(profilid):
 parties = ["Haus Wittelsbach","Haus Hohenzollern", "Vereinigte Bürgerinitiative", "Deutsche Spätzle Koalition"]
 
 
-def getRegionDonations(regionid, partylist):
+def getRegionDonations(regionid, partylist,profildict):
 
     try:
         id,adder = regionid.split("/")
@@ -276,8 +277,15 @@ def getRegionDonations(regionid, partylist):
                 ids = z.split("/")
                 id = ids[2]
 
-                Party = getProfilParty(id)
-                try: Party = Party.strip()
+                if id in profildict:
+                    Party = profildict[id]
+                    print(Party + "aus Profildict")
+                else:
+                    Party = getProfilParty(id)
+                    profildict[id]=Party
+
+                try:
+                    Party = Party.strip()
                 except:
                     print(id)
 
@@ -307,7 +315,7 @@ def getRegionDonations(regionid, partylist):
 
     return Partydonations
 
-def getStateDonations(stateid,partylist):
+def getStateDonations(stateid,partylist,profildict):
     regionlist = []
     StateUrl = "http://rivalregions.com/listed/state/"
     url = StateUrl + stateid
@@ -328,7 +336,8 @@ def getStateDonations(stateid,partylist):
         regionlist.append(id)
 
     for region in regionlist:
-        tempdonations= getRegionDonations(region,partylist)
+        print("region: " + region)
+        tempdonations= getRegionDonations(region,partylist,profildict)
         for p in tempdonations:
             if p in partydonations:
                 partydonations[p]+=tempdonations[p]
