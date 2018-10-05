@@ -220,7 +220,7 @@ def getProfilParty(profilid):
             party = party.get_text()
         counter +=1
 
-    print(party)
+    print(party + "Eintrag aus getProfilParty")
     return party
 
 parties = ["Haus Wittelsbach","Haus Hohenzollern", "Vereinigte Bürgerinitiative", "Deutsche Spätzle Koalition"]
