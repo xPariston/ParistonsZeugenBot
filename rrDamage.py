@@ -314,7 +314,7 @@ def getRegionDonations(regionid, partylist,profildict):
 
     return Partydonations
 
-async def getStateDonations(stateid,partylist,profildict,client):
+async def getStateDonations(stateid,partylist,profildict):
     regionlist = []
     StateUrl = "http://rivalregions.com/listed/state/"
     url = StateUrl + stateid
@@ -335,7 +335,6 @@ async def getStateDonations(stateid,partylist,profildict,client):
         regionlist.append(id)
     counter= 1
     for region in regionlist:
-        await client.say("region nr. %d: " %counter + region)
         print("region nr. %d: " %counter + region)
         tempdonations= getRegionDonations(region,partylist,profildict)
         for p in tempdonations:
