@@ -322,6 +322,7 @@ async def getRegionDonations(regionid, partylist,profildict, session):
                         Partydonations[Party] = Partydonations[Party] + await RessToMoney(donation)
                     else:
                         Partydonations[Party] = await RessToMoney(donation)
+                        print(RessToMoney(donation))
         counter+=1
         #print(Partydonations)
     if datebool[listcounter]==True:
