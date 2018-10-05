@@ -343,6 +343,7 @@ def getStateDonations(stateid,partylist,profildict):
                 partydonations[p]+=tempdonations[p]
             else:
                 partydonations[p]=tempdonations[p]
+        counter+=1
 
     return partydonations
 
