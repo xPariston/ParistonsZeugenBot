@@ -2,6 +2,7 @@ import bs4
 import requests
 import datetime
 import asyncio
+import aiohttp
 
 myheader = \
     {
@@ -227,7 +228,7 @@ def getProfilParty(profilid):
     return party
 
 
-def getRegionDonations(regionid, partylist,profildict):
+async def getRegionDonations(regionid, partylist,profildict):
 
     try:
         id,adder = regionid.split("/")
@@ -237,9 +238,11 @@ def getRegionDonations(regionid, partylist,profildict):
 
     BaseUrl = "http://rivalregions.com/listed/donated_regions/"
     url = BaseUrl + regionid
-    r = requests.get(url, headers=myheader)
-    r = r.content
-    soup = bs4.BeautifulSoup(r, 'html.parser')
+    async with aiohttp.get(url, header =myheader) as r:
+
+        #r = requests.get(url, headers=myheader)
+        r = r.content
+        soup = bs4.BeautifulSoup(r, 'html.parser')
 
     now = datetime.datetime.now()
     siebenDays = now + datetime.timedelta(days=-7)
