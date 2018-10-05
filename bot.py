@@ -142,13 +142,17 @@ async def AllDonations7d():
     partydon={}
     Gesamtspendenvolumen=0
     for state in stateids:
+        print(state)
         tempdict = rrDamage.getStateDonations(state,parteiliste,profildict)
+        print("Staat beendet")
         for p in tempdict:
             Gesamtspendenvolumen+=tempdict[p]
             if p in partydon:
                 partydon[p]+= tempdict[p]
             else:
                 partydon[p] = tempdict[p]
+
+    print("Alle Staaten beendet")
     partydonPro={}
 
     Msg1 = "Gesamtspenden des Staatenbundes während der letzten 7 Tage: " + rrDamage.MakeNumber2PrettyString(Gesamtspendenvolumen) + "\n\n"
