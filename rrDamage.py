@@ -240,10 +240,10 @@ async def getRegionDonations(regionid, partylist,profildict):
     url = BaseUrl + regionid
     r = 0
     async with aiohttp.ClientSession(headers=myheader) as session:
-        async with session.get(url) as r:
+        async with session.request(url) as r:
 
             #r = requests.get(url, headers=myheader)
-            soup = await bs4.BeautifulSoup(r)
+            soup = bs4.BeautifulSoup(r)
 
     now = datetime.datetime.now()
     siebenDays = now + datetime.timedelta(days=-7)
