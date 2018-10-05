@@ -243,7 +243,7 @@ async def getRegionDonations(regionid, partylist,profildict):
         async with session.get(url) as r:
 
             #r = requests.get(url, headers=myheader)
-            await r.text()
+            print (await r.text())
             r = r.content
             soup = await bs4.BeautifulSoup(r, 'html.parser')
 
