@@ -222,7 +222,7 @@ def getProfilParty(profilid):
             party = party.get_text()
         counter +=1
     party = party.replace("Ã¼","ü")
-    print(party + "Eintrag aus getProfilParty")
+    #print(party + "Eintrag aus getProfilParty")
     return party
 
 
@@ -277,7 +277,7 @@ def getRegionDonations(regionid, partylist,profildict):
 
                 if id in profildict:
                     Party = profildict[id]
-                    print(Party + "aus Profildict")
+                    #print(Party + "aus Profildict")
                 else:
                     Party = getProfilParty(id)
                     profildict[id]=Party

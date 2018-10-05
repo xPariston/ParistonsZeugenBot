@@ -140,11 +140,13 @@ async def AllDonations7d():
         stateids.append(n)
 
     partydon={}
+    counter=1
     Gesamtspendenvolumen=0
     for state in stateids:
-        print(state)
+        print("Staat Nr.%d" %counter + state)
         tempdict = rrDamage.getStateDonations(state,parteiliste,profildict)
         print("Staat beendet")
+        counter +=1
         for p in tempdict:
             Gesamtspendenvolumen+=tempdict[p]
             if p in partydon:
