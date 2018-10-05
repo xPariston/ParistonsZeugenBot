@@ -243,8 +243,9 @@ async def getRegionDonations(regionid, partylist,profildict):
         async with session.get(url) as r:
 
             #r = requests.get(url, headers=myheader)
+            await r.text()
             r = r.content
-            soup = bs4.BeautifulSoup(r, 'html.parser')
+            soup = await bs4.BeautifulSoup(r, 'html.parser')
 
     now = datetime.datetime.now()
     siebenDays = now + datetime.timedelta(days=-7)
