@@ -173,6 +173,8 @@ async def AllDonations7d():
 
     for o in Spendensitze:
         Msg4 += o + ": " + str(round(Spendensitze[o],2)) + "%\n"
+
+    "Jetzt müsst er was sagen"
     await client.say(Msg1 + Msg2 + Msg3 + Msg4)
 
 

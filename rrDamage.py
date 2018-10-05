@@ -225,8 +225,6 @@ def getProfilParty(profilid):
     print(party + "Eintrag aus getProfilParty")
     return party
 
-parties = ["Haus Wittelsbach","Haus Hohenzollern", "Vereinigte Bürgerinitiative", "Deutsche Spätzle Koalition"]
-
 
 def getRegionDonations(regionid, partylist,profildict):
 
