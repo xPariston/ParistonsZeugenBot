@@ -216,10 +216,11 @@ def getProfilParty(profilid):
 
     counter = 1
     for party in soup.find_all(attrs={"class": "header_buttons_hover slide_profile_link tc"}):
+        print(party)
         if counter == 2:
             party = party.get_text()
         counter +=1
-
+    party = party.replace("Ã¼","ü")
     print(party + "Eintrag aus getProfilParty")
     return party
 
