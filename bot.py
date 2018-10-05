@@ -617,7 +617,7 @@ async def on_ready():
 
 
 
-client.loop.create_task(vote_background_task())
+#client.loop.create_task(vote_background_task())
 client.run(os.getenv('TOKEN'))
 
 
