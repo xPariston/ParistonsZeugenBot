@@ -218,7 +218,6 @@ def getProfilParty(profilid):
     for party in soup.find_all(attrs={"class": "header_buttons_hover slide_profile_link tc"}):
         if counter == 2:
             party = party.get_text()
-            print(party)
         counter +=1
 
     return party
@@ -276,7 +275,11 @@ def getRegionDonations(regionid, partylist):
                 id = ids[2]
 
                 Party = getProfilParty(id)
-                Party = Party.strip()
+                try: Party = Party.strip()
+                except:
+                    print("ErrorTime")
+                    raise
+
                 if Party in partylist:
                     Partybool = True
                 else:
