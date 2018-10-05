@@ -175,6 +175,7 @@ async def AllDonations7d():
         Msg4 += o + ": " + str(round(Spendensitze[o],2)) + "%\n"
 
     print("Jetzt müsst er was sagen")
+    print(Msg1 + Msg2 + Msg3 + Msg4)
     await client.say(Msg1 + Msg2 + Msg3 + Msg4)
 
 
