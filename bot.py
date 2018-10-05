@@ -271,39 +271,39 @@ async def Vote(context):
     newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
     await client.add_reaction(newmsg_id,emoji='👍')
     await client.add_reaction(newmsg_id,emoji='👎')
-
-async def vote_background_task():
-    await client.wait_until_ready()
-    channel = discord.Object(id='496295597632913410')
-    while not client.is_closed:
-        now= datetime.datetime.now()
-        async for m in client.logs_from(channel,100):
-            try:
-                if m.timestamp + datetime.timedelta(hours=26) <= now :
-                    content= m.content
-                    reaction= m.reactions
-                    ups=0
-                    downs=0
-                    Ausgang=""
-                    for n in reaction:
-                        if n.emoji=='👍':
-                            ups=n.count
-                        if n.emoji=='👎':
-                            downs=n.count
-
-                    if ups > downs:
-                        Ausgang= "Vorschlag angenommen mit %d zu %d Stimmen!" % (ups,downs)
-                    else:
-                        Ausgang= "Vorschlag abgelehnt mit %d zu %d Stimmen" % (ups,downs)
-
-                    await client.send_message(client.get_channel('496734924854919178'), Ausgang + "\n" + content )
-                    await client.delete_message(m)
-            except:
-                raise
-
-
-        await asyncio.sleep(60) # task runs every 60 seconds
-
+#
+# async def vote_background_task():
+#     await client.wait_until_ready()
+#     channel = discord.Object(id='496295597632913410')
+#     while not client.is_closed:
+#         now= datetime.datetime.now()
+#         async for m in client.logs_from(channel,100):
+#             try:
+#                 if m.timestamp + datetime.timedelta(hours=26) <= now :
+#                     content= m.content
+#                     reaction= m.reactions
+#                     ups=0
+#                     downs=0
+#                     Ausgang=""
+#                     for n in reaction:
+#                         if n.emoji=='👍':
+#                             ups=n.count
+#                         if n.emoji=='👎':
+#                             downs=n.count
+#
+#                     if ups > downs:
+#                         Ausgang= "Vorschlag angenommen mit %d zu %d Stimmen!" % (ups,downs)
+#                     else:
+#                         Ausgang= "Vorschlag abgelehnt mit %d zu %d Stimmen" % (ups,downs)
+#
+#                     await client.send_message(client.get_channel('496734924854919178'), Ausgang + "\n" + content )
+#                     await client.delete_message(m)
+#             except:
+#                 raise
+#
+#
+#         await asyncio.sleep(60) # task runs every 60 seconds
+#
 
 
 
