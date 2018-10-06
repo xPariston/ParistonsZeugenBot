@@ -63,8 +63,10 @@ async def AddParty(context):
     everyone_perms = discord.PermissionOverwrite(read_messages=False)
     my_perms = discord.PermissionOverwrite(read_messages=True)
     everyone = discord.ChannelPermissions(target=server.default_role, overwrite=everyone_perms)
-    mine = discord.ChannelPermissions(target= (rMitglied,rSekretär,rChhef) , overwrite=my_perms)
-    await client.create_channel(server, partei + ' - Chat', everyone, mine)
+    pMitglied = discord.ChannelPermissions(target= rMitglied , overwrite=my_perms)
+    pSekretär = discord.ChannelPermissions(target= rSekretär, overwrite=my_perms)
+    pChef = discord.ChannelPermissions(target= rChhef, overwrite=my_perms)
+    await client.create_channel(server, partei + ' - Chat', everyone, pMitglied, pSekretär, pChef)
 
 
 @client.command(name="WarAnalyse",
