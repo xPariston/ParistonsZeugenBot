@@ -37,6 +37,8 @@ async def EditPartyName(context):
     server= context.message.server
     msg = context.message.content.replace("!EditPartyName","")
     NameAlt,NameNeu = msg.split(",")
+    NameAlt = NameAlt.strip()
+    NameNeu = NameNeu.strip()
 
     parteiliste = await getPartys()
 
@@ -45,10 +47,11 @@ async def EditPartyName(context):
     else:
 
         parteienchannel = discord.Object(id='497356738492629013')
-        parteiliste = []
         async for m in client.logs_from(parteienchannel, 100):
             if NameAlt in m.content:
+                print(m.content)
                 newMsg= m.content.replace(NameAlt,NameNeu)
+                print(newMsg)
                 await client.edit_message(m,newMsg)
 
         rolelist = server.roles
@@ -60,8 +63,10 @@ async def EditPartyName(context):
 
         channellist = server.channels
         for channel in channellist:
+            print(channel.name)
             if NameAlt in channel.name:
                 name = channel.name.replace(NameAlt,NameNeu)
+                print(name)
                 await client.edit_role(server,role,name= name)
 
         await client.say("Namensänderung abgeschlossen")
