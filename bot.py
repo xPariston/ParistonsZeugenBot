@@ -42,17 +42,12 @@ async def EditPartyName(context):
 
     parteiliste = await getPartys()
 
-    print(parteiliste)
-    print("Name Alt: " + NameAlt)
-
     if NameAlt in parteiliste:
 
         parteienchannel = discord.Object(id='497356738492629013')
         async for m in client.logs_from(parteienchannel, 100):
             if NameAlt in m.content:
-                print(m.content)
                 newMsg= m.content.replace(NameAlt,NameNeu)
-                print(newMsg)
                 await client.edit_message(m,newMsg)
 
         rolelist = server.roles
@@ -68,16 +63,47 @@ async def EditPartyName(context):
         NameAlt = NameAlt.replace(" ","-")
         NameNeu = NameNeu.replace(" ", "-")
         for channel in channellist:
-            print(channel.name)
-            print("Name Alt: " + NameAlt)
-
             if channel.name.startswith(NameAlt):
-                print("If überwunden!")
                 name = channel.name.replace(NameAlt,NameNeu)
-                print(name)
                 await client.edit_channel(channel,name= name)
 
         await client.say("Namensänderung abgeschlossen")
+
+    else:
+        await client.say("Partei nicht gefunden.")
+
+@client.command(name="DeleteParty",
+                description='Lösche eine Partei.',
+                brief='Lösche eine Partei.',
+                pass_context=True)
+
+async def DeleteParty(context):
+
+    server= context.message.server
+    msg = context.message.content.replace("!DeleteParty","")
+    partei = msg.strip()
+
+    parteiliste = await getPartys()
+
+    if partei in parteiliste:
+        parteienchannel = discord.Object(id='497356738492629013')
+        async for m in client.logs_from(parteienchannel, 100):
+            if partei in m.content:
+                await client.delete_message(m)
+
+        rolelist = server.roles
+        for role in rolelist:
+            if partei in role.name:
+                await client.delete_role(server,role)
+
+        channellist = server.channels
+        partei = partei.lower()
+        partei = partei.replace(" ","-")
+        for channel in channellist:
+            if channel.name.startswith(partei):
+                await client.delete_channel(channel)
+
+        await client.say("Partei wurde gelöscht.")
 
     else:
         await client.say("Partei nicht gefunden.")
