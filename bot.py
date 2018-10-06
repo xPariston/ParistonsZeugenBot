@@ -38,7 +38,7 @@ async def EditPartyName(context):
     msg = context.message.content.replace("!EditPartyName","")
     NameAlt,NameNeu = msg.split(",")
 
-    parteiliste = getPartys()
+    parteiliste = await getPartys()
 
     if NameAlt in parteiliste:
         await client.say("Partei nicht gefunden.")
