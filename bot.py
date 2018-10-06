@@ -57,13 +57,15 @@ async def AddParty(context):
     await client.send_message(client.get_channel('497356738492629013'),partei + ": 0")
     rMitglied = await client.create_role(context.message.server, name= partei, colour=discord.Colour(value= c1))
     rSekretär = await client.create_role(context.message.server, name= nSekretär, colour=discord.Colour(value= c2))
-    rChef = await client.create_role(context.message.server, name=nChef , colour=discord.Colour(value= c3))
-    client.create_channel()
-    print(rMitglied.id)
+    rChhef = await client.create_role(context.message.server, name=nChef , colour=discord.Colour(value= c3))
 
-    everyone = discord.PermissionOverwrite(read_messages=False)
-    mine = discord.PermissionOverwrite(read_messages=True)
-    await client.create_channel(server, partei + ' - Chat', (server.default_role, everyone), ((rMitglied,rSekretär,rChef), mine))
+
+    everyone_perms = discord.PermissionOverwrite(read_messages=False)
+    my_perms = discord.PermissionOverwrite(read_messages=True)
+    everyone = discord.ChannelPermissions(target=server.default_role, overwrite=everyone_perms)
+    mine = discord.ChannelPermissions(target= (rMitglied,rSekretär,rChhef) , overwrite=my_perms)
+    await client.create_channel(server, partei + ' - Chat', everyone, mine)
+
 
 @client.command(name="WarAnalyse",
                 description='Analysiere einen Krieg auf Teilnahme unserer Parteien. Poste dafür den Link des Krieges hinter dem Befehl.',
