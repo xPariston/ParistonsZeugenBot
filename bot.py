@@ -102,8 +102,8 @@ async def DeleteParty(context):
         for channel in channellist:
             if channel.name.startswith(partei):
                 await client.delete_channel(channel)
-
-        await client.say("Partei wurde gelöscht.")
+                await client.say("Partei wurde gelöscht.")
+                break
 
     else:
         await client.say("Partei nicht gefunden.")
