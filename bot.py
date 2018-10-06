@@ -37,7 +37,7 @@ async def AddParty(context):
     partei = context.message.content.replace("!AddParty", "")
     partei = partei.strip()
 
-    r= lambda: random.randint(0,150)
+    r= lambda: random.randint(50,150)
     c1=r()
     c2=r()
     c3=r()
