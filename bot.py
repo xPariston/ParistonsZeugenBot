@@ -44,6 +44,7 @@ async def AddParty(context):
 
     cMitglied= "%d%d%d" %(c1,c2,c3)
     cSekretär= "%d%d%d" %(c1+50,c2+50,c3+50)
+    print(cSekretär)
     cChef= "%d%d%d" %(c1+100,c2+100,c3+100)
 
     nSekretär= "Sekretär - " + partei
