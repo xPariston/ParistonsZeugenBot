@@ -39,16 +39,16 @@ async def AddParty(context):
     c2=r()
     c3=r()
 
-    cMitglied= "0x%02X%02X%02X" %(c1,c2,c3)
-    cSekretär= "0x%02X%02X%02X" %(c1+50,c2+50,c3+50)
-    cChef= "0x%02X%02X%02X" %(c1+100,c2+100,c3+100)
+    cMitglied= "%d%d%d" %(c1,c2,c3)
+    cSekretär= "%d%d%d" %(c1+50,c2+50,c3+50)
+    cChef= "%d%d%d" %(c1+100,c2+100,c3+100)
 
 
     partei = context.message.content.replace("!AddParty","")
     partei = partei.strip()
     await client.send_message(client.get_channel('497356738492629013'),partei + ": 0")
     rMitglied = await client.create_role(context.message.server, name=partei)
-    rSekretär = await client.create_role(context.message.server, name=partei, colour=discord.Colour(hex(cSekretär)))
+    rSekretär = await client.create_role(context.message.server, name=partei, colour=discord.Colour(value= int(cSekretär)))
     rChhef = await client.create_role(context.message.server, name=partei, colour=discord.Colour(cChef))
 
     parteiKategorie = await client.create_channel(context.message.server, name= partei[0]+"-Diskussion", )
