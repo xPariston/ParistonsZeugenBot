@@ -65,8 +65,8 @@ async def EditPartyName(context):
         channellist = server.channels
         for channel in channellist:
             print(channel.name)
-            if NameAlt in channel.name:
-                name = channel.name.replace(NameAlt,NameNeu)
+            if NameAlt.lower() in channel.name:
+                name = channel.name.replace(NameAlt.lower(),NameNeu.lower())
                 print(name)
                 await client.edit_role(server,role,name= name)
 
