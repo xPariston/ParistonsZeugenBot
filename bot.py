@@ -26,6 +26,32 @@ Antwort8='Kuras'
 Antwort9='Niemand' #Vorbild
 Antwort10='Pirat' #Früheres Leben
 
+
+@client.command(name="AddParty",
+                description='Füge eine Partei ins System hinzu. Achte auf die Schreibung!',
+                brief='Fügt neue Partei hinzu.',
+                pass_context=True)
+
+async def AddParty(context):
+
+    r= lambda: random.randint(0,150)
+    c1=await r()
+    c2=await r()
+    c3=await r()
+
+    cMitglied= "0x%02X%02X%02X" %(c1,c2,c3)
+    cSekretär= "0x%02X%02X%02X" %(c1+50,c2+50,c3+50)
+    cChef= "0x%02X%02X%02X" %(c1+100,c2+100,c3+100)
+
+
+    partei = context.message.content.strip()
+    await client.send_message(client.get_channel('497356738492629013'),partei + ": 0")
+    rMitglied = await client.create_role(context.message.server, name=partei, colour=discord.Colour(cMitglied))
+    rSekretär = await client.create_role(context.message.server, name=partei, colour=discord.Colour(cSekretär))
+    rChhef = await client.create_role(context.message.server, name=partei, colour=discord.Colour(cChef))
+
+    parteiKategorie = await client.create_channel(context.message.server, name= partei[0]+"-Diskussion", )
+
 @client.command(name="WarAnalyse",
                 description='Analysiere einen Krieg auf Teilnahme unserer Parteien. Poste dafür den Link des Krieges hinter dem Befehl.',
                 brief='Einzelkrieganalyse',
