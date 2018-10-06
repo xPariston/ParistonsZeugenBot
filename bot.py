@@ -63,10 +63,13 @@ async def EditPartyName(context):
                 await client.edit_role(server,role,name= name)
 
         channellist = server.channels
+        NameAlt = NameAlt.lower()
+        NameNeu = NameNeu.lower()
         for channel in channellist:
             print(channel.name)
-            if NameAlt.lower() in channel.name:
-                name = channel.name.replace(NameAlt.lower(),NameNeu.lower())
+            if NameAlt in channel.name:
+                print("If überwunden!")
+                name = channel.name.replace(NameAlt,NameNeu)
                 print(name)
                 await client.edit_role(server,role,name= name)
 
