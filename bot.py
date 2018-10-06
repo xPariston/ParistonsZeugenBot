@@ -35,9 +35,9 @@ Antwort10='Pirat' #Früheres Leben
 async def AddParty(context):
 
     r= lambda: random.randint(0,150)
-    c1=await r()
-    c2=await r()
-    c3=await r()
+    c1=r()
+    c2=r()
+    c3=r()
 
     cMitglied= "0x%02X%02X%02X" %(c1,c2,c3)
     cSekretär= "0x%02X%02X%02X" %(c1+50,c2+50,c3+50)
