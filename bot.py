@@ -27,6 +27,37 @@ Antwort9='Niemand' #Vorbild
 Antwort10='Pirat' #Früheres Leben
 
 
+@client.command(name="EditPartyName",
+                description='Ändere den Namen einer Partei. Schreibe dazu !EditPartyName AlterParteiname,NeuerParteiname.',
+                brief='!EditPartyName AlterParteiname,NeuerParteiname.',
+                pass_context=True)
+
+async def EditPartyName(context):
+
+    server= context.message.server
+    msg = context.message.content.replace("!EditPartyName","")
+    NameAlt,NameNeu = msg.split(",")
+
+    parteiliste = getPartys()
+
+    if NameAlt in parteiliste:
+        await client.say("Partei nicht gefunden.")
+    else:
+        rolelist = server.roles
+
+        for role in rolelist:
+            if NameAlt in role.name:
+                name = role.name.replace(NameAlt,NameNeu)
+                await client.edit_role(server,role,name= name)
+
+        channellist = server.channels
+        for channel in channellist:
+            if NameAlt in channel.name:
+                name = channel.name.replace(NameAlt,NameNeu)
+                await client.edit_role(server,role,name= name)
+
+        await client.say("Namensänderung abgeschlossen")
+
 @client.command(name="AddParty",
                 description='Füge eine Partei ins System hinzu. Achte auf die Schreibung!',
                 brief='Fügt neue Partei hinzu.',
@@ -43,7 +74,7 @@ async def AddParty(context):
         await client.say("Partei exestiert bereits")
     else:
 
-        r= lambda: random.randint(0,240)
+        r= lambda: random.randint(50,200)
         R=r()
         G=r()
         B=r()
@@ -83,6 +114,10 @@ async def getPartys():
         p = p.strip()
         parteiliste.append(p)
     return parteiliste
+
+async def getPartyRoles(server):
+    rolelist = server.roles
+
 
 @client.command(name="WarAnalyse",
                 description='Analysiere einen Krieg auf Teilnahme unserer Parteien. Poste dafür den Link des Krieges hinter dem Befehl.',
