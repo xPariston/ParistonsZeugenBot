@@ -38,14 +38,14 @@ async def AddParty(context):
     partei = partei.strip()
     server = context.message.server
 
-    r= lambda: random.randint(50,200)
+    r= lambda: random.randint(0,240)
     R=r()
     G=r()
     B=r()
 
     c1= R + G* 256 + B * (256^2)
-    c2 = R+1 + (G+1) * 256 + (B+1) * (256 ^ 2)
-    c3 = R+2 + (G+2) * 256 + (B+2) * (256 ^ 2)
+    c2 = R+1 + (G+3) * 256 + (B+3) * (256 ^ 2)
+    c3 = R+2 + (G+6) * 256 + (B+6) * (256 ^ 2)
 
     #cMitglied= "%d%d%d" %(c1,c2,c3)
     #cSekretär= "%d%d%d" %(c1+50,c2+50,c3+50)
@@ -57,17 +57,13 @@ async def AddParty(context):
     await client.send_message(client.get_channel('497356738492629013'),partei + ": 0")
     rMitglied = await client.create_role(context.message.server, name= partei, colour=discord.Colour(value= c1))
     rSekretär = await client.create_role(context.message.server, name= nSekretär, colour=discord.Colour(value= c2))
-    rChhef = await client.create_role(context.message.server, name=nChef , colour=discord.Colour(value= c3))
+    rChef = await client.create_role(context.message.server, name=nChef , colour=discord.Colour(value= c3))
+    client.create_channel()
+    print(rMitglied.id)
 
-    print(rMitglied)
-
-    everyone_perms = discord.PermissionOverwrite(read_messages=False)
-    my_perms = discord.PermissionOverwrite(read_messages=True)
-    everyone = discord.ChannelPermissions(target=server.default_role, overwrite=everyone_perms)
-    mine = discord.ChannelPermissions(target= rMitglied, overwrite=my_perms)
-    await client.create_channel(server, 'secret', everyone, mine)
-
-    parteiKategorie = await client.create_channel(context.message.server, name= partei[0]+"-Diskussion")
+    everyone = discord.PermissionOverwrite(read_messages=False)
+    mine = discord.PermissionOverwrite(read_messages=True)
+    await client.create_channel(server, partei + ' - Chat', (server.default_role, everyone), ((rMitglied,rSekretär,rChef), mine))
 
 @client.command(name="WarAnalyse",
                 description='Analysiere einen Krieg auf Teilnahme unserer Parteien. Poste dafür den Link des Krieges hinter dem Befehl.',
