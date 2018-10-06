@@ -68,6 +68,7 @@ async def EditPartyName(context):
         for channel in channellist:
             print(channel.name)
             print("Name Alt: " + NameAlt)
+
             if channel.name.startswith(NameAlt):
                 print("If überwunden!")
                 name = channel.name.replace(NameAlt,NameNeu)
