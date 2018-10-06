@@ -37,37 +37,52 @@ async def AddParty(context):
     partei = context.message.content.replace("!AddParty", "")
     partei = partei.strip()
     server = context.message.server
+    parteiliste = await getPartys()
 
-    r= lambda: random.randint(0,240)
-    R=r()
-    G=r()
-    B=r()
+    if partei in parteiliste:
+        await client.say("Partei exestiert bereits")
+    else:
 
-    c1= R + G* 256 + B * (256^2)
-    c2 = R+1 + (G+3) * 256 + (B+3) * (256 ^ 2)
-    c3 = R+2 + (G+6) * 256 + (B+6) * (256 ^ 2)
+        r= lambda: random.randint(0,240)
+        R=r()
+        G=r()
+        B=r()
 
-    #cMitglied= "%d%d%d" %(c1,c2,c3)
-    #cSekretär= "%d%d%d" %(c1+50,c2+50,c3+50)
-    #cChef= "%d%d%d" %(c1+100,c2+100,c3+100)
+        c1= R + G* 256 + B * (256^2)
+        c2 = R + G * 256 + B * (256 ^ 2)
+        c3 = R + G * 256 + B * (256 ^ 2)
 
-    nSekretär= "Sekretär - " + partei
-    nChef = "Leiter - " + partei
+        #cMitglied= "%d%d%d" %(c1,c2,c3)
+        #cSekretär= "%d%d%d" %(c1+50,c2+50,c3+50)
+        #cChef= "%d%d%d" %(c1+100,c2+100,c3+100)
 
-    await client.send_message(client.get_channel('497356738492629013'),partei + ": 0")
-    rMitglied = await client.create_role(context.message.server, name= partei, colour=discord.Colour(value= c1))
-    rSekretär = await client.create_role(context.message.server, name= nSekretär, colour=discord.Colour(value= c2))
-    rChhef = await client.create_role(context.message.server, name=nChef , colour=discord.Colour(value= c3))
+        nSekretär= "Sekretär - " + partei
+        nChef = "Leiter - " + partei
+
+        await client.send_message(client.get_channel('497356738492629013'),partei + ": 0")
+        rMitglied = await client.create_role(context.message.server, name= partei, colour=discord.Colour(value= c1))
+        rSekretär = await client.create_role(context.message.server, name= nSekretär, colour=discord.Colour(value= c2))
+        rChhef = await client.create_role(context.message.server, name=nChef , colour=discord.Colour(value= c3))
 
 
-    everyone_perms = discord.PermissionOverwrite(read_messages=False)
-    my_perms = discord.PermissionOverwrite(read_messages=True)
-    everyone = discord.ChannelPermissions(target=server.default_role, overwrite=everyone_perms)
-    pMitglied = discord.ChannelPermissions(target= rMitglied , overwrite=my_perms)
-    pSekretär = discord.ChannelPermissions(target= rSekretär, overwrite=my_perms)
-    pChef = discord.ChannelPermissions(target= rChhef, overwrite=my_perms)
-    await client.create_channel(server, partei + ' - Chat', everyone, pMitglied, pSekretär, pChef)
+        everyone_perms = discord.PermissionOverwrite(read_messages=False)
+        my_perms = discord.PermissionOverwrite(read_messages=True)
+        everyone = discord.ChannelPermissions(target=server.default_role, overwrite=everyone_perms)
+        pMitglied = discord.ChannelPermissions(target= rMitglied , overwrite=my_perms)
+        pSekretär = discord.ChannelPermissions(target= rSekretär, overwrite=my_perms)
+        pChef = discord.ChannelPermissions(target= rChhef, overwrite=my_perms)
+        await client.create_channel(server, partei + ' - Chat', everyone, pMitglied, pSekretär, pChef)
 
+        await client.say("Partei " + partei + " wurde erfolgreich erstellt")
+
+async def getPartys():
+    parteienchannel = discord.Object(id='497356738492629013')
+    parteiliste = []
+    async for m in client.logs_from(parteienchannel, 100):
+        p,rest = m.content.split(":")
+        p = p.strip()
+        parteiliste.append(p)
+    return parteiliste
 
 @client.command(name="WarAnalyse",
                 description='Analysiere einen Krieg auf Teilnahme unserer Parteien. Poste dafür den Link des Krieges hinter dem Befehl.',
@@ -75,10 +90,7 @@ async def AddParty(context):
                 pass_context=True)
 
 async def WarAnalyse(context):
-    parteienchannel= discord.Object(id='497356738492629013')
-    parteiliste= []
-    async for m in client.logs_from(parteienchannel, 100):
-        parteiliste.append(m.content)
+    parteiliste= await getPartys()
     warurl = context.message.content
     warurl = warurl.replace('!WarAnalyse','')
     warurl = warurl.strip()
