@@ -47,11 +47,11 @@ async def AddParty(context):
     partei = context.message.content.replace("!AddParty","")
     partei = partei.strip()
     await client.send_message(client.get_channel('497356738492629013'),partei + ": 0")
-    rMitglied = await client.create_role(context.message.server, name=partei)
-    rSekretär = await client.create_role(context.message.server, name=partei, colour=discord.Colour(value= int(cSekretär)))
-    rChhef = await client.create_role(context.message.server, name=partei, colour=discord.Colour(cChef))
+    rMitglied = await client.create_role(context.message.server, name=partei, colour=discord.Colour(value= int(cMitglied)))
+    rSekretär = await client.create_role(context.message.server, name="Sekretär - " + partei, colour=discord.Colour(value= int(cSekretär)))
+    rChhef = await client.create_role(context.message.server, name="Leiter - " + partei, colour=discord.Colour(value= int(cChef)))
 
-    parteiKategorie = await client.create_channel(context.message.server, name= partei[0]+"-Diskussion", )
+    parteiKategorie = await client.create_channel(context.message.server, name= partei[0]+"-Diskussion", topic= partei)
 
 @client.command(name="WarAnalyse",
                 description='Analysiere einen Krieg auf Teilnahme unserer Parteien. Poste dafür den Link des Krieges hinter dem Befehl.',
