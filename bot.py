@@ -42,6 +42,8 @@ async def EditPartyName(context):
 
     parteiliste = await getPartys()
 
+    print(parteiliste)
+
     if NameAlt in parteiliste:
         await client.say("Partei nicht gefunden.")
     else:
