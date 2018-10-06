@@ -46,8 +46,6 @@ async def EditPartyName(context):
     print("Name Alt: " + NameAlt)
 
     if NameAlt in parteiliste:
-        await client.say("Partei nicht gefunden.")
-    else:
 
         parteienchannel = discord.Object(id='497356738492629013')
         async for m in client.logs_from(parteienchannel, 100):
@@ -73,6 +71,9 @@ async def EditPartyName(context):
                 await client.edit_role(server,role,name= name)
 
         await client.say("Namensänderung abgeschlossen")
+
+    else:
+        await client.say("Partei nicht gefunden.")
 
 @client.command(name="AddParty",
                 description='Füge eine Partei ins System hinzu. Achte auf die Schreibung!',
