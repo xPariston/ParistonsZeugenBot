@@ -75,7 +75,7 @@ async def EditPartyName(context):
                 print("If überwunden!")
                 name = channel.name.replace(NameAlt,NameNeu)
                 print(name)
-                await client.edit_role(server,channel,name= name)
+                await client.edit_channel(server,channel,name= name)
 
         await client.say("Namensänderung abgeschlossen")
 
