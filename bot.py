@@ -34,6 +34,9 @@ Antwort10='Pirat' #Früheres Leben
 
 async def AddParty(context):
 
+    partei = context.message.content.replace("!AddParty", "")
+    partei = partei.strip()
+
     r= lambda: random.randint(0,150)
     c1=r()
     c2=r()
@@ -43,13 +46,13 @@ async def AddParty(context):
     cSekretär= "%d%d%d" %(c1+50,c2+50,c3+50)
     cChef= "%d%d%d" %(c1+100,c2+100,c3+100)
 
+    nSekretär= "Sekretär - " + partei
+    nChef = "Leiter - " + partei
 
-    partei = context.message.content.replace("!AddParty","")
-    partei = partei.strip()
     await client.send_message(client.get_channel('497356738492629013'),partei + ": 0")
     rMitglied = await client.create_role(context.message.server, name=partei, colour=discord.Colour(value= int(cMitglied)))
-    rSekretär = await client.create_role(context.message.server, name="Sekretär - " + partei, colour=discord.Colour(value= int(cSekretär)))
-    rChhef = await client.create_role(context.message.server, name="Leiter - " + partei, colour=discord.Colour(value= int(cChef)))
+    rSekretär = await client.create_role(context.message.server, name=nSekretär, colour=discord.Colour(value= int(cSekretär)))
+    rChhef = await client.create_role(context.message.server, name=nChef, colour=discord.Colour(value= int(cChef)))
 
     parteiKategorie = await client.create_channel(context.message.server, name= partei[0]+"-Diskussion", topic= partei)
 
