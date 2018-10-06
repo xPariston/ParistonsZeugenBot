@@ -43,6 +43,14 @@ async def EditPartyName(context):
     if NameAlt in parteiliste:
         await client.say("Partei nicht gefunden.")
     else:
+
+        parteienchannel = discord.Object(id='497356738492629013')
+        parteiliste = []
+        async for m in client.logs_from(parteienchannel, 100):
+            if NameAlt in m.content:
+                newMsg= m.content.replace(NameAlt,NameNeu)
+                await client.edit_message(m,newMsg)
+
         rolelist = server.roles
 
         for role in rolelist:
