@@ -123,9 +123,9 @@ async def LeaveParty(context):
     else:
         await client.say ("Du bist in keiner teilnehmenden Partei.")
 
-@client.command(name="KickSekretär",
+@client.command(name="KickMember",
                 description='!KickMember @Pariston Kick ein Mitgleid aus deiner Partei. Nur Parteileiter und Seretäre könn dies.',
-                brief='!AddMember @Pariston Kick ein Mitgleid aus deiner Partei. Nur Parteileiter und Seretäre könn dies.',
+                brief='!KickMember @Pariston Kick ein Mitgleid aus deiner Partei. Nur Parteileiter und Seretäre könn dies.',
                 pass_context=True)
 
 async def KickMember(context):
