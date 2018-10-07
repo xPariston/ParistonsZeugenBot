@@ -107,9 +107,9 @@ async def AddMember(context):
         await client.say("Bitte Füge ein Mitglied mit '!AddMember @Member' hinzu")
 
 
-@client.command(name="MakeAbgeordneter",
-                description='!MakeAbgeordnet @Pariston Füge ein Mitgleid deiner Partei ins Parlament hinzu. Nur Parteileiter und Seretäre könn dies.',
-                brief='!MakeAbgeordneter @Pariston Füge ein Mitgleid deiner Partei ins Parlament hinzu. Nur Parteileiter und Seretäre könn dies.',
+@client.command(name="RemoveAbgeordneter",
+                description='!RemoveAbgeordner @Pariston Entferne ein Mitgleid deiner Partei aus dem Parlament. Nur Parteileiter und Seretäre könn dies.',
+                brief='!RemoveAbgeordneter @Pariston Eintferne ein Mitgleid deiner Partei aus dem Parlament. Nur Parteileiter und Seretäre könn dies.',
                 pass_context=True)
 
 async def RemoveAbgeordneter(context):
@@ -137,14 +137,14 @@ async def RemoveAbgeordneter(context):
             for member in mentions:
                 if targetrole2 in member.roles:
                     await client.remove_roles(member,targetrole)
-                    await client.say(member.name + " repräsentiert nun die Partei im Parlament!")
+                    await client.say(member.name + " repräsentiert nun nicht mehr die Partei im Parlament!")
                     break
                 else:
                     await client.say("Abgeordneter muss aus deiner Partei sein.")
         else:
             await client.say("Du musst Parteileiter oder Sekretär sein um ein Abgeordneten zu ernennen")
     else:
-        await client.say("Bitte ernenne ein Abgeordneten mit '!MakeAbgeordneter @Member'")
+        await client.say("Bitte entferne ein Abgeordneten mit '!RemoveAbgeordneter @Member'")
 
 @client.command(name="MakeAbgeordneter",
                 description='!MakeAbgeordnet @Pariston Füge ein Mitgleid deiner Partei ins Parlament hinzu. Nur Parteileiter und Seretäre könn dies.',
