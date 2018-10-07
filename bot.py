@@ -494,9 +494,9 @@ async def AddParty(context):
             G=r()
             B=r()
 
-            c1= R + G* 256 + B * (256^2)
-            c2 = R + G * 256 + B * (256 ^ 2)
-            c3 = R + G * 256 + B * (256 ^ 2)
+            c1= R*65536 + G* 256 + B
+            c2 = R*65536 + G * 256 + B
+            c3 = R*65536 + G * 256 + B
 
             #cMitglied= "%d%d%d" %(c1,c2,c3)
             #cSekretär= "%d%d%d" %(c1+50,c2+50,c3+50)
