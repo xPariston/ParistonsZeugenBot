@@ -107,7 +107,7 @@ async def AddMember(context):
                 pass_context=True)
 
 async def LeaveParty(context):
-    parteiliste = getPartys()
+    parteiliste = await getPartys()
     authorroles = context.message.author.roles
     author = context.message.author
     targetrole = ""
