@@ -1004,7 +1004,9 @@ async def NewParliamentDemo(context):
         print(Msg1 + Msg2 + Msg3 + Msg4)
         await asyncio.shield(client.send_message(context.message.channel, Msg1 + Msg2 + Msg3 + Msg4))
 
-        ParteiStimmenProzente += Kriegssitze + Spendensitze
+        for partei in ParteiStimmenProzente:
+            ParteiStimmenProzente[partei]+= Kriegssitze[partei] + Spendensitze[partei]
+            await client.say("Sitze " + partei + ": " + ParteiStimmenProzente[partei])
         print(ParteiStimmenProzente)
 
 
