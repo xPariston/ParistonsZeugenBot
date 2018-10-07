@@ -876,13 +876,13 @@ async def NewParliament(context):
             ParteiStimmenProzente[partei] = round (Stimmliste[count] / Gesamtstimmen * 100,2)
 
         for m in ParteiStimmenProzente:
-            await client.say(m + "=" + ParteiStimmenProzente[m])
+            await client.say(m + "=" + str(ParteiStimmenProzente[m]))
 
         for p in ParteiStimmenProzente:
             ParteiStimmenProzente[p] = WahlProzent/100 * ParteiStimmenProzente[p]
 
         for m in ParteiStimmenProzente:
-            await client.say(m + "=" + ParteiStimmenProzente[m])
+            await client.say(m + "=" + str(ParteiStimmenProzente[m]))
 
 
 
