@@ -86,7 +86,10 @@ async def AddMember(context):
     serverroles = server.roles
     targetrole = ""
 
+    print(msg)
+
     if "@" in msg:
+        print(msg)
         if "Sekretär" in authorroles or "Leiter" in authorroles:
             for roles in authorroles:
                 if "Sekretär" in roles:
