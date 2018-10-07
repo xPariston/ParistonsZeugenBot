@@ -235,22 +235,30 @@ async def ChangeLeader(context):
     serverroles = server.roles
     author = context.message.author
     targetrole = ""
+    targetrole2 = ""
+    targetrole3 = ""
 
     party = await getLPartyName(context)
 
     if "@" in msg:
         if party != "":
             for role in serverroles:
+                if party == role.name:
+                    targetrole3 = role
                 if "Leiter - " + party == role.name:
                     targetrole = role
                 if "Sekretär - " + party == role.name:
                     targetrole2 = role
             for member in mentions:
-                await client.add_roles(member, targetrole)
-                await client.remove_roles(member, targetrole2)
-                await client.remove_roles(author, targetrole)
-                await client.add_roles(author, targetrole2)
-                await client.say(member.name + " ist neuer Parteileiter!")
+                if targetrole3 in member.roles:
+                    await client.add_roles(member, targetrole)
+                    await client.remove_roles(member, targetrole2)
+                    await client.remove_roles(author, targetrole)
+                    await client.add_roles(author, targetrole2)
+                    await client.say(member.name + " ist neuer Parteileiter!")
+                    break
+                else:
+                    await client.say("User muss Mitglied in der Partei sein.")
         else:
             await client.say("Du musst Parteileiter sein um den Leader zu wechseln.")
     else:
@@ -348,7 +356,7 @@ async def AddParty(context):
             await client.say("Partei exestiert bereits")
         else:
 
-            r= lambda: random.randint(50,200)
+            r= lambda: random.randint(0,255)
             R=r()
             G=r()
             B=r()
