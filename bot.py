@@ -112,6 +112,7 @@ async def AddMember(context):
 
 
 
+
 async def Platzhalter(context):
     msg = context.message.content
     authorroles = context.message.author.roles
