@@ -89,6 +89,7 @@ async def AddMember(context):
 
     if "@" in msg:
         if party != "":
+            print(party)
             for role in serverroles:
                 if party == role.name:
                     targetrole = role
