@@ -814,7 +814,8 @@ async def vote_background_task():
 async def Wahlergebnisse(context):
     msg = context.message.content
     msg = msg.replace("!Wahlergebnisse","")
-    msg = msg.split
+    msg = msg.split(",")
+    print (msg)
 
     wahldict = {}
     for p in msg:
