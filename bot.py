@@ -243,7 +243,7 @@ async def ChangeLeader(context):
             for member in mentions:
                 await client.add_roles(member, targetrole)
                 await client.remove_roles(member, targetrole2)
-                await client.remove_roles(member, targetrole)
+                await client.remove_roles(author, targetrole)
                 await client.add_roles(author, targetrole2)
                 await client.say(member.name + " ist neuer Parteileiter!")
         else:
