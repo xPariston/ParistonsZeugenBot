@@ -840,7 +840,7 @@ async def Wahlergebnisse(context):
             await client.say(parteien + " nicht gefunden.")
     await client.say("Wahlergebnisse wurden eingetragen")
 
-@client.command(name='NewParliament',
+@client.command(name='NewParliamentDemo',
                 description='Simuliere neues Parlament',
                 brief='Simuliere neues Parlament',
                 pass_context=True)
