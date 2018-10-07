@@ -683,7 +683,6 @@ async def AllDonations7d(context):
     print(Msg1 + Msg2 + Msg3 + Msg4)
     await asyncio.shield(client.send_message(context.message.channel, Msg1 + Msg2 + Msg3 + Msg4))
 
-    return Spendensitze
 
 @client.command(name="StateAndListWars",
                 description='Analysiere Kriege die in den letzten 7 Tage beendet wurden in unseren Regionen und alle Links aus der Datenbank.',
@@ -754,7 +753,6 @@ async def StateAndListWars():
         Msg4 += o + ": " + str(round(Kriegssitze[o],2)) + "%\n"
     await client.say(Msg1 + Msg2 + Msg3 + Msg4)
 
-    return Kriegssitze
 
 
 
@@ -886,10 +884,127 @@ async def NewParliamentDemo(context):
         for m in ParteiStimmenProzente:
             await client.say(m + "=" + str(ParteiStimmenProzente[m]))
 
-        Kriegsitze = await AllDonations7d()
-        Spendensitze = await StateAndListWars()
+        #Krieg
+        TotalWars = 0
+        parteiliste = await getPartys()
 
-        ParteiStimmenProzente += Kriegsitze + Spendensitze
+        warchannel = discord.Object(id='497356837679529994')
+        warliste = []
+        async for n in client.logs_from(warchannel, 100):
+            warliste.append(n.content)
+            TotalWars += 1
+
+        GesamtDamage, partydictRawDmg, partydictPerDmg = rrDamage.MultiWar(warliste, parteiliste)
+
+        stateschannel = discord.Object(id='497356879840935936')
+        stateids = []
+        async for n in client.logs_from(stateschannel, 100):
+            n = n.content
+            n = n.split(":")
+            n = n[1].strip()
+            stateids.append(n)
+
+        warbase = "http://rivalregions.com/listed/partydamage/"
+
+        Totalwarurllist = []
+        for id in stateids:
+            warlist = rrDamage.getStateWars7d(id)
+            for war in warlist:
+                warurl = warbase + war
+                Totalwarurllist.append(warurl)
+                TotalWars += 1
+
+        GesamtDamage2, partydictRawDmg2, partydictPerDmg2 = rrDamage.MultiWar(Totalwarurllist, parteiliste)
+        GesamtDamage += GesamtDamage2
+
+        for i in partydictRawDmg2:
+            if i in partydictRawDmg:
+                partydictRawDmg[i] += partydictRawDmg2[i]
+            else:
+                partydictRawDmg[i] = partydictRawDmg2[i]
+
+        for i in partydictPerDmg2:
+            if i in partydictPerDmg:
+                partydictPerDmg[i] = partydictRawDmg[i] / GesamtDamage * 100
+            else:
+                partydictPerDmg[i] = partydictPerDmg2[i] / GesamtDamage * 100
+
+        Kriegssitze = partydictPerDmg
+
+        Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen während der letzten 7 Tage und aus der Kriegsliste (insgesamt:%d): " % TotalWars + rrDamage.MakeNumber2PrettyString(
+            GesamtDamage) + "\n\n"
+        Msg2 = "Roher Schaden der Parteien:\n"
+        Msg3 = "\nProzentualer Schaden der Parteien:\n"
+        Msg4 = "\nAufteilung der Sitze nach Schaden im Parlament (%d Prozent nach Schaden verteilen):\n" % WarProzent
+        for j in partydictRawDmg:
+            Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[j]) + '\n'
+        for i in partydictPerDmg:
+            Msg3 += i + ": " + str(round(partydictPerDmg[i], 2)) + "%\n"
+
+        for s in Kriegssitze:
+            Kriegssitze[s] = Kriegssitze[s] / 100 * WarProzent
+
+        for o in Kriegssitze:
+            Msg4 += o + ": " + str(round(Kriegssitze[o], 2)) + "%\n"
+        await client.say(Msg1 + Msg2 + Msg3 + Msg4)
+
+        #Spenden
+        parteiliste = await getPartys()
+
+        stateschannel = discord.Object(id='497356879840935936')
+        stateids = []
+        async for n in client.logs_from(stateschannel, 100):
+            n = n.content
+            n = n.split(":")
+            n = n[1].strip()
+            stateids.append(n)
+
+        partydon = {}
+        counter = 1
+        Gesamtspendenvolumen = 0
+
+        await client.say("Starte Analyse")
+        for state in stateids:
+            await client.say("Analysiere Staat %d" % counter)
+            print("Staat Nr.%d: " % counter + state)
+            tempdict = await rrDamage.getStateDonations(state, parteiliste, profildict)
+            print("Staat beendet")
+            counter += 1
+            for p in tempdict:
+                Gesamtspendenvolumen = Gesamtspendenvolumen + tempdict[p]
+                if p in partydon:
+                    partydon[p] = partydon[p] + tempdict[p]
+                else:
+                    partydon[p] = tempdict[p]
+        await client.say("Analyse abgeschlossen")
+        print("Alle Staaten beendet")
+        partydonPro = {}
+
+        Msg1 = "Gesamtspenden des Staatenbundes während der letzten 7 Tage: " + rrDamage.MakeNumber2PrettyString(
+            Gesamtspendenvolumen) + "\n\n"
+        Msg2 = "Spendenvolumen der Parteien:\n"
+        Msg3 = "\nProzentuale Spenden der Parteien:\n"
+        for j in partydon:
+            Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydon[j]) + '\n'
+        for i in partydon:
+            partydonPro[i] = partydon[i] / Gesamtspendenvolumen * 100
+            Msg3 += i + ": " + str(round(partydonPro[i], 2)) + "%\n"
+
+        Spendensitze = partydonPro
+
+        Msg4 = "\nAufteilung der Sitze nach Spenden im Parlament (%d Prozent nach Spenden verteilen):\n" % SpendenProzent
+
+        for s in Spendensitze:
+            Spendensitze[s] = Spendensitze[s] / 100 * SpendenProzent
+
+        for o in Spendensitze:
+            Msg4 += o + ": " + str(round(Spendensitze[o], 2)) + "%\n"
+
+        print("Jetzt müsst er was sagen")
+        print(Msg1 + Msg2 + Msg3 + Msg4)
+        await asyncio.shield(client.send_message(context.message.channel, Msg1 + Msg2 + Msg3 + Msg4))
+
+        ParteiStimmenProzente += Kriegssitze + Spendensitze
         print(ParteiStimmenProzente)
 
 
