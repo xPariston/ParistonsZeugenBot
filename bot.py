@@ -90,16 +90,16 @@ async def AddMember(context):
 
     if "@" in msg:
         print(msg)
-        if "Sekretär" in authorroles or "Leiter" in authorroles:
+        if "Sekretär" in authorroles.name or "Leiter" in authorroles.name:
             for roles in authorroles:
-                if "Sekretär" in roles:
+                if "Sekretär" in roles.name:
                     party = roles.name.replace("Sekretär -","")
                     party = party.strip()
-                if "Leiter" in roles:
+                if "Leiter" in roles.name:
                     party = roles.name.replace("Leiter -","")
                     party = party.strip()
             for role in serverroles:
-                if party in role:
+                if party in role.name:
                    targetrole = role
             for member in mentions:
                 await client.add_roles(member,targetrole)
