@@ -100,7 +100,7 @@ async def AddMember(context):
         if party != "":
             print(party)
             for role in serverroles:
-                if party in role.name:
+                if party == role.name:
                     targetrole = role
             for member in mentions:
                 print(targetrole.name)
