@@ -132,7 +132,7 @@ async def Platzhalter(context):
                     party = roles.name.replace("Leiter -", "")
                     party = party.strip()
             for role in serverroles:
-                if party in role:
+                if party == role.name:
                     targetrole = role
             for member in mentions:
                 await client.add_roles(member, targetrole)
