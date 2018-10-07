@@ -92,9 +92,12 @@ async def DeleteParty(context):
                 await client.delete_message(m)
 
         rolelist = server.roles
+        DeleteList = []
         for role in rolelist:
             if partei in role.name:
-                await client.delete_role(server,role)
+                DeleteList.append(role)
+        for role2 in DeleteList:
+            await client.delete_role(server, role2)
 
         channellist = server.channels
         partei = partei.lower()
