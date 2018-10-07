@@ -683,6 +683,7 @@ async def AllDonations7d(context):
     print(Msg1 + Msg2 + Msg3 + Msg4)
     await asyncio.shield(client.send_message(context.message.channel, Msg1 + Msg2 + Msg3 + Msg4))
 
+    return Spendensitze
 
 @client.command(name="StateAndListWars",
                 description='Analysiere Kriege die in den letzten 7 Tage beendet wurden in unseren Regionen und alle Links aus der Datenbank.',
@@ -753,6 +754,7 @@ async def StateAndListWars():
         Msg4 += o + ": " + str(round(Kriegssitze[o],2)) + "%\n"
     await client.say(Msg1 + Msg2 + Msg3 + Msg4)
 
+    return Kriegssitze
 
 
 
@@ -839,11 +841,11 @@ async def Wahlergebnisse(context):
     await client.say("Wahlergebnisse wurden eingetragen")
 
 @client.command(name='NewParliament',
-                description='Stelle etwas zur Wahl',
-                brief='Stelle etwas zur Wahl',
+                description='Simuliere neues Parlament',
+                brief='Simuliere neues Parlament',
                 pass_context=True)
 
-async def NewParliament(context):
+async def NewParliamentDemo(context):
     author = context.message.author
     authorroles = author.roles
     Berechtigung = False
@@ -884,7 +886,11 @@ async def NewParliament(context):
         for m in ParteiStimmenProzente:
             await client.say(m + "=" + str(ParteiStimmenProzente[m]))
 
+        Kriegsitze = await AllDonations7d()
+        Spendensitze = await StateAndListWars()
 
+        ParteiStimmenProzente += Kriegsitze + Spendensitze
+        print(ParteiStimmenProzente)
 
 
 
