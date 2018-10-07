@@ -806,6 +806,37 @@ async def vote_background_task():
 
 
 
+@client.command(name='Wahlergebnisse',
+                description='!Wahlergebnisse Partei 1: 33, Partei 3: 144, Partei x: 231',
+                brief='!Wahlergebnisse Partei 1: 33, Partei 3: 144, Partei x: 231',
+                pass_context=True)
+
+async def Wahlergebnisse(context):
+    msg = context.message.content
+    msg = msg.replace("!Wahlergebnisse","")
+    msg = msg.split
+
+    wahldict = {}
+    for p in msg:
+        partei,stimmen = p.split(":")
+        partei = partei.strip()
+        stimmen = stimmen.strip()
+        wahldict[partei]=stimmen
+
+    Wahlchannel = discord.Object(id='498487327484543006')
+    async for n in client.logs_from(Wahlchannel, 100):
+        parteien, stimmen = n.content.split(":")
+        parteien = parteien.strip()
+        stimmen = stimmen.strip()
+
+        if parteien in wahldict:
+            stimmen = wahldict[parteien]
+            nachricht = parteien + ": " + stimmen
+            await client.edit_message(n, nachricht)
+        else:
+            await client.say(parteien + " nicht gefunden.")
+    await client.say("Wahlergebnisse wurden eingetragen")
+
 @client.command(name='NewParliament',
                 description='Stelle etwas zur Wahl',
                 brief='Stelle etwas zur Wahl',
