@@ -86,11 +86,9 @@ async def AddMember(context):
     serverroles = server.roles
     targetrole = ""
 
-    print(msg)
-
     if "@" in msg:
-        print(msg)
         for roles in authorroles:
+            print(roles.name)
             if "Sekretär" in roles.name:
                 party = roles.name.replace("Sekretär -","")
                 party = party.strip()
@@ -107,6 +105,7 @@ async def AddMember(context):
                 await client.add_roles(member,targetrole)
                 await client.say(member.name + " wurde der Partei hinzugefügt")
         else:
+            print("Im Else")
             client.say("Du musst Parteileiter oder Sekretär sein um ein Mitglied hinzuzufügen")
     else:
         client.say("Bitte Füge ein Mitglied mit '!AddMember @Member' hinzu")
