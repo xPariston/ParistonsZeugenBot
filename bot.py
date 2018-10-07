@@ -72,6 +72,75 @@ async def EditPartyName(context):
     else:
         await client.say("Partei nicht gefunden.")
 
+@client.command(name="AddMember",
+                description='!AddMember @Pariston Füge ein Mitgleid deiner Partei hinzu. Nur Parteileiter und Seretäre könn dies.',
+                brief='!AddMember @Pariston Füge ein Mitgleid deiner Partei hinzu. Nur Parteileiter und Seretäre könn dies.',
+                pass_context=True)
+
+async def AddMember(context):
+    msg = context.message.content
+    authorroles = context.message.author.roles
+    mentions = context.message.mentions
+    party = ""
+    server = context.message.server
+    serverroles = server.roles
+    targetrole = ""
+
+    if "@" in msg:
+        if "Sekretär" in authorroles or "Leiter" in authorroles:
+            for roles in authorroles:
+                if "Sekretär" in roles:
+                    party = roles.name.replace("Sekretär -","")
+                    party = party.strip()
+                if "Leiter" in roles:
+                    party = roles.name.replace("Leiter -","")
+                    party = party.strip()
+            for role in serverroles:
+                if party in role:
+                   targetrole = role
+            for member in mentions:
+                await client.add_roles(member,targetrole)
+                await client.say(member.name + " wurder der Partei hinzugefügt")
+
+        else:
+            client.say("Du musst Parteileiter oder Sekretär sein um ein Mitglied hinzuzufügen")
+    else:
+        client.say("Bitte Füge ein Mitglied mit '!AddMember @Member' hinzu")
+
+
+
+async def Platzhalter(context):
+    msg = context.message.content
+    authorroles = context.message.author.roles
+    mentions = context.message.mentions
+    party = ""
+    server = context.message.server
+    serverroles = server.roles
+    targetrole = ""
+
+    if "@" in msg:
+        if "Sekretär" in authorroles or "Leiter" in authorroles:
+            for roles in authorroles:
+                if "Sekretär" in roles:
+                    party = roles.name.replace("Sekretär -", "")
+                    party = party.strip()
+                if "Leiter" in roles:
+                    party = roles.name.replace("Leiter -", "")
+                    party = party.strip()
+            for role in serverroles:
+                if party in role:
+                    targetrole = role
+            for member in mentions:
+                await client.add_roles(member, targetrole)
+                await client.say(member.name + " wurder der Partei hinzugefügt")
+
+        else:
+            client.say("Du musst Parteileiter oder Sekretär sein um ein Mitglied hinzuzufügen")
+    else:
+        client.say("Bitte Füge ein Mitglied mit '!AddMember @Member' hinzu")
+
+
+
 @client.command(name="DeleteParty",
                 description='Lösche eine Partei.',
                 brief='Lösche eine Partei.',
