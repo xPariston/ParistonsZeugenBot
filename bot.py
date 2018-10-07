@@ -111,17 +111,22 @@ async def LeaveParty(context):
     authorroles = context.message.author.roles
     author = context.message.author
     targetrole = ""
+    Leiterbool = False
 
     for partei in parteiliste:
         for role in authorroles:
             if partei == role.name:
                 targetrole = role
-
-    if targetrole != "":
-        await client.remove_roles(author,targetrole)
-        await client.say ("Du hast die Partei verlassen.")
+            if "Leiter - " + partei == role.name:
+                Leiterbool = True
+    if Leiterbool == False:
+        if targetrole != "":
+            await client.remove_roles(author,targetrole)
+            await client.say ("Du hast die Partei verlassen.")
+        else:
+            await client.say ("Du bist in keiner teilnehmenden Partei.")
     else:
-        await client.say ("Du bist in keiner teilnehmenden Partei.")
+        await client.say("Du bist Leiter dieser Partei. Gebe den Posten ab oder lass die Partei vom AdminTeam löschen.")
 
 @client.command(name="KickMember",
                 description='!KickMember @Pariston Kick ein Mitgleid aus deiner Partei. Nur Parteileiter und Seretäre könn dies.',
