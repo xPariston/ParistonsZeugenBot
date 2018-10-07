@@ -93,6 +93,9 @@ async def AddMember(context):
                 if party == role.name:
                     targetrole = role
             for member in mentions:
+                print(member)
+                print(targetrole)
+
                 await client.add_roles(member,targetrole)
                 await client.say(member.name + " wurde der Partei hinzugefügt")
         else:
