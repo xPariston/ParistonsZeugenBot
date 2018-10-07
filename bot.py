@@ -1014,7 +1014,7 @@ async def NewParliamentDemo(context):
             except:
                 pass
 
-            await client.say("Sitze " + partei + ": " + ParteiStimmenProzente[partei])
+            await client.say("Sitze " + partei + ": " + str(ParteiStimmenProzente[partei]))
         print(ParteiStimmenProzente)
 
 
