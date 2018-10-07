@@ -364,8 +364,8 @@ async def AddParty(context):
             rSekretär = await client.create_role(context.message.server, name= nSekretär, colour=discord.Colour(value= c2))
             rChef = await client.create_role(context.message.server, name=nChef , colour=discord.Colour(value= c3))
 
-            await client.add_roles(mention,rMitglied)
-            await client.add_roles(mention, rChef)
+            await client.add_roles(mention[0], rMitglied)
+            await client.add_roles(mention[0], rChef)
 
             everyone_perms = discord.PermissionOverwrite(read_messages=False)
             my_perms = discord.PermissionOverwrite(read_messages=True)
