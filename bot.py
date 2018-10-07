@@ -159,16 +159,12 @@ async def MakeAbgeordneter(context):
     targetrole = ""
     targetrole2 =""
 
+    print(1)
     party = await getPartyName(context)
-
-
-
     partyseatsmax = 0
     parteienchannel = discord.Object(id='497356738492629013')
-
-
     partyseatsnow = 0
-
+    print(2)
 
 
     if "@" in msg:
@@ -185,18 +181,19 @@ async def MakeAbgeordneter(context):
                 seats = seats.strip()
                 if p == party:
                     partyseatsmax == seats
-
+            print(3)
             memberlist = await client.get_all_members()
             for member in memberlist:
                 if targetrole2 in member.roles:
                     if targetrole in member.roles:
                         partyseatsnow += 1
-
+            print(4)
             if partyseatsnow == partyseatsmax:
                 await client.say("Maximale Anzahl an Abgeordneten bereits erreicht. Kicke einen Abgeordneten um einen neuen zu ernennen oder erhalte mehr Sitze.")
             else:
                 for member in mentions:
                     if targetrole2 in member.roles:
+                        print(5)
                         await client.add_roles(member,targetrole)
                         await client.say(member.name + " repräsentiert nun die Partei im Parlament!")
                         break
