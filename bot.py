@@ -78,71 +78,201 @@ async def EditPartyName(context):
                 pass_context=True)
 
 async def AddMember(context):
+
     msg = context.message.content
-    authorroles = context.message.author.roles
     mentions = context.message.mentions
-    party = ""
     server = context.message.server
     serverroles = server.roles
     targetrole = ""
 
+    party = getPartyName(context)
+
     if "@" in msg:
-        for roles in authorroles:
-            print(roles.name)
-            if "Sekretär" in roles.name:
-                party = roles.name.replace("Sekretär -","")
-                party = party.strip()
-            if "Leiter" in roles.name:
-                party = roles.name.replace("Leiter -","")
-                party = party.strip()
         if party != "":
-            print(party)
             for role in serverroles:
                 if party == role.name:
                     targetrole = role
             for member in mentions:
-                print(targetrole.name)
                 await client.add_roles(member,targetrole)
                 await client.say(member.name + " wurde der Partei hinzugefügt")
         else:
-            print("Im Else")
             await client.say("Du musst Parteileiter oder Sekretär sein um ein Mitglied hinzuzufügen")
     else:
         await client.say("Bitte Füge ein Mitglied mit '!AddMember @Member' hinzu")
 
 
+@client.command(name="LeaveParty",
+                description='Verlasse deine Partei',
+                brief='Verlasse deine Partei.',
+                pass_context=True)
 
-
-async def Platzhalter(context):
-    msg = context.message.content
+async def LeaveParty(context):
+    parteiliste = getPartys()
     authorroles = context.message.author.roles
+    author = context.message.author
+    targetrole = ""
+
+    for partei in parteiliste:
+        for role in authorroles:
+            if partei == role.name:
+                targetrole = role
+
+    if targetrole != "":
+        await client.remove_roles(author,targetrole)
+        await client.say ("Du hast die Partei verlassen.")
+    else:
+        await client.say ("Du bist in keiner teilnehmenden Partei.")
+
+@client.command(name="KickSekretär",
+                description='!KickMember @Pariston Kick ein Mitgleid aus deiner Partei. Nur Parteileiter und Seretäre könn dies.',
+                brief='!AddMember @Pariston Kick ein Mitgleid aus deiner Partei. Nur Parteileiter und Seretäre könn dies.',
+                pass_context=True)
+
+async def KickMember(context):
+    msg = context.message.content
     mentions = context.message.mentions
-    party = ""
+    server = context.message.server
+    authorroles = context.message.author.roles
+    serverroles = server.roles
+    targetrole = ""
+    targetrole2 = ""
+    targetrole3 = ""
+
+    party = getPartyName(context)
+
+    if "@" in msg:
+        if party != "":
+            for role in serverroles:
+                if party == role.name:
+                    targetrole = role
+                if "Leiter -" + party == role.name:
+                    targetrole2 = role
+                if "Sekretär -" + party == role.name:
+                    targetrole3 = role
+            for member in mentions:
+                if targetrole2 in authorroles:
+                    await client.say("Ein Leader kann sich nicht aus der eigenen Partei kicken. Bitte das Admin Team die Partei zu löschen oder wechsel den Parteileiter mit !ChangeLeader")
+                elif targetrole3 in authorroles:
+                    await client.remove_roles(member,targetrole3)
+                    await client.remove_roles(member, targetrole)
+                    await client.say(member.name + " wurde aus der Partei gegickt")
+                else:
+                    await client.remove_roles(member, targetrole)
+                    await client.say(member.name + " wurde aus der Partei gegickt")
+        else:
+            await client.say("Du musst Parteileiter oder Sekretär sein um ein Mitglied zu kicken")
+    else:
+        await client.say("Bitte kicke ein Mitglied mit '!AddMember @Member' hinzu")
+
+@client.command(name="RemoveSekretär",
+                description='!RemoveSekretär @Pariston Kick ein Sekretär aus deiner Partei. Nur Parteileiter können dies.',
+                brief='!RemoveSekretär @Pariston Kick ein Sekretär aus deiner Partei. Nur Parteileiter können dies.',
+                pass_context=True)
+
+async def RemoveSekretär(context):
+    msg = context.message.content
+    mentions = context.message.mentions
     server = context.message.server
     serverroles = server.roles
     targetrole = ""
 
+    party = getLPartyName(context)
+
     if "@" in msg:
-        if "Sekretär" in authorroles or "Leiter" in authorroles:
-            for roles in authorroles:
-                if "Sekretär" in roles:
-                    party = roles.name.replace("Sekretär -", "")
-                    party = party.strip()
-                if "Leiter" in roles:
-                    party = roles.name.replace("Leiter -", "")
-                    party = party.strip()
+        if party != "":
             for role in serverroles:
-                if party == role.name:
+                if "Sekretär - " + party == role.name:
+                    targetrole = role
+            for member in mentions:
+                await client.remove_roles(member, targetrole)
+                await client.say(member.name + "wurde als Sekretär entfernt")
+        else:
+            await client.say("Du musst Parteileiter sein um ein Sekretär zu entfernen")
+    else:
+        await client.say("Bitte entferne ein Sekretär mit '!RemoveSekretär @Member'.")
+
+@client.command(name="MakeSekretär",
+                description='!MakeSekretär @Pariston Ernenne einen Sekretär aus deiner Partei. Nur Parteileiter können dies.',
+                brief='!MakeSekretär @Pariston Ernenne einen Sekretär aus deiner Partei. Nur Parteileiter können dies.',
+                pass_context=True)
+
+async def MakeSekretär(context):
+    msg = context.message.content
+    mentions = context.message.mentions
+    server = context.message.server
+    serverroles = server.roles
+    targetrole = ""
+
+    party = getLPartyName(context)
+
+    if "@" in msg:
+        if party != "":
+            for role in serverroles:
+                if "Sekretär - " + party == role.name:
                     targetrole = role
             for member in mentions:
                 await client.add_roles(member, targetrole)
-                await client.say(member.name + " wurder der Partei hinzugefügt")
-
+                await client.say(member.name + "wurde als Sekretär hinzugefügt")
         else:
-            client.say("Du musst Parteileiter oder Sekretär sein um ein Mitglied hinzuzufügen")
+            await client.say("Du musst Parteileiter sein um ein Sekretär hinzuzufügen.")
     else:
-        client.say("Bitte Füge ein Mitglied mit '!AddMember @Member' hinzu")
+        await client.say("Bitte füge ein Sekretär mit '!MakeSekretär @Member' hinzu.")
 
+@client.command(name="ChangeLeader",
+                description='!ChangeLeader @Pariston Ernenne einen neuen Leader aus deiner Partei. Nur Parteileiter können dies.',
+                brief='!ChangeLeader @Pariston Ernenne einen neune Leader aus deiner Partei. Nur Parteileiter können dies.',
+                pass_context=True)
+
+async def ChangeLeader(context):
+    msg = context.message.content
+    mentions = context.message.mentions
+    server = context.message.server
+    serverroles = server.roles
+    author = context.message.author
+    targetrole = ""
+
+    party = getLPartyName(context)
+
+    if "@" in msg:
+        if party != "":
+            for role in serverroles:
+                if "Leiter - " + party == role.name:
+                    targetrole = role
+                if "Sekretär - " + party == role.name:
+                    targetrole2 = role
+            for member in mentions:
+                await client.add_roles(member, targetrole)
+                await client.remove_roles(member, targetrole2)
+                await client.remove_roles(member, targetrole)
+                await client.add_roles(author, targetrole2)
+                await client.say(member.name + " ist neuer Parteileiter!")
+        else:
+            await client.say("Du musst Parteileiter sein um den Leader zu wechseln.")
+    else:
+        await client.say("Bitte ändere den Leader mit '!ChangeLeader @Member'.")
+
+async def getLPartyName(context):
+    authorroles = context.message.author.roles
+    party = ""
+
+    for roles in authorroles:
+        if "Leiter" in roles.name:
+            party = roles.name.replace("Leiter -", "")
+            party = party.strip()
+    return party
+
+async def getPartyName(context):
+    authorroles = context.message.author.roles
+    party = ""
+
+    for roles in authorroles:
+        if "Leiter" in roles.name:
+            party = roles.name.replace("Leiter -", "")
+            party = party.strip()
+        if "Sekretär" in roles.name:
+            party = roles.name.replace("Sekretär -", "")
+            party = party.strip()
+    return party
 
 
 @client.command(name="DeleteParty",
@@ -191,47 +321,60 @@ async def DeleteParty(context):
 
 async def AddParty(context):
 
+    msg = context.message.content
     partei = context.message.content.replace("!AddParty", "")
+    partei,müll = partei.split("<")
     partei = partei.strip()
+    mention = context.message.mentions
     server = context.message.server
     parteiliste = await getPartys()
 
-    if partei in parteiliste:
-        await client.say("Partei exestiert bereits")
+
+    counter = 0
+    for i in msg:
+        if msg[i] == "@":
+            counter += 1
+
+    if counter == 1:
+        if partei in parteiliste:
+            await client.say("Partei exestiert bereits")
+        else:
+
+            r= lambda: random.randint(50,200)
+            R=r()
+            G=r()
+            B=r()
+
+            c1= R + G* 256 + B * (256^2)
+            c2 = R + G * 256 + B * (256 ^ 2)
+            c3 = R + G * 256 + B * (256 ^ 2)
+
+            #cMitglied= "%d%d%d" %(c1,c2,c3)
+            #cSekretär= "%d%d%d" %(c1+50,c2+50,c3+50)
+            #cChef= "%d%d%d" %(c1+100,c2+100,c3+100)
+
+            nSekretär= "Sekretär - " + partei
+            nChef = "Leiter - " + partei
+
+            await client.send_message(client.get_channel('497356738492629013'),partei + ": 0")
+            rMitglied = await client.create_role(context.message.server, name= partei, colour=discord.Colour(value= c1))
+            rSekretär = await client.create_role(context.message.server, name= nSekretär, colour=discord.Colour(value= c2))
+            rChef = await client.create_role(context.message.server, name=nChef , colour=discord.Colour(value= c3))
+
+            await client.add_roles(mention,rMitglied)
+            await client.add_roles(mention, rChef)
+
+            everyone_perms = discord.PermissionOverwrite(read_messages=False)
+            my_perms = discord.PermissionOverwrite(read_messages=True)
+            everyone = discord.ChannelPermissions(target=server.default_role, overwrite=everyone_perms)
+            pMitglied = discord.ChannelPermissions(target= rMitglied , overwrite=my_perms)
+            pSekretär = discord.ChannelPermissions(target= rSekretär, overwrite=my_perms)
+            pChef = discord.ChannelPermissions(target= rChef, overwrite=my_perms)
+            await client.create_channel(server, partei + ' - Chat', everyone, pMitglied, pSekretär, pChef)
+
+            await client.say("Partei " + partei + " wurde erfolgreich erstellt")
     else:
-
-        r= lambda: random.randint(50,200)
-        R=r()
-        G=r()
-        B=r()
-
-        c1= R + G* 256 + B * (256^2)
-        c2 = R + G * 256 + B * (256 ^ 2)
-        c3 = R + G * 256 + B * (256 ^ 2)
-
-        #cMitglied= "%d%d%d" %(c1,c2,c3)
-        #cSekretär= "%d%d%d" %(c1+50,c2+50,c3+50)
-        #cChef= "%d%d%d" %(c1+100,c2+100,c3+100)
-
-        nSekretär= "Sekretär - " + partei
-        nChef = "Leiter - " + partei
-
-        await client.send_message(client.get_channel('497356738492629013'),partei + ": 0")
-        rMitglied = await client.create_role(context.message.server, name= partei, colour=discord.Colour(value= c1))
-        rSekretär = await client.create_role(context.message.server, name= nSekretär, colour=discord.Colour(value= c2))
-        rChhef = await client.create_role(context.message.server, name=nChef , colour=discord.Colour(value= c3))
-
-
-        everyone_perms = discord.PermissionOverwrite(read_messages=False)
-        my_perms = discord.PermissionOverwrite(read_messages=True)
-        everyone = discord.ChannelPermissions(target=server.default_role, overwrite=everyone_perms)
-        pMitglied = discord.ChannelPermissions(target= rMitglied , overwrite=my_perms)
-        pSekretär = discord.ChannelPermissions(target= rSekretär, overwrite=my_perms)
-        pChef = discord.ChannelPermissions(target= rChhef, overwrite=my_perms)
-        await client.create_channel(server, partei + ' - Chat', everyone, pMitglied, pSekretär, pChef)
-
-        await client.say("Partei " + partei + " wurde erfolgreich erstellt")
-
+        await client.say("Nenne einen Parteileiter der Partei mit der Form !AddParty Partei XY @Parteileiter")
 async def getPartys():
     parteienchannel = discord.Object(id='497356738492629013')
     parteiliste = []
@@ -241,8 +384,6 @@ async def getPartys():
         parteiliste.append(p)
     return parteiliste
 
-async def getPartyRoles(server):
-    rolelist = server.roles
 
 
 @client.command(name="WarAnalyse",
