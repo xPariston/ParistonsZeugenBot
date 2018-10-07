@@ -106,9 +106,9 @@ async def AddMember(context):
                 await client.say(member.name + " wurde der Partei hinzugefügt")
         else:
             print("Im Else")
-            client.say("Du musst Parteileiter oder Sekretär sein um ein Mitglied hinzuzufügen")
+            await client.say("Du musst Parteileiter oder Sekretär sein um ein Mitglied hinzuzufügen")
     else:
-        client.say("Bitte Füge ein Mitglied mit '!AddMember @Member' hinzu")
+        await client.say("Bitte Füge ein Mitglied mit '!AddMember @Member' hinzu")
 
 
 
