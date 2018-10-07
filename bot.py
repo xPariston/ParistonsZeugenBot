@@ -107,6 +107,107 @@ async def AddMember(context):
         await client.say("Bitte Füge ein Mitglied mit '!AddMember @Member' hinzu")
 
 
+@client.command(name="MakeAbgeordneter",
+                description='!MakeAbgeordnet @Pariston Füge ein Mitgleid deiner Partei ins Parlament hinzu. Nur Parteileiter und Seretäre könn dies.',
+                brief='!MakeAbgeordneter @Pariston Füge ein Mitgleid deiner Partei ins Parlament hinzu. Nur Parteileiter und Seretäre könn dies.',
+                pass_context=True)
+
+async def RemoveAbgeordneter(context):
+    msg = context.message.content
+    mentions = context.message.mentions
+    server = context.message.server
+    serverroles = server.roles
+    targetrole = ""
+    targetrole2 =""
+    party = await getPartyName(context)
+    partyseatsmax = 0
+    parteienchannel = discord.Object(id='497356738492629013')
+    partyseatsnow = 0
+
+
+
+    if "@" in msg:
+        if party != "":
+            for role in serverroles:
+                if "Abgeordneter" == role.name:
+                    targetrole = role
+                if party == role.name:
+                    targetrole2 = role
+
+            for member in mentions:
+                if targetrole2 in member.roles:
+                    await client.remove_roles(member,targetrole)
+                    await client.say(member.name + " repräsentiert nun die Partei im Parlament!")
+                    break
+                else:
+                    await client.say("Abgeordneter muss aus deiner Partei sein.")
+        else:
+            await client.say("Du musst Parteileiter oder Sekretär sein um ein Abgeordneten zu ernennen")
+    else:
+        await client.say("Bitte ernenne ein Abgeordneten mit '!MakeAbgeordneter @Member'")
+
+@client.command(name="MakeAbgeordneter",
+                description='!MakeAbgeordnet @Pariston Füge ein Mitgleid deiner Partei ins Parlament hinzu. Nur Parteileiter und Seretäre könn dies.',
+                brief='!MakeAbgeordneter @Pariston Füge ein Mitgleid deiner Partei ins Parlament hinzu. Nur Parteileiter und Seretäre könn dies.',
+                pass_context=True)
+
+async def MakeAbgeordneter(context):
+    msg = context.message.content
+    mentions = context.message.mentions
+    server = context.message.server
+    serverroles = server.roles
+    targetrole = ""
+    targetrole2 =""
+
+    party = await getPartyName(context)
+
+
+
+    partyseatsmax = 0
+    parteienchannel = discord.Object(id='497356738492629013')
+
+
+    partyseatsnow = 0
+
+
+
+    if "@" in msg:
+        if party != "":
+            for role in serverroles:
+                if "Abgeordneter" == role.name:
+                    targetrole = role
+                if party == role.name:
+                    targetrole2 = role
+
+            async for m in client.logs_from(parteienchannel, 100):
+                p, seats = m.content.split(":")
+                p = p.strip()
+                seats = seats.strip()
+                if p == party:
+                    partyseatsmax == seats
+
+            memberlist = await client.get_all_members()
+            for member in memberlist:
+                if targetrole2 in member.roles:
+                    if targetrole in member.roles:
+                        partyseatsnow += 1
+
+            if partyseatsnow == partyseatsmax:
+                await client.say("Maximale Anzahl an Abgeordneten bereits erreicht. Kicke einen Abgeordneten um einen neuen zu ernennen oder erhalte mehr Sitze.")
+            else:
+                for member in mentions:
+                    if targetrole2 in member.roles:
+                        await client.add_roles(member,targetrole)
+                        await client.say(member.name + " repräsentiert nun die Partei im Parlament!")
+                        break
+                    else:
+                        await client.say("User muss in deiner Partei sein um Abgeordneter zu werden.")
+        else:
+            await client.say("Du musst Parteileiter oder Sekretär sein um ein Abgeordneten zu ernennen")
+    else:
+        await client.say("Bitte ernenne ein Abgeordneten mit '!MakeAbgeordneter @Member'")
+
+
 @client.command(name="LeaveParty",
                 description='Verlasse deine Partei',
                 brief='Verlasse deine Partei.',
@@ -117,7 +218,9 @@ async def LeaveParty(context):
     authorroles = context.message.author.roles
     author = context.message.author
     targetrole = ""
+    targetrole2 = ""
     Leiterbool = False
+    Abgeordneterbool = False
 
     for partei in parteiliste:
         for role in authorroles:
@@ -125,10 +228,18 @@ async def LeaveParty(context):
                 targetrole = role
             if "Leiter - " + partei == role.name:
                 Leiterbool = True
+            if "Abgeordneter" == role.name:
+                Abgeordneterbool = True
+                targetrole2 = role
     if Leiterbool == False:
         if targetrole != "":
-            await client.remove_roles(author,targetrole)
-            await client.say ("Du hast die Partei verlassen.")
+            if Abgeordneterbool == False:
+                await client.remove_roles(author,targetrole)
+                await client.say ("Du hast die Partei verlassen.")
+            else:
+                await client.remove_roles(author,targetrole2)
+                await client.remove_roles(author, targetrole)
+                await client.say("Du hast die Partei verlassen und deinen Parlamentsitz geräumt.")
         else:
             await client.say ("Du bist in keiner teilnehmenden Partei.")
     else:
@@ -148,6 +259,7 @@ async def KickMember(context):
     targetrole = ""
     targetrole2 = ""
     targetrole3 = ""
+    targetrole4 = ""
 
     party = await getPartyName(context)
 
@@ -160,15 +272,19 @@ async def KickMember(context):
                     targetrole2 = role
                 if "Sekretär -" + party == role.name:
                     targetrole3 = role
+                if "Abgeordneter" == role.name:
+                    targetrole4 = role.name
             for member in mentions:
                 if targetrole2 in authorroles:
                     await client.say("Ein Leader kann sich nicht aus der eigenen Partei kicken. Bitte das Admin Team die Partei zu löschen oder wechsel den Parteileiter mit !ChangeLeader")
                 elif targetrole3 in authorroles:
                     await client.remove_roles(member,targetrole3)
                     await client.remove_roles(member, targetrole)
+                    await client.remove_roles(member, targetrole4)
                     await client.say(member.name + " wurde aus der Partei gegickt")
                 else:
                     await client.remove_roles(member, targetrole)
+                    await client.remove_roles(member, targetrole4)
                     await client.say(member.name + " wurde aus der Partei gegickt")
         else:
             await client.say("Du musst Parteileiter oder Sekretär sein um ein Mitglied zu kicken")
@@ -317,12 +433,24 @@ async def DeleteParty(context):
             if partei in m.content:
                 await client.delete_message(m)
 
-
         rolelist = server.roles
+        targetrole = ""
+        targetrole2 = ""
         DeleteList = []
         for role in rolelist:
             if partei in role.name:
                 DeleteList.append(role)
+            if partei == role.name:
+                targetrole2 = role
+            if "Abgeordneter" == role.name:
+                targetrole = role
+
+        memberlist = await client.get_all_members()
+        for member in memberlist:
+            if targetrole2 in member.roles:
+                if targetrole in member.roles:
+                    await client.remove_roles(member,targetrole)
+
         for role2 in DeleteList:
             await client.delete_role(server, role2)
 
@@ -403,6 +531,8 @@ async def AddParty(context):
             await client.say("Partei " + partei + " wurde erfolgreich erstellt")
     else:
         await client.say("Nenne einen Parteileiter der Partei mit der Form !AddParty Partei XY @Parteileiter")
+
+
 async def getPartys():
     parteienchannel = discord.Object(id='497356738492629013')
     parteiliste = []
