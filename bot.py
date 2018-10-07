@@ -439,7 +439,7 @@ async def DeleteParty(context):
             if "Abgeordneter" == role.name:
                 targetrole = role
 
-        memberlist = await client.get_all_members()
+        memberlist = client.get_all_members()
         for member in memberlist:
             if targetrole2 in member.roles:
                 if targetrole in member.roles:
