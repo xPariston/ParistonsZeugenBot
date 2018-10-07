@@ -323,7 +323,10 @@ async def AddParty(context):
 
     msg = context.message.content
     partei = context.message.content.replace("!AddParty", "")
-    partei,müll = partei.split("<")
+    try :
+        partei,müll = partei.split("<")
+    except:
+        pass
     partei = partei.strip()
     mention = context.message.mentions
     server = context.message.server
