@@ -50,6 +50,12 @@ async def EditPartyName(context):
                 newMsg= m.content.replace(NameAlt,NameNeu)
                 await client.edit_message(m,newMsg)
 
+        parteienchannel = discord.Object(id='498487327484543006')
+        async for m in client.logs_from(parteienchannel, 100):
+            if NameAlt in m.content:
+                newMsg = m.content.replace(NameAlt, NameNeu)
+                await client.edit_message(m, newMsg)
+
         rolelist = server.roles
 
         for role in rolelist:
@@ -306,6 +312,11 @@ async def DeleteParty(context):
         async for m in client.logs_from(parteienchannel, 100):
             if partei in m.content:
                 await client.delete_message(m)
+        parteienchannel = discord.Object(id='498487327484543006')
+        async for m in client.logs_from(parteienchannel, 100):
+            if partei in m.content:
+                await client.delete_message(m)
+
 
         rolelist = server.roles
         DeleteList = []
@@ -373,6 +384,7 @@ async def AddParty(context):
             nChef = "Leiter - " + partei
 
             await client.send_message(client.get_channel('497356738492629013'),partei + ": 0")
+            await client.send_message(client.get_channel('498487327484543006'), partei + ": 0")
             rMitglied = await client.create_role(context.message.server, name= partei, colour=discord.Colour(value= c1))
             rSekretär = await client.create_role(context.message.server, name= nSekretär, colour=discord.Colour(value= c2))
             rChef = await client.create_role(context.message.server, name=nChef , colour=discord.Colour(value= c3))
@@ -430,10 +442,7 @@ async def WarAnalyse(context):
                 pass_context=True)
 
 async def WarListAnalyse(context):
-    parteienchannel= discord.Object(id='497356738492629013')
-    parteiliste= []
-    async for m in client.logs_from(parteienchannel, 100):
-        parteiliste.append(m.content)
+    parteiliste = await getPartys()
 
     warchannel = discord.Object(id='497356837679529994')
     warliste = []
@@ -458,10 +467,7 @@ async def WarListAnalyse(context):
 
 
 async def StateWars7d():
-    parteienchannel = discord.Object(id='497356738492629013')
-    parteiliste = []
-    async for m in client.logs_from(parteienchannel, 100):
-        parteiliste.append(m.content)
+    parteiliste = await getPartys()
 
     stateschannel = discord.Object(id='497356879840935936')
     stateids = []
@@ -499,10 +505,7 @@ async def StateWars7d():
 
 
 async def AllDonations7d(context):
-    parteienchannel = discord.Object(id='497356738492629013')
-    parteiliste = []
-    async for m in client.logs_from(parteienchannel, 100):
-        parteiliste.append(m.content)
+    parteiliste = await getPartys()
 
     stateschannel = discord.Object(id='497356879840935936')
     stateids = []
@@ -564,11 +567,8 @@ async def AllDonations7d(context):
 
 
 async def StateAndListWars():
-    parteienchannel = discord.Object(id='497356738492629013')
-    parteiliste = []
     TotalWars = 0
-    async for m in client.logs_from(parteienchannel, 100):
-        parteiliste.append(m.content)
+    parteiliste = await getPartys()
 
     warchannel = discord.Object(id='497356837679529994')
     warliste = []
@@ -993,7 +993,7 @@ async def on_ready():
 
 
 
-#client.loop.create_task(vote_background_task())
+client.loop.create_task(vote_background_task())
 client.run(os.getenv('TOKEN'))
 
 
