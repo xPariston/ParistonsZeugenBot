@@ -182,6 +182,7 @@ async def MakeAbgeordneter(context):
                 if p == party:
                     partyseatsmax == seats
             print(3)
+
             memberlist = client.get_all_members()
             for member in memberlist:
                 if targetrole2 in member.roles:
