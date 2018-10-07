@@ -894,7 +894,7 @@ async def NewParliamentDemo(context):
             warliste.append(n.content)
             TotalWars += 1
 
-        GesamtDamage, partydictRawDmg, partydictPerDmg = rrDamage.MultiWar(warliste, parteiliste)
+        GesamtDamage, partydictRawDmg, partydictPerDmg = await rrDamage.MultiWar(warliste, parteiliste)
 
         stateschannel = discord.Object(id='497356879840935936')
         stateids = []
@@ -908,13 +908,13 @@ async def NewParliamentDemo(context):
 
         Totalwarurllist = []
         for id in stateids:
-            warlist = rrDamage.getStateWars7d(id)
+            warlist = await rrDamage.getStateWars7d(id)
             for war in warlist:
                 warurl = warbase + war
                 Totalwarurllist.append(warurl)
                 TotalWars += 1
 
-        GesamtDamage2, partydictRawDmg2, partydictPerDmg2 = rrDamage.MultiWar(Totalwarurllist, parteiliste)
+        GesamtDamage2, partydictRawDmg2, partydictPerDmg2 = await rrDamage.MultiWar(Totalwarurllist, parteiliste)
         GesamtDamage += GesamtDamage2
 
         for i in partydictRawDmg2:
@@ -937,7 +937,7 @@ async def NewParliamentDemo(context):
         Msg3 = "\nProzentualer Schaden der Parteien:\n"
         Msg4 = "\nAufteilung der Sitze nach Schaden im Parlament (%d Prozent nach Schaden verteilen):\n" % WarProzent
         for j in partydictRawDmg:
-            Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[j]) + '\n'
+            Msg2 += j + ": " + await rrDamage.MakeNumber2PrettyString(partydictRawDmg[j]) + '\n'
         for i in partydictPerDmg:
             Msg3 += i + ": " + str(round(partydictPerDmg[i], 2)) + "%\n"
 
@@ -985,7 +985,7 @@ async def NewParliamentDemo(context):
         Msg2 = "Spendenvolumen der Parteien:\n"
         Msg3 = "\nProzentuale Spenden der Parteien:\n"
         for j in partydon:
-            Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydon[j]) + '\n'
+            Msg2 += j + ": " + await rrDamage.MakeNumber2PrettyString(partydon[j]) + '\n'
         for i in partydon:
             partydonPro[i] = partydon[i] / Gesamtspendenvolumen * 100
             Msg3 += i + ": " + str(round(partydonPro[i], 2)) + "%\n"

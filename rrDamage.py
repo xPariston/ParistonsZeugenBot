@@ -19,7 +19,7 @@ myheader = \
     }
 
 
-def getRawDamage(url):
+async def getRawDamage(url):
 
     partys = []
     damage = []
@@ -43,9 +43,9 @@ def getRawDamage(url):
 
     return partys,damage
 
-def RefineDamage(url,partylist):
+async def RefineDamage(url,partylist):
 
-    partys,damage=getRawDamage(url)
+    partys,damage= await getRawDamage(url)
     Gesamtdamage=0
     partydictRawDmg={}
     partydictPerDmg={}
@@ -69,13 +69,13 @@ def RefineDamage(url,partylist):
 
     return Gesamtdamage,partydictRawDmg,partydictPerDmg
 
-def MultiWar(urllist,partylist):
+async def MultiWar(urllist,partylist):
     Gesamtdamage = 0
     partydictRawDmg = {}
     partydictPerDmg = {}
 
     for x in urllist:
-        PartDamage,PartRawDmg,PartPerDmg = RefineDamage(x,partylist)
+        PartDamage,PartRawDmg,PartPerDmg = await RefineDamage(x,partylist)
         Gesamtdamage += PartDamage
 
         for i in PartRawDmg:
@@ -90,13 +90,15 @@ def MultiWar(urllist,partylist):
 
     return Gesamtdamage,partydictRawDmg,partydictPerDmg
 
-def getStateWars7d(stateid):
+async def getStateWars7d(stateid):
     regionlist = []
     StateUrl="http://rivalregions.com/listed/state/"
     url = StateUrl + stateid
     r = requests.get(url, headers=myheader)
     r = r.content
     soup = bs4.BeautifulSoup(r, 'html.parser')
+
+    print("in get statewars")
 
     for e in soup.find_all(attrs={"class": "list_name pointer small"}):
         x = str(e)
@@ -113,7 +115,7 @@ def getStateWars7d(stateid):
     yesterday= now + datetime.timedelta(days=-1)
 
     warlistState = []
-
+    print(warlistState)
     BaseUrl = "http://rivalregions.com/war/top/"
     for i in regionlist:
         RegionWarUrl = BaseUrl + i
