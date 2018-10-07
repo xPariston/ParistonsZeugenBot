@@ -89,14 +89,10 @@ async def AddMember(context):
 
     if "@" in msg:
         if party != "":
-            print(party)
             for role in serverroles:
                 if party == role.name:
                     targetrole = role
             for member in mentions:
-                print(member)
-                print(targetrole)
-
                 await client.add_roles(member,targetrole)
                 await client.say(member.name + " wurde der Partei hinzugefügt")
         else:
@@ -142,7 +138,7 @@ async def KickMember(context):
     targetrole2 = ""
     targetrole3 = ""
 
-    party = getPartyName(context)
+    party = await getPartyName(context)
 
     if "@" in msg:
         if party != "":
@@ -180,7 +176,7 @@ async def RemoveSekretär(context):
     serverroles = server.roles
     targetrole = ""
 
-    party = getLPartyName(context)
+    party = await getLPartyName(context)
 
     if "@" in msg:
         if party != "":
@@ -207,7 +203,7 @@ async def MakeSekretär(context):
     serverroles = server.roles
     targetrole = ""
 
-    party = getLPartyName(context)
+    party = await getLPartyName(context)
 
     if "@" in msg:
         if party != "":
@@ -235,7 +231,7 @@ async def ChangeLeader(context):
     author = context.message.author
     targetrole = ""
 
-    party = getLPartyName(context)
+    party = await getLPartyName(context)
 
     if "@" in msg:
         if party != "":
