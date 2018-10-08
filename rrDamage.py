@@ -31,7 +31,6 @@ async def getRawDamage(url,session):
 
     for party in soup.find_all(attrs={"class":"list_name pointer"}):
         party=party.get_text()
-        print(party)
         party= party[0:-14]
         partys.append(party)
 
@@ -39,6 +38,7 @@ async def getRawDamage(url,session):
         if counter%2 == 1:
             damage.append(dmg.get_text())
         counter+=1
+    print("RawDamage URL: ", url)
     print("In RawDamage. damagelist: ", damage, " partylist ",partys)
 
     return partys,damage
@@ -103,14 +103,12 @@ async def getStateWars7d(stateid):
 
         for e in soup.find_all(attrs={"class": "list_name pointer small"}):
             print("e: ",e)
-            x = str(e)
             x = x.split(" ")
             y = x[1].split("=")
             z = y[1].replace('"', '')
             ids = z.split("/")
             id = ids[2]
             id = id.strip()
-            print("id: ", id)
             regionlist.append(id)
 
         now = datetime.datetime.now()
