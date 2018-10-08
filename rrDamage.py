@@ -38,6 +38,7 @@ async def getRawDamage(url,session):
         if counter%2 == 1:
             damage.append(dmg.get_text())
         counter+=1
+    print("In RawDamage. damagelist: ", damage, " partylist ",partys)
 
     return partys,damage
 
