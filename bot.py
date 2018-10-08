@@ -1229,12 +1229,11 @@ async def NewParliamentDemo(context):
 
 
 
-
 @client.event
 async def on_member_join(member):
     server = member.server
     fmt = 'Willkommen {0.mention} auf dem Server des Staatenbundes! Um verifiziert zu werden poste bitte ein Screenshot deines RR Profils. Akzeptiert werden alle Bürger des Staatenbundes. Eines unserer Teammitglieder wird sich dann die Daten genauer prüfen und dich bei erfolgreicher Prüfung auf dem Server verifizieren.'
-    await client.send_message(client.get_channel(496286798624849923), fmt.format(member, server))
+    await client.send_message(client.get_channel('496286798624849923'), fmt.format(member, server))
 
 @client.command(name='Jukebox',
                 description="Best of Pariston Songs",
