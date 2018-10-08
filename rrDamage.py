@@ -109,6 +109,7 @@ async def getStateWars7d(stateid):
             z = y[1].replace('"', '')
             ids = z.split("/")
             id = ids[2]
+            id = id.strip()
             print("id: ", id)
             regionlist.append(id)
 
@@ -117,7 +118,7 @@ async def getStateWars7d(stateid):
         yesterday= now + datetime.timedelta(days=-1)
 
         warlistState = []
-        print(warlistState)
+
         BaseUrl = "http://rivalregions.com/war/top/"
         for i in regionlist:
             RegionWarUrl = BaseUrl + i
@@ -158,7 +159,7 @@ async def getStateWars7d(stateid):
                 for i in range(warcounter):
                     if i >= todaycounter:
                         warlistState.append(warlist[i])
-
+        print("WarListState: ",warlistState)
         return warlistState
 
 
