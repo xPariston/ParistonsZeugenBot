@@ -573,7 +573,7 @@ async def WarListAnalyse(context):
     async for n in client.logs_from(warchannel, 100):
         warliste.append(n.content)
 
-    GesamtDamage,partydictRawDmg,partydictPerDmg = rrDamage.MultiWar(warliste,parteiliste)
+    GesamtDamage,partydictRawDmg,partydictPerDmg = await rrDamage.MultiWar(warliste,parteiliste)
 
     Msg1= "Gesamtschaden des Staatenbundes: " + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
     Msg2= "Roher Schaden der Parteien:\n"
@@ -605,13 +605,13 @@ async def StateWars7d():
     TotalWars=0
     Totalwarurllist=[]
     for id in stateids:
-        warlist= rrDamage.getStateWars7d(id)
+        warlist= await rrDamage.getStateWars7d(id)
         for war in warlist:
             warurl= warbase + war
             Totalwarurllist.append(warurl)
             TotalWars+=1
 
-    GesamtDamage, partydictRawDmg, partydictPerDmg = rrDamage.MultiWar(Totalwarurllist, parteiliste)
+    GesamtDamage, partydictRawDmg, partydictPerDmg = await rrDamage.MultiWar(Totalwarurllist, parteiliste)
 
     Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen(%d) während der letzten 7 Tage: "%TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
     Msg2 = "Roher Schaden der Parteien:\n"
@@ -700,7 +700,7 @@ async def StateAndListWars():
         warliste.append(n.content)
         TotalWars+=1
 
-    GesamtDamage, partydictRawDmg, partydictPerDmg = rrDamage.MultiWar(warliste, parteiliste)
+    GesamtDamage, partydictRawDmg, partydictPerDmg = await rrDamage.MultiWar(warliste, parteiliste)
 
     stateschannel = discord.Object(id='497356879840935936')
     stateids = []
@@ -714,13 +714,13 @@ async def StateAndListWars():
 
     Totalwarurllist = []
     for id in stateids:
-        warlist = rrDamage.getStateWars7d(id)
+        warlist = await rrDamage.getStateWars7d(id)
         for war in warlist:
             warurl = warbase + war
             Totalwarurllist.append(warurl)
             TotalWars += 1
 
-    GesamtDamage2, partydictRawDmg2, partydictPerDmg2 = rrDamage.MultiWar(Totalwarurllist, parteiliste)
+    GesamtDamage2, partydictRawDmg2, partydictPerDmg2 = await rrDamage.MultiWar(Totalwarurllist, parteiliste)
     GesamtDamage += GesamtDamage2
 
     for i in partydictRawDmg2:
