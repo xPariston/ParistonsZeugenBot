@@ -102,8 +102,7 @@ async def getStateWars7d(stateid):
         print("in get statewars, stateid: ", stateid)
 
         for e in soup.find_all(attrs={"class": "list_name pointer small"}):
-            print("e: ",e)
-            x = x.split(" ")
+            x = e.split(" ")
             y = x[1].split("=")
             z = y[1].replace('"', '')
             ids = z.split("/")
