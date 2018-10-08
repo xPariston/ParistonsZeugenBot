@@ -31,6 +31,7 @@ async def getRawDamage(url,session):
 
     for party in soup.find_all(attrs={"class":"list_name pointer"}):
         party=party.get_text()
+        print(party)
         party= party[0:-14]
         partys.append(party)
 
