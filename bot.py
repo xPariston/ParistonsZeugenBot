@@ -859,6 +859,10 @@ async def NewParliamentDemo(context):
         Wahlchannel = discord.Object(id='498487327484543006')
         Stimmliste = []
         Parteienliste = []
+        msg1= "---WAHLERGEBNISSE---\n"
+        msg2="Abgegebene Stimmen: "
+        msg3="Aufteilung der Stimmen: \n"
+        msg4="Stimmen aufgeteilt auf 40% Wahlanteil:\n"
         async for n in client.logs_from(Wahlchannel, 100):
             parteien, stimmen = n.content.split(":")
             parteien = parteien.strip()
@@ -870,19 +874,18 @@ async def NewParliamentDemo(context):
         Gesamtstimmen = 0
         for i in Stimmliste:
             Gesamtstimmen += i
-
+        msg2= msg2 + str(Gesamtstimmen) + "\n"
         ParteiStimmenProzente = {}
         for count,partei in enumerate(Parteienliste):
             ParteiStimmenProzente[partei] = round (Stimmliste[count] / Gesamtstimmen * 100,2)
-
-        for m in ParteiStimmenProzente:
-            await client.say(m + "=" + str(ParteiStimmenProzente[m]))
-
+            msg3= msg3 + partei + ": " + str(ParteiStimmenProzente[partei]) + "% \n"
+        msg3 = msg3 + "\n"
         for p in ParteiStimmenProzente:
             ParteiStimmenProzente[p] = WahlProzent/100 * ParteiStimmenProzente[p]
+            msg4 = msg4 + p + ": " + str(ParteiStimmenProzente[p]) + "% \n"
+        msg4 = msg4 + "\n"
 
-        for m in ParteiStimmenProzente:
-            await client.say(m + "=" + str(ParteiStimmenProzente[m]))
+        await client.say(msg1 + msg2 + msg3 + msg4)
 
         #Krieg
         TotalWars = 0
@@ -930,9 +933,8 @@ async def NewParliamentDemo(context):
                 partydictPerDmg[i] = partydictPerDmg2[i] / GesamtDamage * 100
 
         Kriegssitze = partydictPerDmg
-
-        Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen während der letzten 7 Tage und aus der Kriegsliste (insgesamt:%d): " % TotalWars + rrDamage.MakeNumber2PrettyString(
-            GesamtDamage) + "\n\n"
+        Msg = "\n---KRIEGSERGEBNISSE---\n"
+        Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen während der letzten 7 Tage und aus der Kriegsliste (insgesamt:%d): " % TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
         Msg2 = "Roher Schaden der Parteien:\n"
         Msg3 = "\nProzentualer Schaden der Parteien:\n"
         Msg4 = "\nAufteilung der Sitze nach Schaden im Parlament (%d Prozent nach Schaden verteilen):\n" % WarProzent
@@ -946,7 +948,7 @@ async def NewParliamentDemo(context):
 
         for o in Kriegssitze:
             Msg4 += o + ": " + str(round(Kriegssitze[o], 2)) + "%\n"
-        await client.say(Msg1 + Msg2 + Msg3 + Msg4)
+        await client.say(Msg + Msg1 + Msg2 + Msg3 + Msg4 + "\n")
 
         #Spenden
         parteiliste = await getPartys()
@@ -963,9 +965,7 @@ async def NewParliamentDemo(context):
         counter = 1
         Gesamtspendenvolumen = 0
 
-        await client.say("Starte Analyse")
         for state in stateids:
-            await client.say("Analysiere Staat %d" % counter)
             print("Staat Nr.%d: " % counter + state)
             tempdict = await rrDamage.getStateDonations(state, parteiliste, profildict)
             print("Staat beendet")
@@ -976,10 +976,11 @@ async def NewParliamentDemo(context):
                     partydon[p] = partydon[p] + tempdict[p]
                 else:
                     partydon[p] = tempdict[p]
-        await client.say("Analyse abgeschlossen")
+
         print("Alle Staaten beendet")
         partydonPro = {}
 
+        Msg = "\n---SPENDENERGEBNISSE---\n"
         Msg1 = "Gesamtspenden des Staatenbundes während der letzten 7 Tage: " + rrDamage.MakeNumber2PrettyString(
             Gesamtspendenvolumen) + "\n\n"
         Msg2 = "Spendenvolumen der Parteien:\n"
@@ -1000,10 +1001,11 @@ async def NewParliamentDemo(context):
         for o in Spendensitze:
             Msg4 += o + ": " + str(round(Spendensitze[o], 2)) + "%\n"
 
-        print("Jetzt müsst er was sagen")
-        print(Msg1 + Msg2 + Msg3 + Msg4)
-        await asyncio.shield(client.send_message(context.message.channel, Msg1 + Msg2 + Msg3 + Msg4))
+        print(Msg + Msg1 + Msg2 + Msg3 + Msg4)
+        await asyncio.shield(client.send_message(context.message.channel, Msg + Msg1 + Msg2 + Msg3 + Msg4 + "\n"))
 
+        msg= "\n---GESAMTERGEBNISS---\n"
+        msg1= "Addierte Prozente der Parteien: \n"
         for partei in ParteiStimmenProzente:
             try:
                 ParteiStimmenProzente[partei]+= Kriegssitze[partei]
@@ -1014,7 +1016,15 @@ async def NewParliamentDemo(context):
             except:
                 pass
 
-            await client.say("Sitze " + partei + ": " + str(ParteiStimmenProzente[partei]))
+            msg1= partei + ": " + str(ParteiStimmenProzente[partei]) +"\n"
+        msg1 = msg1 + "\n"
+        Gesamtsitze = 18
+        msg2 = "Sitzverteilung im Parlament bei %d Sitzen\n" %Gesamtsitze
+        for sitze in ParteiStimmenProzente:
+            ParteiStimmenProzente[sitze] = round(Gesamtsitze / 100 * ParteiStimmenProzente)
+            msg2 = msg2 + "Sitze" + sitze + ": " + ParteiStimmenProzente[sitze] + "\n"
+
+        await client.say(msg + msg1 + msg2)
         print(ParteiStimmenProzente)
 
 
