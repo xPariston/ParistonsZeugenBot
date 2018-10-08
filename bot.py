@@ -920,17 +920,16 @@ async def NewParliamentDemo(context):
         GesamtDamage2, partydictRawDmg2, partydictPerDmg2 = await rrDamage.MultiWar(Totalwarurllist, parteiliste)
         GesamtDamage += GesamtDamage2
 
+        print("Damage vor Verrrechnung: PartydictRawDmg1", partydictRawDmg, " PartydictRawDmg2: ", partydictRawDmg2)
         for i in partydictRawDmg2:
             if i in partydictRawDmg:
                 partydictRawDmg[i] += partydictRawDmg2[i]
             else:
                 partydictRawDmg[i] = partydictRawDmg2[i]
 
-        for i in partydictPerDmg2:
-            if i in partydictPerDmg:
-                partydictPerDmg[i] = partydictRawDmg[i] / GesamtDamage * 100
-            else:
-                partydictPerDmg[i] = partydictRawDmg2[i] / GesamtDamage * 100
+
+        for i in partydictRawDmg:
+            partydictPerDmg[i] = partydictRawDmg[i] / GesamtDamage * 100
 
         Kriegssitze = partydictPerDmg
         Msg = "\n---KRIEGSERGEBNISSE---\n\n"
