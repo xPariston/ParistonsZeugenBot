@@ -885,7 +885,7 @@ async def NewParliamentDemo(context):
             msg4 = msg4 + p + ": " + str(ParteiStimmenProzente[p]) + "% \n"
         msg4 = msg4 + "\n"
 
-        await client.say(msg1 + msg2 + msg3 + msg4)
+        await client.say(msg1 + msg2 + msg3 + msg4 +"\n")
 
         #Krieg
         TotalWars = 0
@@ -930,10 +930,10 @@ async def NewParliamentDemo(context):
             if i in partydictPerDmg:
                 partydictPerDmg[i] = partydictRawDmg[i] / GesamtDamage * 100
             else:
-                partydictPerDmg[i] = partydictPerDmg2[i] / GesamtDamage * 100
+                partydictPerDmg[i] = partydictRawDmg2[i] / GesamtDamage * 100
 
         Kriegssitze = partydictPerDmg
-        Msg = "\n\n---KRIEGSERGEBNISSE---\n\n"
+        Msg = "\n---KRIEGSERGEBNISSE---\n\n"
         Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen während der letzten 7 Tage und aus der Kriegsliste (insgesamt:%d): " % TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
         Msg2 = "Roher Schaden der Parteien:\n"
         Msg3 = "\nProzentualer Schaden der Parteien:\n"
