@@ -248,7 +248,6 @@ async def getProfilParty(profilid,session):
 
 
 async def getRegionDonations(regionid, partylist,profildict, session):
-    print("In Region Get Donations")
     try:
         id,adder = regionid.split("/")
         adder = int(adder)
