@@ -331,6 +331,12 @@ async def getRegionDonations(regionid, partylist,profildict, session):
     print("Datebool: " , datebool[listcounter])
     if datebool[listcounter]==True:
         adder += 25
+        try:
+            id,a = regionid.split("/")
+            id=id.strip()
+            regionid = id
+        except:
+            pass
         regionid = regionid + "/" + str(adder)
         print("Im if, regionid: ", regionid)
         partydict = await getRegionDonations(regionid,partylist,profildict,session)
