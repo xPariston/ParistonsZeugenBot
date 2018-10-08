@@ -859,7 +859,7 @@ async def NewParliamentDemo(context):
         Wahlchannel = discord.Object(id='498487327484543006')
         Stimmliste = []
         Parteienliste = []
-        msg1= "---WAHLERGEBNISSE---\n"
+        msg1= "---WAHLERGEBNISSE---\n\n"
         msg2="Abgegebene Stimmen: "
         msg3="Aufteilung der Stimmen: \n"
         msg4="Stimmen aufgeteilt auf 40% Wahlanteil:\n"
@@ -933,7 +933,7 @@ async def NewParliamentDemo(context):
                 partydictPerDmg[i] = partydictPerDmg2[i] / GesamtDamage * 100
 
         Kriegssitze = partydictPerDmg
-        Msg = "\n---KRIEGSERGEBNISSE---\n"
+        Msg = "\n\n---KRIEGSERGEBNISSE---\n\n"
         Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen während der letzten 7 Tage und aus der Kriegsliste (insgesamt:%d): " % TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
         Msg2 = "Roher Schaden der Parteien:\n"
         Msg3 = "\nProzentualer Schaden der Parteien:\n"
@@ -980,7 +980,7 @@ async def NewParliamentDemo(context):
         print("Alle Staaten beendet")
         partydonPro = {}
 
-        Msg = "\n---SPENDENERGEBNISSE---\n"
+        Msg = "\n---SPENDENERGEBNISSE---\n\n"
         Msg1 = "Gesamtspenden des Staatenbundes während der letzten 7 Tage: " + rrDamage.MakeNumber2PrettyString(
             Gesamtspendenvolumen) + "\n\n"
         Msg2 = "Spendenvolumen der Parteien:\n"
@@ -1004,7 +1004,7 @@ async def NewParliamentDemo(context):
         print(Msg + Msg1 + Msg2 + Msg3 + Msg4)
         await asyncio.shield(client.send_message(context.message.channel, Msg + Msg1 + Msg2 + Msg3 + Msg4 + "\n"))
 
-        msg= "\n---GESAMTERGEBNISS---\n"
+        msg= "\n\n---GESAMTERGEBNISS---\n\n"
         msg1= "Addierte Prozente der Parteien: \n"
         for partei in ParteiStimmenProzente:
             try:
@@ -1016,7 +1016,7 @@ async def NewParliamentDemo(context):
             except:
                 pass
 
-            msg1= partei + ": " + str(ParteiStimmenProzente[partei]) +"\n"
+            msg1= msg1 + partei + ": " + str(round(ParteiStimmenProzente[partei],2)) +"\n"
         msg1 = msg1 + "\n"
         Gesamtsitze = 18
         msg2 = "Sitzverteilung im Parlament bei %d Sitzen\n" %Gesamtsitze
