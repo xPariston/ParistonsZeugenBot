@@ -1022,7 +1022,7 @@ async def NewParliamentDemo(context):
         msg2 = "Sitzverteilung im Parlament bei %d Sitzen\n" %Gesamtsitze
         for sitze in ParteiStimmenProzente:
             ParteiStimmenProzente[sitze] = round(Gesamtsitze / 100 * ParteiStimmenProzente[sitze])
-            msg2 = msg2 + "Sitze" + sitze + ": " + ParteiStimmenProzente[sitze] + "\n"
+            msg2 = msg2 + "Sitze" + sitze + ": " + str(ParteiStimmenProzente[sitze]) + "\n"
 
         await client.say(msg + msg1 + msg2)
         print(ParteiStimmenProzente)
