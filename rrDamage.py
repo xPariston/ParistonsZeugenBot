@@ -72,7 +72,7 @@ async def MultiWar(urllist,partylist):
         Gesamtdamage = 0
         partydictRawDmg = {}
         partydictPerDmg = {}
-
+        print("In Multiwar. URLlist: ", urllist)
         for x in urllist:
             PartDamage,PartRawDmg,PartPerDmg = await RefineDamage(x,partylist,session)
             Gesamtdamage += PartDamage
@@ -97,16 +97,17 @@ async def getStateWars7d(stateid):
         html = await fetch(session, url)
         soup = await soup_d(html)
 
-        print("in get statewars")
+        print("in get statewars, stateid: ", stateid)
 
         for e in soup.find_all(attrs={"class": "list_name pointer small"}):
+            print("e: ",e)
             x = str(e)
             x = x.split(" ")
             y = x[1].split("=")
             z = y[1].replace('"', '')
             ids = z.split("/")
             id = ids[2]
-
+            print("id: ", id)
             regionlist.append(id)
 
         now = datetime.datetime.now()
