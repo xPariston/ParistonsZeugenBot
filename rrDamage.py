@@ -19,17 +19,15 @@ myheader = \
     }
 
 
-async def getRawDamage(url):
+async def getRawDamage(url,session):
 
     partys = []
     damage = []
     counter = 1
 
-
     url = url.replace("#war/details","listed/partydamage")
-    r=requests.get(url, headers=myheader)
-    r=r.content
-    soup = bs4.BeautifulSoup(r,'html.parser')
+    html = await fetch(session, url)
+    soup = await soup_d(html)
 
     for party in soup.find_all(attrs={"class":"list_name pointer"}):
         party=party.get_text()
@@ -43,9 +41,9 @@ async def getRawDamage(url):
 
     return partys,damage
 
-async def RefineDamage(url,partylist):
+async def RefineDamage(url,partylist,session):
 
-    partys,damage= await getRawDamage(url)
+    partys,damage= await getRawDamage(url,session)
     Gesamtdamage=0
     partydictRawDmg={}
     partydictPerDmg={}
@@ -70,95 +68,95 @@ async def RefineDamage(url,partylist):
     return Gesamtdamage,partydictRawDmg,partydictPerDmg
 
 async def MultiWar(urllist,partylist):
-    Gesamtdamage = 0
-    partydictRawDmg = {}
-    partydictPerDmg = {}
+    async with aiohttp.ClientSession(headers=myheader) as session:
+        Gesamtdamage = 0
+        partydictRawDmg = {}
+        partydictPerDmg = {}
 
-    for x in urllist:
-        PartDamage,PartRawDmg,PartPerDmg = await RefineDamage(x,partylist)
-        Gesamtdamage += PartDamage
+        for x in urllist:
+            PartDamage,PartRawDmg,PartPerDmg = await RefineDamage(x,partylist,session)
+            Gesamtdamage += PartDamage
 
-        for i in PartRawDmg:
-            if i in partydictRawDmg:
-                partydictRawDmg[i] += PartRawDmg[i]
-            else:
-                partydictRawDmg[i] = PartRawDmg[i]
+            for i in PartRawDmg:
+                if i in partydictRawDmg:
+                    partydictRawDmg[i] += PartRawDmg[i]
+                else:
+                    partydictRawDmg[i] = PartRawDmg[i]
 
-    for i in partydictRawDmg:
-        Percent = partydictRawDmg[i]/Gesamtdamage * 100
-        partydictPerDmg[i]=Percent
+        for i in partydictRawDmg:
+            Percent = partydictRawDmg[i]/Gesamtdamage * 100
+            partydictPerDmg[i]=Percent
 
-    return Gesamtdamage,partydictRawDmg,partydictPerDmg
+        return Gesamtdamage,partydictRawDmg,partydictPerDmg
 
 async def getStateWars7d(stateid):
-    regionlist = []
-    StateUrl="http://rivalregions.com/listed/state/"
-    url = StateUrl + stateid
-    r = requests.get(url, headers=myheader)
-    r = r.content
-    soup = bs4.BeautifulSoup(r, 'html.parser')
+    async with aiohttp.ClientSession(headers=myheader) as session:
+        regionlist = []
+        StateUrl="http://rivalregions.com/listed/state/"
+        url = StateUrl + stateid
+        html = await fetch(session, url)
+        soup = await soup_d(html)
 
-    print("in get statewars")
+        print("in get statewars")
 
-    for e in soup.find_all(attrs={"class": "list_name pointer small"}):
-        x = str(e)
-        x = x.split(" ")
-        y = x[1].split("=")
-        z = y[1].replace('"', '')
-        ids = z.split("/")
-        id = ids[2]
-
-        regionlist.append(id)
-
-    now = datetime.datetime.now()
-    siebenDays = now + datetime.timedelta(days=-7)
-    yesterday= now + datetime.timedelta(days=-1)
-
-    warlistState = []
-    print(warlistState)
-    BaseUrl = "http://rivalregions.com/war/top/"
-    for i in regionlist:
-        RegionWarUrl = BaseUrl + i
-        r = requests.get(RegionWarUrl, headers=myheader)
-        r = r.content
-        soup = bs4.BeautifulSoup(r, 'html.parser')
-
-        warlist = []
-        for w in soup.find_all(attrs={"class": "list_avatar yellow pointer"}):
-            x = str(w)
+        for e in soup.find_all(attrs={"class": "list_name pointer small"}):
+            x = str(e)
             x = x.split(" ")
             y = x[1].split("=")
             z = y[1].replace('"', '')
             ids = z.split("/")
             id = ids[2]
-            warlist.append(id)
 
-        warcounter = 0
-        todaycounter = 0
-        datelist = []
-        for i in soup.find_all(attrs={"class": "list_avatar pointer small"}):
-            date = i.get_text()
-            try:
-                date = datetime.datetime.strptime(date, "%d %B %Y %H:%M")
-                if date > yesterday:
+            regionlist.append(id)
+
+        now = datetime.datetime.now()
+        siebenDays = now + datetime.timedelta(days=-7)
+        yesterday= now + datetime.timedelta(days=-1)
+
+        warlistState = []
+        print(warlistState)
+        BaseUrl = "http://rivalregions.com/war/top/"
+        for i in regionlist:
+            RegionWarUrl = BaseUrl + i
+            html = await fetch(session, RegionWarUrl)
+            soup = await soup_d(html)
+
+            warlist = []
+            for w in soup.find_all(attrs={"class": "list_avatar yellow pointer"}):
+                x = str(w)
+                x = x.split(" ")
+                y = x[1].split("=")
+                z = y[1].replace('"', '')
+                ids = z.split("/")
+                id = ids[2]
+                warlist.append(id)
+
+            warcounter = 0
+            todaycounter = 0
+            datelist = []
+            for i in soup.find_all(attrs={"class": "list_avatar pointer small"}):
+                date = i.get_text()
+                try:
+                    date = datetime.datetime.strptime(date, "%d %B %Y %H:%M")
+                    if date > yesterday:
+                        todaycounter += 1
+                    else:
+                        datelist.append(date)
+
+                except:
                     todaycounter += 1
-                else:
-                    datelist.append(date)
-
-            except:
-                todaycounter += 1
-                warcounter +=1
+                    warcounter +=1
 
 
-        for q in datelist:
-            if q > siebenDays:
-                warcounter += 1
-        if warcounter > 0:
-            for i in range(warcounter):
-                if i >= todaycounter:
-                    warlistState.append(warlist[i])
+            for q in datelist:
+                if q > siebenDays:
+                    warcounter += 1
+            if warcounter > 0:
+                for i in range(warcounter):
+                    if i >= todaycounter:
+                        warlistState.append(warlist[i])
 
-    return warlistState
+        return warlistState
 
 
 def MakeNumber2PrettyString(number):
