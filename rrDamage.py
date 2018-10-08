@@ -256,6 +256,7 @@ async def getRegionDonations(regionid, partylist,profildict, session):
 
     BaseUrl = "http://rivalregions.com/listed/donated_regions/"
     url = BaseUrl + regionid
+    print(url)
 
     html = await fetch(session, url)
     soup = await soup_d(html)
@@ -327,9 +328,11 @@ async def getRegionDonations(regionid, partylist,profildict, session):
                         #print(RessToMoney(donation))
         counter+=1
         #print(Partydonations)
+    print("Datebool: " , datebool[listcounter])
     if datebool[listcounter]==True:
         adder += 25
         regionid = regionid + "/" + str(adder)
+        print("Im if, regionid: ", regionid)
         partydict = await getRegionDonations(regionid,partylist,profildict,session)
         for x in partydict:
             if x in Partydonations:
