@@ -226,6 +226,7 @@ async def RessToMoney(Ress):
 async def getProfilParty(profilid,session):
     BaseUrl = "http://rivalregions.com/slide/profile/"
     url = BaseUrl + profilid
+    print("Profilurl: ",url)
 
 
     html = await fetch(session, url)
