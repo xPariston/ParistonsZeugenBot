@@ -244,7 +244,10 @@ async def getProfilParty(profilid,session):
         if counter == 3:
             party = party.get_text()
         counter +=1
-    party = party.replace("Ã¼","ü")
+    try:
+        party = party.replace("Ã¼","ü")
+    except:
+        party = "Unaffiliated"
     #print(party + "Eintrag aus getProfilParty")
     return party
 
