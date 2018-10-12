@@ -112,7 +112,7 @@ async def getStateWars7d(stateid):
             regionlist.append(id)
 
         now = datetime.datetime.now()
-        siebenDays = now + datetime.timedelta(days=-7)
+        siebenDays = now + datetime.timedelta(days=-21)
         yesterday= now + datetime.timedelta(days=-1)
 
         warlistState = []
@@ -265,7 +265,7 @@ async def getRegionDonations(regionid, partylist,profildict, session):
     #soup = bs4.BeautifulSoup(r)
 
     now = datetime.datetime.now()
-    siebenDays = now + datetime.timedelta(days=-7)
+    siebenDays = now + datetime.timedelta(days=-21)
     datebool=[]
 
     for dates in soup.find_all(attrs={"class": "list_avatar pointer small"}):

@@ -584,13 +584,13 @@ async def WarListAnalyse(context):
         Msg3 += i + ": " + str(round(partydictPerDmg[i],2)) + "%\n"
     await client.say(Msg1 + Msg2 + Msg3)
 
-@client.command(name="StateWars7d",
-                description='Analysiere Kriege die in den letzten 7 Tage beendet wurden in unseren Regionen.',
-                brief='Kriegsanalyse von allen Kriegen in unseren Regionen letzten 7 Tage',
+@client.command(name="StateWars21d",
+                description='Analysiere Kriege die in den letzten 21 Tage beendet wurden in unseren Regionen.',
+                brief='Kriegsanalyse von allen Kriegen in unseren Regionen letzten 21 Tage',
                 pass_context=True)
 
 
-async def StateWars7d():
+async def StateWars21d():
     parteiliste = await getPartys()
 
     stateschannel = discord.Object(id='497356879840935936')
@@ -613,7 +613,7 @@ async def StateWars7d():
 
     GesamtDamage, partydictRawDmg, partydictPerDmg = await rrDamage.MultiWar(Totalwarurllist, parteiliste)
 
-    Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen(%d) während der letzten 7 Tage: "%TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
+    Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen(%d) während der letzten 21 Tage: "%TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
     Msg2 = "Roher Schaden der Parteien:\n"
     Msg3 = "\nProzentualer Schaden der Parteien:\n"
     for j in partydictRawDmg:
@@ -622,13 +622,13 @@ async def StateWars7d():
         Msg3 += i + ": " + str(round(partydictPerDmg[i], 2)) + "%\n"
     await client.say(Msg1 + Msg2 + Msg3)
 
-@client.command(name="AllDonations7d",
-                description='Analysiere alle Spenden in unseren Regionen in den letzten 7 Tagen.',
-                brief='Spendenanalyse aller Regionen in den letzten 7 Tagen',
+@client.command(name="AllDonations21d",
+                description='Analysiere alle Spenden in unseren Regionen in den letzten 21 Tagen.',
+                brief='Spendenanalyse aller Regionen in den letzten 21 Tagen',
                 pass_context=True)
 
 
-async def AllDonations7d(context):
+async def AllDonations21d(context):
     parteiliste = await getPartys()
 
     stateschannel = discord.Object(id='497356879840935936')
@@ -660,7 +660,7 @@ async def AllDonations7d(context):
     print("Alle Staaten beendet")
     partydonPro={}
 
-    Msg1 = "Gesamtspenden des Staatenbundes während der letzten 7 Tage: " + rrDamage.MakeNumber2PrettyString(Gesamtspendenvolumen) + "\n\n"
+    Msg1 = "Gesamtspenden des Staatenbundes während der letzten 21 Tage: " + rrDamage.MakeNumber2PrettyString(Gesamtspendenvolumen) + "\n\n"
     Msg2 = "Spendenvolumen der Parteien:\n"
     Msg3 = "\nProzentuale Spenden der Parteien:\n"
     for j in partydon:
@@ -685,8 +685,8 @@ async def AllDonations7d(context):
 
 
 @client.command(name="StateAndListWars",
-                description='Analysiere Kriege die in den letzten 7 Tage beendet wurden in unseren Regionen und alle Links aus der Datenbank.',
-                brief='Kriegsanalyse von allen Kriegen in unseren Regionen letzten 7 Tage und aus der Datenbank',
+                description='Analysiere Kriege die in den letzten 21 Tage beendet wurden in unseren Regionen und alle Links aus der Datenbank.',
+                brief='Kriegsanalyse von allen Kriegen in unseren Regionen letzten 21 Tage und aus der Datenbank',
                 pass_context=True)
 
 
@@ -737,7 +737,7 @@ async def StateAndListWars():
 
     Kriegssitze = partydictPerDmg
 
-    Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen während der letzten 7 Tage und aus der Kriegsliste (insgesamt:%d): "%TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
+    Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen während der letzten 21 Tagen und aus der Kriegsliste (insgesamt:%d): "%TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
     Msg2 = "Roher Schaden der Parteien:\n"
     Msg3 = "\nProzentualer Schaden der Parteien:\n"
     Msg4 = "\nAufteilung der Sitze nach Schaden im Parlament (%d Prozent nach Schaden verteilen):\n" %WarProzent
@@ -933,7 +933,7 @@ async def NewParliamentReal(context):
 
         Kriegssitze = partydictPerDmg
         Msg = "\n---KRIEGSERGEBNISSE---\n\n"
-        Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen während der letzten 7 Tage und aus der Kriegsliste (insgesamt:%d): " % TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
+        Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen während der letzten 21 Tagen und aus der Kriegsliste (insgesamt:%d): " % TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
         Msg2 = "Roher Schaden der Parteien:\n"
         Msg3 = "\nProzentualer Schaden der Parteien:\n"
         Msg4 = "\nAufteilung der Sitze nach Schaden im Parlament (%d Prozent nach Schaden verteilen):\n" % WarProzent
@@ -980,7 +980,7 @@ async def NewParliamentReal(context):
         partydonPro = {}
 
         Msg = "\n---SPENDENERGEBNISSE---\n\n"
-        Msg1 = "Gesamtspenden des Staatenbundes während der letzten 7 Tage: " + rrDamage.MakeNumber2PrettyString(
+        Msg1 = "Gesamtspenden des Staatenbundes während der letzten 21 Tagen: " + rrDamage.MakeNumber2PrettyString(
             Gesamtspendenvolumen) + "\n\n"
         Msg2 = "Spendenvolumen der Parteien:\n"
         Msg3 = "\nProzentuale Spenden der Parteien:\n"
@@ -1130,7 +1130,7 @@ async def NewParliamentDemo(context):
 
         Kriegssitze = partydictPerDmg
         Msg = "\n---KRIEGSERGEBNISSE---\n\n"
-        Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen während der letzten 7 Tage und aus der Kriegsliste (insgesamt:%d): " % TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
+        Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen während der letzten 21 Tagen und aus der Kriegsliste (insgesamt:%d): " % TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
         Msg2 = "Roher Schaden der Parteien:\n"
         Msg3 = "\nProzentualer Schaden der Parteien:\n"
         Msg4 = "\nAufteilung der Sitze nach Schaden im Parlament (%d Prozent nach Schaden verteilen):\n" % WarProzent
@@ -1177,7 +1177,7 @@ async def NewParliamentDemo(context):
         partydonPro = {}
 
         Msg = "\n---SPENDENERGEBNISSE---\n\n"
-        Msg1 = "Gesamtspenden des Staatenbundes während der letzten 7 Tage: " + rrDamage.MakeNumber2PrettyString(
+        Msg1 = "Gesamtspenden des Staatenbundes während der letzten 21 Tagen: " + rrDamage.MakeNumber2PrettyString(
             Gesamtspendenvolumen) + "\n\n"
         Msg2 = "Spendenvolumen der Parteien:\n"
         Msg3 = "\nProzentuale Spenden der Parteien:\n"
