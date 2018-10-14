@@ -42,7 +42,7 @@ async def EditPartyName(context):
             Berechtigung = True
 
     if Berechtigung == False:
-        client.say("Nur das Admin Team kann diesen Befehl ausführen")
+       await client.say("Nur das Admin Team kann diesen Befehl ausführen")
     else:
         server= context.message.server
         msg = context.message.content.replace("!EditPartyName","")
@@ -433,7 +433,7 @@ async def DeleteParty(context):
             Berechtigung = True
 
     if Berechtigung == False:
-        client.say("Nur das Admin Team kann diesen Befehl ausführen")
+        await client.say("Nur das Admin Team kann diesen Befehl ausführen")
     else:
         server= context.message.server
         msg = context.message.content.replace("!DeleteParty","")
@@ -499,7 +499,7 @@ async def AddParty(context):
             Berechtigung = True
 
     if Berechtigung == False:
-        client.say("Nur das Admin Team kann diesen Befehl ausführen")
+        await client.say("Nur das Admin Team kann diesen Befehl ausführen")
     else:
         msg = context.message.content
         partei = context.message.content.replace("!AddParty", "")
@@ -614,7 +614,7 @@ async def WarListAnalyse(context):
             Berechtigung = True
 
     if Berechtigung == False:
-        client.say("Nur das Admin Team kann diesen Befehl ausführen")
+        await client.say("Nur das Admin Team kann diesen Befehl ausführen")
     else:
         parteiliste = await getPartys()
 
@@ -650,7 +650,7 @@ async def StateWars21d(context):
             Berechtigung = True
 
     if Berechtigung == False:
-        client.say("Nur das Admin Team kann diesen Befehl ausführen")
+        await client.say("Nur das Admin Team kann diesen Befehl ausführen")
     else:
         parteiliste = await getPartys()
 
@@ -699,7 +699,7 @@ async def AllDonations21d(context):
             Berechtigung = True
 
     if Berechtigung == False:
-        client.say("Nur das Admin Team kann diesen Befehl ausführen")
+        await client.say("Nur das Admin Team kann diesen Befehl ausführen")
     else:
         parteiliste = await getPartys()
 
@@ -772,7 +772,7 @@ async def StateAndListWars(context):
             Berechtigung = True
 
     if Berechtigung == False:
-        client.say("Nur das Admin Team kann diesen Befehl ausführen")
+        await client.say("Nur das Admin Team kann diesen Befehl ausführen")
     else:
         TotalWars = 0
         parteiliste = await getPartys()
@@ -854,7 +854,7 @@ async def Vote(context):
             Berechtigung = True
 
     if Berechtigung == False:
-        client.say("Nur das Admin Team kann diesen Befehl ausführen")
+        await client.say("Nur das Admin Team kann diesen Befehl ausführen")
     else:
         msg= context.message.content
         time= context.message.timestamp + datetime.timedelta(hours=24)
@@ -943,7 +943,7 @@ async def Wahlergebnisse(context):
             Berechtigung = True
 
     if Berechtigung == False:
-        client.say("Nur das Admin Team kann diesen Befehl ausführen")
+        await client.say("Nur das Admin Team kann diesen Befehl ausführen")
     else:
 
         msg = context.message.content
@@ -987,7 +987,7 @@ async def NewParliamentReal(context):
             Berechtigung = True
 
     if Berechtigung == False:
-        client.say("Nur das Admin Team kann diesen Befehl ausführen")
+        await client.say("Nur das Admin Team kann diesen Befehl ausführen")
     else:
         #Wahl
         Wahlchannel = discord.Object(id='498487327484543006')
@@ -1186,7 +1186,7 @@ async def NewParliamentDemo(context):
             Berechtigung = True
 
     if Berechtigung == False:
-        client.say("Nur das Admin Team kann diesen Befehl ausführen")
+        await client.say("Nur das Admin Team kann diesen Befehl ausführen")
     else:
         #Wahl
         Wahlchannel = discord.Object(id='498487327484543006')
