@@ -854,7 +854,7 @@ async def Vote(context):
             Berechtigung = True
 
     if Berechtigung == False:
-        await client.say("Nur das Admin Team kann diesen Befehl ausführen")
+        await client.say("Nur Abgeordnete können diesen Befehl ausführen")
     else:
         msg= context.message.content
         time= context.message.timestamp + datetime.timedelta(hours=24)
