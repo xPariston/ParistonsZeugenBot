@@ -117,12 +117,12 @@ async def AddMember(context):
         await client.say("Bitte Füge ein Mitglied mit '!AddMember @Member' hinzu")
 
 
-@client.command(name="RemoveAbgeordneter",
+@client.command(name="RemoveAbgeordneten",
                 description='!RemoveAbgeordner @Pariston Entferne ein Mitgleid deiner Partei aus dem Parlament. Nur Parteileiter und Seretäre könn dies.',
                 brief='!RemoveAbgeordneter @Pariston Eintferne ein Mitgleid deiner Partei aus dem Parlament. Nur Parteileiter und Seretäre könn dies.',
                 pass_context=True)
 
-async def RemoveAbgeordneter(context):
+async def RemoveAbgeordneten(context):
     msg = context.message.content
     mentions = context.message.mentions
     server = context.message.server
@@ -134,7 +134,7 @@ async def RemoveAbgeordneter(context):
     parteienchannel = discord.Object(id='497356738492629013')
     partyseatsnow = 0
 
-
+    logchannel = discord.Object(id='500952715917000715')
 
     if "@" in msg:
         if party != "":
@@ -148,6 +148,7 @@ async def RemoveAbgeordneter(context):
                 if targetrole2 in member.roles:
                     await client.remove_roles(member,targetrole)
                     await client.say(member.name + " repräsentiert nun nicht mehr die Partei im Parlament!")
+                    await client.send_message(logchannel, member.name + " wurde als Repräsentant hinzugefügt")
                     break
                 else:
                     await client.say("Abgeordneter muss aus deiner Partei sein.")
@@ -156,12 +157,12 @@ async def RemoveAbgeordneter(context):
     else:
         await client.say("Bitte entferne ein Abgeordneten mit '!RemoveAbgeordneter @Member'")
 
-@client.command(name="MakeAbgeordneter",
+@client.command(name="MakeAbgeordneten",
                 description='!MakeAbgeordnet @Pariston Füge ein Mitgleid deiner Partei ins Parlament hinzu. Nur Parteileiter und Seretäre könn dies.',
                 brief='!MakeAbgeordneter @Pariston Füge ein Mitgleid deiner Partei ins Parlament hinzu. Nur Parteileiter und Seretäre könn dies.',
                 pass_context=True)
 
-async def MakeAbgeordneter(context):
+async def MakeAbgeordneten(context):
     msg = context.message.content
     mentions = context.message.mentions
     server = context.message.server
@@ -174,6 +175,7 @@ async def MakeAbgeordneter(context):
     parteienchannel = discord.Object(id='497356738492629013')
     partyseatsnow = 0
 
+    logchannel = discord.Object(id='500952715917000715')
 
     if "@" in msg:
         if party != "":
@@ -203,6 +205,7 @@ async def MakeAbgeordneter(context):
                     if targetrole2 in member.roles:
                         await client.add_roles(member,targetrole)
                         await client.say(member.name + " repräsentiert nun die Partei im Parlament!")
+                        await client.send_message(logchannel, member.name + " wurde als Repräsentant hinzugefügt")
                         break
                     else:
                         await client.say("User muss in deiner Partei sein um Abgeordneter zu werden.")
@@ -911,23 +914,24 @@ async def vote_background_task():
 
         await asyncio.sleep(60) # task runs every 60 seconds
 
-@client.event
-async def on_reaction_add(reaction,user):
-    channel = reaction.message.channel
-    print(channel.id)
-    abstimmungschannel = discord.Object(id='496295597632913410')
-    print(abstimmungschannel.id)
-    reactionlogchannel = discord.Object(id='500952632265801730')
-    if channel.id == abstimmungschannel.id:
-        await client.send_message(reactionlogchannel, user.mention + " hat abgestimmt zur nachrichtenid " + reaction.message.id + " mit " + reaction.emoji)
-
-@client.event
-async def on_reaction_remove(reaction,user):
-    channel = reaction.message.channel
-    abstimmungschannel = discord.Object(id='496295597632913410')
-    reactionlogchannel = discord.Object(id='500952632265801730')
-    if channel.id == abstimmungschannel.id:
-        await client.send_message(reactionlogchannel, user.mention + " hat zur nachrichtenid " + reaction.message.id + " sein " + reaction.emoji + " zurückgenommen.")
+# @client.event
+# async def on_reaction_add(reaction,user):
+#     channel = reaction.message.channel
+#     print(channel.id)
+#     abstimmungschannel = discord.Object(id='496295597632913410')
+#     print(abstimmungschannel.id)
+#     reactionlogchannel = discord.Object(id='500952632265801730')
+#     if channel.id == abstimmungschannel.id:
+#         await client.send_message(reactionlogchannel, user.mention + " hat abgestimmt zur nachrichtenid " + reaction.message.id + " mit " + reaction.emoji)
+#
+# @client.event
+# async def on_reaction_remove(reaction,user):
+#     channel = reaction.message.channel
+#     abstimmungschannel = discord.Object(id='496295597632913410')
+#     reactionlogchannel = discord.Object(id='500952632265801730')
+#     if channel.id == abstimmungschannel.id:
+#         await client.send_message(reactionlogchannel, user.mention + " hat zur nachrichtenid " + reaction.message.id + " sein " + reaction.emoji + " zurückgenommen.")
+#
 
 
 @client.command(name='Wahlergebnisse',
