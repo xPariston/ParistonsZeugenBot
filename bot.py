@@ -901,7 +901,9 @@ async def NewParliamentReal(context):
 
         stateschannel = discord.Object(id='497356879840935936')
         stateids = []
+        seats = 0
         async for n in client.logs_from(stateschannel, 100):
+            seats += 6
             n = n.content
             n = n.split(":")
             n = n[1].strip()
@@ -1017,7 +1019,7 @@ async def NewParliamentReal(context):
 
             msg1= msg1 + partei + ": " + str(round(ParteiStimmenProzente[partei],2)) +"\n"
         msg1 = msg1 + "\n"
-        Gesamtsitze = 18
+        Gesamtsitze = seats
         msg2 = "Sitzverteilung im Parlament bei %d Sitzen\n" %Gesamtsitze
         for sitze in ParteiStimmenProzente:
             ParteiStimmenProzente[sitze] = round(Gesamtsitze / 100 * ParteiStimmenProzente[sitze])
@@ -1098,7 +1100,9 @@ async def NewParliamentDemo(context):
 
         stateschannel = discord.Object(id='497356879840935936')
         stateids = []
+        seats = 0
         async for n in client.logs_from(stateschannel, 100):
+            seats += 6
             n = n.content
             n = n.split(":")
             n = n[1].strip()
@@ -1214,7 +1218,7 @@ async def NewParliamentDemo(context):
 
             msg1= msg1 + partei + ": " + str(round(ParteiStimmenProzente[partei],2)) +"\n"
         msg1 = msg1 + "\n"
-        Gesamtsitze = 18
+        Gesamtsitze = seats
         msg2 = "Sitzverteilung im Parlament bei %d Sitzen\n" %Gesamtsitze
         for sitze in ParteiStimmenProzente:
             ParteiStimmenProzente[sitze] = round(Gesamtsitze / 100 * ParteiStimmenProzente[sitze])
