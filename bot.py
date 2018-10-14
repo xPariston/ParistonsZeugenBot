@@ -911,6 +911,21 @@ async def vote_background_task():
 
         await asyncio.sleep(60) # task runs every 60 seconds
 
+@client.event
+async def on_reaction_add(reaction,user):
+    channel = reaction.message.channel
+    abstimmungschannel = discord.Object(id='496295597632913410')
+    reactionlogchannel = discord.Object(id='500952632265801730')
+    if channel == abstimmungschannel:
+        await client.send_message(reactionlogchannel, user.mention + " hat abgestimmt zur nachrichtenid " + reaction.message.id + " mit " + reaction.emoji)
+
+@client.event
+async def on_reaction_remove(reaction,user):
+    channel = reaction.message.channel
+    abstimmungschannel = discord.Object(id='496295597632913410')
+    reactionlogchannel = discord.Object(id='500952632265801730')
+    if channel == abstimmungschannel:
+        await client.send_message(reactionlogchannel, user.mention + " hat zur nachrichtenid " + reaction.message.id + " sein " + reaction.emoji + " zurückgenommen.")
 
 
 @client.command(name='Wahlergebnisse',
