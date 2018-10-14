@@ -33,50 +33,60 @@ Antwort10='Pirat' #Früheres Leben
                 pass_context=True)
 
 async def EditPartyName(context):
+    author = context.message.author
+    authorroles = author.roles
+    Berechtigung = False
 
-    server= context.message.server
-    msg = context.message.content.replace("!EditPartyName","")
-    NameAlt,NameNeu = msg.split(",")
-    NameAlt = NameAlt.strip()
-    NameNeu = NameNeu.strip()
+    for role in authorroles:
+        if "AdminTeam" in role.name:
+            Berechtigung = True
 
-    parteiliste = await getPartys()
-
-    if NameAlt in parteiliste:
-
-        parteienchannel = discord.Object(id='497356738492629013')
-        async for m in client.logs_from(parteienchannel, 100):
-            if NameAlt in m.content:
-                newMsg= m.content.replace(NameAlt,NameNeu)
-                await client.edit_message(m,newMsg)
-
-        parteienchannel = discord.Object(id='498487327484543006')
-        async for m in client.logs_from(parteienchannel, 100):
-            if NameAlt in m.content:
-                newMsg = m.content.replace(NameAlt, NameNeu)
-                await client.edit_message(m, newMsg)
-
-        rolelist = server.roles
-
-        for role in rolelist:
-            if NameAlt in role.name:
-                name = role.name.replace(NameAlt,NameNeu)
-                await client.edit_role(server,role,name= name)
-
-        channellist = server.channels
-        NameAlt = NameAlt.lower()
-        NameNeu = NameNeu.lower()
-        NameAlt = NameAlt.replace(" ","-")
-        NameNeu = NameNeu.replace(" ", "-")
-        for channel in channellist:
-            if channel.name.startswith(NameAlt):
-                name = channel.name.replace(NameAlt,NameNeu)
-                await client.edit_channel(channel,name= name)
-
-        await client.say("Namensänderung abgeschlossen")
-
+    if Berechtigung == False:
+        client.say("Nur das Admin Team kann diesen Befehl ausführen")
     else:
-        await client.say("Partei nicht gefunden.")
+        server= context.message.server
+        msg = context.message.content.replace("!EditPartyName","")
+        NameAlt,NameNeu = msg.split(",")
+        NameAlt = NameAlt.strip()
+        NameNeu = NameNeu.strip()
+
+        parteiliste = await getPartys()
+
+        if NameAlt in parteiliste:
+
+            parteienchannel = discord.Object(id='497356738492629013')
+            async for m in client.logs_from(parteienchannel, 100):
+                if NameAlt in m.content:
+                    newMsg= m.content.replace(NameAlt,NameNeu)
+                    await client.edit_message(m,newMsg)
+
+            parteienchannel = discord.Object(id='498487327484543006')
+            async for m in client.logs_from(parteienchannel, 100):
+                if NameAlt in m.content:
+                    newMsg = m.content.replace(NameAlt, NameNeu)
+                    await client.edit_message(m, newMsg)
+
+            rolelist = server.roles
+
+            for role in rolelist:
+                if NameAlt in role.name:
+                    name = role.name.replace(NameAlt,NameNeu)
+                    await client.edit_role(server,role,name= name)
+
+            channellist = server.channels
+            NameAlt = NameAlt.lower()
+            NameNeu = NameNeu.lower()
+            NameAlt = NameAlt.replace(" ","-")
+            NameNeu = NameNeu.replace(" ", "-")
+            for channel in channellist:
+                if channel.name.startswith(NameAlt):
+                    name = channel.name.replace(NameAlt,NameNeu)
+                    await client.edit_channel(channel,name= name)
+
+            await client.say("Namensänderung abgeschlossen")
+
+        else:
+            await client.say("Partei nicht gefunden.")
 
 @client.command(name="AddMember",
                 description='!AddMember @Pariston Füge ein Mitgleid deiner Partei hinzu. Nur Parteileiter und Seretäre könn dies.',
@@ -332,8 +342,12 @@ async def MakeSekretär(context):
                 if "Sekretär - " + party == role.name:
                     targetrole = role
             for member in mentions:
-                await client.add_roles(member, targetrole)
-                await client.say(member.name + "wurde als Sekretär hinzugefügt")
+                sek_roles = member.roles
+                if party in sek_roles:
+                    await client.add_roles(member, targetrole)
+                    await client.say(member.name + "wurde als Sekretär hinzugefügt")
+                else:
+                    await client.say("User muss Teil der Partei sein.")
         else:
             await client.say("Du musst Parteileiter sein um ein Sekretär hinzuzufügen.")
     else:
@@ -410,55 +424,65 @@ async def getPartyName(context):
                 pass_context=True)
 
 async def DeleteParty(context):
+    author = context.message.author
+    authorroles = author.roles
+    Berechtigung = False
 
-    server= context.message.server
-    msg = context.message.content.replace("!DeleteParty","")
-    partei = msg.strip()
+    for role in authorroles:
+        if "AdminTeam" in role.name:
+            Berechtigung = True
 
-    parteiliste = await getPartys()
-
-    if partei in parteiliste:
-        parteienchannel = discord.Object(id='497356738492629013')
-        async for m in client.logs_from(parteienchannel, 100):
-            if partei in m.content:
-                await client.delete_message(m)
-        parteienchannel = discord.Object(id='498487327484543006')
-        async for m in client.logs_from(parteienchannel, 100):
-            if partei in m.content:
-                await client.delete_message(m)
-
-        rolelist = server.roles
-        targetrole = ""
-        targetrole2 = ""
-        DeleteList = []
-        for role in rolelist:
-            if partei in role.name:
-                DeleteList.append(role)
-            if partei == role.name:
-                targetrole2 = role
-            if "Abgeordneter" == role.name:
-                targetrole = role
-
-        memberlist = client.get_all_members()
-        for member in memberlist:
-            if targetrole2 in member.roles:
-                if targetrole in member.roles:
-                    await client.remove_roles(member,targetrole)
-
-        for role2 in DeleteList:
-            await client.delete_role(server, role2)
-
-        channellist = server.channels
-        partei = partei.lower()
-        partei = partei.replace(" ","-")
-        for channel in channellist:
-            if channel.name.startswith(partei):
-                await client.delete_channel(channel)
-                await client.say("Partei wurde gelöscht.")
-                break
-
+    if Berechtigung == False:
+        client.say("Nur das Admin Team kann diesen Befehl ausführen")
     else:
-        await client.say("Partei nicht gefunden.")
+        server= context.message.server
+        msg = context.message.content.replace("!DeleteParty","")
+        partei = msg.strip()
+
+        parteiliste = await getPartys()
+
+        if partei in parteiliste:
+            parteienchannel = discord.Object(id='497356738492629013')
+            async for m in client.logs_from(parteienchannel, 100):
+                if partei in m.content:
+                    await client.delete_message(m)
+            parteienchannel = discord.Object(id='498487327484543006')
+            async for m in client.logs_from(parteienchannel, 100):
+                if partei in m.content:
+                    await client.delete_message(m)
+
+            rolelist = server.roles
+            targetrole = ""
+            targetrole2 = ""
+            DeleteList = []
+            for role in rolelist:
+                if partei in role.name:
+                    DeleteList.append(role)
+                if partei == role.name:
+                    targetrole2 = role
+                if "Abgeordneter" == role.name:
+                    targetrole = role
+
+            memberlist = client.get_all_members()
+            for member in memberlist:
+                if targetrole2 in member.roles:
+                    if targetrole in member.roles:
+                        await client.remove_roles(member,targetrole)
+
+            for role2 in DeleteList:
+                await client.delete_role(server, role2)
+
+            channellist = server.channels
+            partei = partei.lower()
+            partei = partei.replace(" ","-")
+            for channel in channellist:
+                if channel.name.startswith(partei):
+                    await client.delete_channel(channel)
+                    await client.say("Partei wurde gelöscht.")
+                    break
+
+        else:
+            await client.say("Partei nicht gefunden.")
 
 @client.command(name="AddParty",
                 description='Füge eine Partei ins System hinzu. Achte auf die Schreibung!',
@@ -466,65 +490,78 @@ async def DeleteParty(context):
                 pass_context=True)
 
 async def AddParty(context):
+    author = context.message.author
+    authorroles = author.roles
+    Berechtigung = False
 
-    msg = context.message.content
-    partei = context.message.content.replace("!AddParty", "")
-    try :
-        partei,müll = partei.split("<")
-    except:
-        pass
-    partei = partei.strip()
-    mention = context.message.mentions
-    server = context.message.server
-    parteiliste = await getPartys()
+    for role in authorroles:
+        if "AdminTeam" in role.name:
+            Berechtigung = True
 
-
-    counter = 0
-    for i in msg:
-        if i == "@":
-            counter += 1
-
-    if counter == 1:
-        if partei in parteiliste:
-            await client.say("Partei exestiert bereits")
-        else:
-
-            r= lambda: random.randint(0,255)
-            R=r()
-            G=r()
-            B=r()
-
-            c1= R*65536 + G* 256 + B
-            c2 = R*65536 + G * 256 + B
-            c3 = R*65536 + G * 256 + B
-
-            #cMitglied= "%d%d%d" %(c1,c2,c3)
-            #cSekretär= "%d%d%d" %(c1+50,c2+50,c3+50)
-            #cChef= "%d%d%d" %(c1+100,c2+100,c3+100)
-
-            nSekretär= "Sekretär - " + partei
-            nChef = "Leiter - " + partei
-
-            await client.send_message(client.get_channel('497356738492629013'),partei + ": 0")
-            await client.send_message(client.get_channel('498487327484543006'), partei + ": 0")
-            rMitglied = await client.create_role(context.message.server, name= partei, colour=discord.Colour(value= c1))
-            rSekretär = await client.create_role(context.message.server, name= nSekretär, colour=discord.Colour(value= c2))
-            rChef = await client.create_role(context.message.server, name=nChef , colour=discord.Colour(value= c3))
-
-            await client.add_roles(mention[0], rMitglied)
-            await client.add_roles(mention[0], rChef)
-
-            everyone_perms = discord.PermissionOverwrite(read_messages=False)
-            my_perms = discord.PermissionOverwrite(read_messages=True)
-            everyone = discord.ChannelPermissions(target=server.default_role, overwrite=everyone_perms)
-            pMitglied = discord.ChannelPermissions(target= rMitglied , overwrite=my_perms)
-            pSekretär = discord.ChannelPermissions(target= rSekretär, overwrite=my_perms)
-            pChef = discord.ChannelPermissions(target= rChef, overwrite=my_perms)
-            await client.create_channel(server, partei + ' - Chat', everyone, pMitglied, pSekretär, pChef)
-
-            await client.say("Partei " + partei + " wurde erfolgreich erstellt")
+    if Berechtigung == False:
+        client.say("Nur das Admin Team kann diesen Befehl ausführen")
     else:
-        await client.say("Nenne einen Parteileiter der Partei mit der Form !AddParty Partei XY @Parteileiter")
+        msg = context.message.content
+        partei = context.message.content.replace("!AddParty", "")
+        try :
+            partei,müll = partei.split("<")
+        except:
+            pass
+        partei = partei.strip()
+        mention = context.message.mentions
+        server = context.message.server
+        parteiliste = await getPartys()
+
+
+        counter = 0
+        for i in msg:
+            if i == "@":
+                counter += 1
+
+        if counter == 1:
+            if partei in parteiliste:
+                await client.say("Partei exestiert bereits")
+            else:
+
+                r= lambda: random.randint(0,255)
+                R=r()
+                G=r()
+                B=r()
+
+                c1= R*65536 + G* 256 + B
+                c2 = R*65536 + G * 256 + B
+                c3 = R*65536 + G * 256 + B
+
+                #cMitglied= "%d%d%d" %(c1,c2,c3)
+                #cSekretär= "%d%d%d" %(c1+50,c2+50,c3+50)
+                #cChef= "%d%d%d" %(c1+100,c2+100,c3+100)
+
+                nSekretär= "Sekretär - " + partei
+                nChef = "Leiter - " + partei
+
+                await client.send_message(client.get_channel('497356738492629013'),partei + ": 0")
+                await client.send_message(client.get_channel('498487327484543006'), partei + ": 0")
+                rMitglied = await client.create_role(context.message.server, name= partei, colour=discord.Colour(value= c1))
+                rSekretär = await client.create_role(context.message.server, name= nSekretär, colour=discord.Colour(value= c2))
+                rChef = await client.create_role(context.message.server, name=nChef , colour=discord.Colour(value= c3))
+
+
+                everyone_perms = discord.PermissionOverwrite(read_messages=False)
+                my_perms = discord.PermissionOverwrite(read_messages=True)
+                everyone = discord.ChannelPermissions(target=server.default_role, overwrite=everyone_perms)
+                pMitglied = discord.ChannelPermissions(target= rMitglied , overwrite=my_perms)
+                pSekretär = discord.ChannelPermissions(target= rSekretär, overwrite=my_perms)
+                pChef = discord.ChannelPermissions(target= rChef, overwrite=my_perms)
+                await client.create_channel(server, partei + ' - Chat', everyone, pMitglied, pSekretär, pChef)
+
+                await client.add_roles(mention[0], rMitglied)
+                print("rMitglied wurde hinzugefügt")
+                await client.add_roles(mention[0], rChef)
+                print("rChef wurde hinzugefügt")
+
+                await client.say("Partei " + partei + " wurde erfolgreich erstellt")
+        else:
+            await client.say("Nenne einen Parteileiter der Partei mit der Form !AddParty Partei XY @Parteileiter")
 
 
 async def getPartys():
@@ -544,6 +581,7 @@ async def getPartys():
                 pass_context=True)
 
 async def WarAnalyse(context):
+
     parteiliste= await getPartys()
     warurl = context.message.content
     warurl = warurl.replace('!WarAnalyse','')
@@ -566,23 +604,34 @@ async def WarAnalyse(context):
                 pass_context=True)
 
 async def WarListAnalyse(context):
-    parteiliste = await getPartys()
+    author = context.message.author
+    authorroles = author.roles
+    Berechtigung = False
 
-    warchannel = discord.Object(id='497356837679529994')
-    warliste = []
-    async for n in client.logs_from(warchannel, 100):
-        warliste.append(n.content)
+    for role in authorroles:
+        if "AdminTeam" in role.name:
+            Berechtigung = True
 
-    GesamtDamage,partydictRawDmg,partydictPerDmg = await rrDamage.MultiWar(warliste,parteiliste)
+    if Berechtigung == False:
+        client.say("Nur das Admin Team kann diesen Befehl ausführen")
+    else:
+        parteiliste = await getPartys()
 
-    Msg1= "Gesamtschaden des Staatenbundes: " + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
-    Msg2= "Roher Schaden der Parteien:\n"
-    Msg3= "\nProzentualer Schaden der Parteien:\n"
-    for j in partydictRawDmg:
-        Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[j])+ '\n'
-    for i in partydictPerDmg:
-        Msg3 += i + ": " + str(round(partydictPerDmg[i],2)) + "%\n"
-    await client.say(Msg1 + Msg2 + Msg3)
+        warchannel = discord.Object(id='497356837679529994')
+        warliste = []
+        async for n in client.logs_from(warchannel, 100):
+            warliste.append(n.content)
+
+        GesamtDamage,partydictRawDmg,partydictPerDmg = await rrDamage.MultiWar(warliste,parteiliste)
+
+        Msg1= "Gesamtschaden des Staatenbundes: " + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
+        Msg2= "Roher Schaden der Parteien:\n"
+        Msg3= "\nProzentualer Schaden der Parteien:\n"
+        for j in partydictRawDmg:
+            Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[j])+ '\n'
+        for i in partydictPerDmg:
+            Msg3 += i + ": " + str(round(partydictPerDmg[i],2)) + "%\n"
+        await client.say(Msg1 + Msg2 + Msg3)
 
 @client.command(name="StateWars21d",
                 description='Analysiere Kriege die in den letzten 21 Tage beendet wurden in unseren Regionen.',
@@ -590,37 +639,48 @@ async def WarListAnalyse(context):
                 pass_context=True)
 
 
-async def StateWars21d():
-    parteiliste = await getPartys()
+async def StateWars21d(context):
+    author = context.message.author
+    authorroles = author.roles
+    Berechtigung = False
 
-    stateschannel = discord.Object(id='497356879840935936')
-    stateids = []
-    async for n in client.logs_from(stateschannel, 100):
-        n=n.content
-        n=n.split(":")
-        n=n[1].strip()
-        stateids.append(n)
+    for role in authorroles:
+        if "AdminTeam" in role.name:
+            Berechtigung = True
 
-    warbase= "http://rivalregions.com/listed/partydamage/"
-    TotalWars=0
-    Totalwarurllist=[]
-    for id in stateids:
-        warlist= await rrDamage.getStateWars7d(id)
-        for war in warlist:
-            warurl= warbase + war
-            Totalwarurllist.append(warurl)
-            TotalWars+=1
+    if Berechtigung == False:
+        client.say("Nur das Admin Team kann diesen Befehl ausführen")
+    else:
+        parteiliste = await getPartys()
 
-    GesamtDamage, partydictRawDmg, partydictPerDmg = await rrDamage.MultiWar(Totalwarurllist, parteiliste)
+        stateschannel = discord.Object(id='497356879840935936')
+        stateids = []
+        async for n in client.logs_from(stateschannel, 100):
+            n=n.content
+            n=n.split(":")
+            n=n[1].strip()
+            stateids.append(n)
 
-    Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen(%d) während der letzten 21 Tage: "%TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
-    Msg2 = "Roher Schaden der Parteien:\n"
-    Msg3 = "\nProzentualer Schaden der Parteien:\n"
-    for j in partydictRawDmg:
-        Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[j]) + '\n'
-    for i in partydictPerDmg:
-        Msg3 += i + ": " + str(round(partydictPerDmg[i], 2)) + "%\n"
-    await client.say(Msg1 + Msg2 + Msg3)
+        warbase= "http://rivalregions.com/listed/partydamage/"
+        TotalWars=0
+        Totalwarurllist=[]
+        for id in stateids:
+            warlist= await rrDamage.getStateWars7d(id)
+            for war in warlist:
+                warurl= warbase + war
+                Totalwarurllist.append(warurl)
+                TotalWars+=1
+
+        GesamtDamage, partydictRawDmg, partydictPerDmg = await rrDamage.MultiWar(Totalwarurllist, parteiliste)
+
+        Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen(%d) während der letzten 21 Tage: "%TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
+        Msg2 = "Roher Schaden der Parteien:\n"
+        Msg3 = "\nProzentualer Schaden der Parteien:\n"
+        for j in partydictRawDmg:
+            Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[j]) + '\n'
+        for i in partydictPerDmg:
+            Msg3 += i + ": " + str(round(partydictPerDmg[i], 2)) + "%\n"
+        await client.say(Msg1 + Msg2 + Msg3)
 
 @client.command(name="AllDonations21d",
                 description='Analysiere alle Spenden in unseren Regionen in den letzten 21 Tagen.',
@@ -629,59 +689,70 @@ async def StateWars21d():
 
 
 async def AllDonations21d(context):
-    parteiliste = await getPartys()
+    author = context.message.author
+    authorroles = author.roles
+    Berechtigung = False
 
-    stateschannel = discord.Object(id='497356879840935936')
-    stateids = []
-    async for n in client.logs_from(stateschannel, 100):
-        n=n.content
-        n=n.split(":")
-        n=n[1].strip()
-        stateids.append(n)
+    for role in authorroles:
+        if "AdminTeam" in role.name:
+            Berechtigung = True
 
-    partydon={}
-    counter=1
-    Gesamtspendenvolumen=0
+    if Berechtigung == False:
+        client.say("Nur das Admin Team kann diesen Befehl ausführen")
+    else:
+        parteiliste = await getPartys()
 
-    await client.say("Starte Analyse")
-    for state in stateids:
-        await client.say("Analysiere Staat %d"%counter)
-        print("Staat Nr.%d: " %counter + state)
-        tempdict = await rrDamage.getStateDonations(state,parteiliste,profildict)
-        print("Staat beendet")
-        counter +=1
-        for p in tempdict:
-            Gesamtspendenvolumen= Gesamtspendenvolumen + tempdict[p]
-            if p in partydon:
-                partydon[p] = partydon[p] + tempdict[p]
-            else:
-                partydon[p] = tempdict[p]
-    await client.say("Analyse abgeschlossen")
-    print("Alle Staaten beendet")
-    partydonPro={}
+        stateschannel = discord.Object(id='497356879840935936')
+        stateids = []
+        async for n in client.logs_from(stateschannel, 100):
+            n=n.content
+            n=n.split(":")
+            n=n[1].strip()
+            stateids.append(n)
 
-    Msg1 = "Gesamtspenden des Staatenbundes während der letzten 21 Tage: " + rrDamage.MakeNumber2PrettyString(Gesamtspendenvolumen) + "\n\n"
-    Msg2 = "Spendenvolumen der Parteien:\n"
-    Msg3 = "\nProzentuale Spenden der Parteien:\n"
-    for j in partydon:
-        Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydon[j]) + '\n'
-    for i in partydon:
-        partydonPro[i] = partydon[i]/Gesamtspendenvolumen * 100
-        Msg3 += i + ": " + str(round(partydonPro[i], 2)) + "%\n"
+        partydon={}
+        counter=1
+        Gesamtspendenvolumen=0
 
-    Spendensitze = partydonPro
+        await client.say("Starte Analyse")
+        for state in stateids:
+            await client.say("Analysiere Staat %d"%counter)
+            print("Staat Nr.%d: " %counter + state)
+            tempdict = await rrDamage.getStateDonations(state,parteiliste,profildict)
+            print("Staat beendet")
+            counter +=1
+            for p in tempdict:
+                Gesamtspendenvolumen= Gesamtspendenvolumen + tempdict[p]
+                if p in partydon:
+                    partydon[p] = partydon[p] + tempdict[p]
+                else:
+                    partydon[p] = tempdict[p]
+        await client.say("Analyse abgeschlossen")
+        print("Alle Staaten beendet")
+        partydonPro={}
 
-    Msg4 = "\nAufteilung der Sitze nach Spenden im Parlament (%d Prozent nach Spenden verteilen):\n" %SpendenProzent
+        Msg1 = "Gesamtspenden des Staatenbundes während der letzten 21 Tage: " + rrDamage.MakeNumber2PrettyString(Gesamtspendenvolumen) + "\n\n"
+        Msg2 = "Spendenvolumen der Parteien:\n"
+        Msg3 = "\nProzentuale Spenden der Parteien:\n"
+        for j in partydon:
+            Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydon[j]) + '\n'
+        for i in partydon:
+            partydonPro[i] = partydon[i]/Gesamtspendenvolumen * 100
+            Msg3 += i + ": " + str(round(partydonPro[i], 2)) + "%\n"
 
-    for s in Spendensitze:
-        Spendensitze[s] = Spendensitze[s] / 100 * SpendenProzent
+        Spendensitze = partydonPro
 
-    for o in Spendensitze:
-        Msg4 += o + ": " + str(round(Spendensitze[o],2)) + "%\n"
+        Msg4 = "\nAufteilung der Sitze nach Spenden im Parlament (%d Prozent nach Spenden verteilen):\n" %SpendenProzent
 
-    print("Jetzt müsst er was sagen")
-    print(Msg1 + Msg2 + Msg3 + Msg4)
-    await asyncio.shield(client.send_message(context.message.channel, Msg1 + Msg2 + Msg3 + Msg4))
+        for s in Spendensitze:
+            Spendensitze[s] = Spendensitze[s] / 100 * SpendenProzent
+
+        for o in Spendensitze:
+            Msg4 += o + ": " + str(round(Spendensitze[o],2)) + "%\n"
+
+        print("Jetzt müsst er was sagen")
+        print(Msg1 + Msg2 + Msg3 + Msg4)
+        await asyncio.shield(client.send_message(context.message.channel, Msg1 + Msg2 + Msg3 + Msg4))
 
 
 @client.command(name="StateAndListWars",
@@ -690,68 +761,79 @@ async def AllDonations21d(context):
                 pass_context=True)
 
 
-async def StateAndListWars():
-    TotalWars = 0
-    parteiliste = await getPartys()
+async def StateAndListWars(context):
+    author = context.message.author
+    authorroles = author.roles
+    Berechtigung = False
 
-    warchannel = discord.Object(id='497356837679529994')
-    warliste = []
-    async for n in client.logs_from(warchannel, 100):
-        warliste.append(n.content)
-        TotalWars+=1
+    for role in authorroles:
+        if "AdminTeam" in role.name:
+            Berechtigung = True
 
-    GesamtDamage, partydictRawDmg, partydictPerDmg = await rrDamage.MultiWar(warliste, parteiliste)
+    if Berechtigung == False:
+        client.say("Nur das Admin Team kann diesen Befehl ausführen")
+    else:
+        TotalWars = 0
+        parteiliste = await getPartys()
 
-    stateschannel = discord.Object(id='497356879840935936')
-    stateids = []
-    async for n in client.logs_from(stateschannel, 100):
-        n = n.content
-        n = n.split(":")
-        n = n[1].strip()
-        stateids.append(n)
+        warchannel = discord.Object(id='497356837679529994')
+        warliste = []
+        async for n in client.logs_from(warchannel, 100):
+            warliste.append(n.content)
+            TotalWars+=1
 
-    warbase = "http://rivalregions.com/listed/partydamage/"
+        GesamtDamage, partydictRawDmg, partydictPerDmg = await rrDamage.MultiWar(warliste, parteiliste)
 
-    Totalwarurllist = []
-    for id in stateids:
-        warlist = await rrDamage.getStateWars7d(id)
-        for war in warlist:
-            warurl = warbase + war
-            Totalwarurllist.append(warurl)
-            TotalWars += 1
+        stateschannel = discord.Object(id='497356879840935936')
+        stateids = []
+        async for n in client.logs_from(stateschannel, 100):
+            n = n.content
+            n = n.split(":")
+            n = n[1].strip()
+            stateids.append(n)
 
-    GesamtDamage2, partydictRawDmg2, partydictPerDmg2 = await rrDamage.MultiWar(Totalwarurllist, parteiliste)
-    GesamtDamage += GesamtDamage2
+        warbase = "http://rivalregions.com/listed/partydamage/"
 
-    for i in partydictRawDmg2:
-        if i in partydictRawDmg:
-            partydictRawDmg[i] += partydictRawDmg2[i]
-        else:
-            partydictRawDmg[i] = partydictRawDmg2[i]
+        Totalwarurllist = []
+        for id in stateids:
+            warlist = await rrDamage.getStateWars7d(id)
+            for war in warlist:
+                warurl = warbase + war
+                Totalwarurllist.append(warurl)
+                TotalWars += 1
 
-    for i in partydictPerDmg2:
-        if i in partydictPerDmg:
-            partydictPerDmg[i] = partydictRawDmg[i]/GesamtDamage*100
-        else:
-            partydictPerDmg[i] = partydictPerDmg2[i]/GesamtDamage*100
+        GesamtDamage2, partydictRawDmg2, partydictPerDmg2 = await rrDamage.MultiWar(Totalwarurllist, parteiliste)
+        GesamtDamage += GesamtDamage2
 
-    Kriegssitze = partydictPerDmg
+        for i in partydictRawDmg2:
+            if i in partydictRawDmg:
+                partydictRawDmg[i] += partydictRawDmg2[i]
+            else:
+                partydictRawDmg[i] = partydictRawDmg2[i]
 
-    Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen während der letzten 21 Tagen und aus der Kriegsliste (insgesamt:%d): "%TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
-    Msg2 = "Roher Schaden der Parteien:\n"
-    Msg3 = "\nProzentualer Schaden der Parteien:\n"
-    Msg4 = "\nAufteilung der Sitze nach Schaden im Parlament (%d Prozent nach Schaden verteilen):\n" %WarProzent
-    for j in partydictRawDmg:
-        Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[j]) + '\n'
-    for i in partydictPerDmg:
-        Msg3 += i + ": " + str(round(partydictPerDmg[i], 2)) + "%\n"
+        for i in partydictPerDmg2:
+            if i in partydictPerDmg:
+                partydictPerDmg[i] = partydictRawDmg[i]/GesamtDamage*100
+            else:
+                partydictPerDmg[i] = partydictPerDmg2[i]/GesamtDamage*100
 
-    for s in Kriegssitze:
-        Kriegssitze[s] = Kriegssitze[s] / 100 * WarProzent
+        Kriegssitze = partydictPerDmg
 
-    for o in Kriegssitze:
-        Msg4 += o + ": " + str(round(Kriegssitze[o],2)) + "%\n"
-    await client.say(Msg1 + Msg2 + Msg3 + Msg4)
+        Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen während der letzten 21 Tagen und aus der Kriegsliste (insgesamt:%d): "%TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
+        Msg2 = "Roher Schaden der Parteien:\n"
+        Msg3 = "\nProzentualer Schaden der Parteien:\n"
+        Msg4 = "\nAufteilung der Sitze nach Schaden im Parlament (%d Prozent nach Schaden verteilen):\n" %WarProzent
+        for j in partydictRawDmg:
+            Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[j]) + '\n'
+        for i in partydictPerDmg:
+            Msg3 += i + ": " + str(round(partydictPerDmg[i], 2)) + "%\n"
+
+        for s in Kriegssitze:
+            Kriegssitze[s] = Kriegssitze[s] / 100 * WarProzent
+
+        for o in Kriegssitze:
+            Msg4 += o + ": " + str(round(Kriegssitze[o],2)) + "%\n"
+        await client.say(Msg1 + Msg2 + Msg3 + Msg4)
 
 
 
@@ -762,15 +844,26 @@ async def StateAndListWars():
                 pass_context=True)
 
 async def Vote(context):
-    msg= context.message.content
-    time= context.message.timestamp + datetime.timedelta(hours=24)
-    time= time.strftime("%d.%m.%Y %H:%M:%S")
-    msg= msg.replace("!Vote ","")
-    autor= context.message.author.mention
-    output= "Gesetzesvorschlag von " + autor + ":\n" + msg + "\nDie Wahl geht bis " + time
-    newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
-    await client.add_reaction(newmsg_id,emoji='👍')
-    await client.add_reaction(newmsg_id,emoji='👎')
+    author = context.message.author
+    authorroles = author.roles
+    Berechtigung = False
+
+    for role in authorroles:
+        if "Abgeordneter" in role.name:
+            Berechtigung = True
+
+    if Berechtigung == False:
+        client.say("Nur das Admin Team kann diesen Befehl ausführen")
+    else:
+        msg= context.message.content
+        time= context.message.timestamp + datetime.timedelta(hours=24)
+        time= time.strftime("%d.%m.%Y %H:%M:%S")
+        msg= msg.replace("!Vote ","")
+        autor= context.message.author.mention
+        output= "Gesetzesvorschlag von " + autor + ":\n" + msg + "\nDie Wahl geht bis " + time
+        newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
+        await client.add_reaction(newmsg_id,emoji='👍')
+        await client.add_reaction(newmsg_id,emoji='👎')
 
 async def vote_background_task():
     await client.wait_until_ready()
@@ -778,6 +871,19 @@ async def vote_background_task():
     while not client.is_closed:
         now= datetime.datetime.now()
         async for m in client.logs_from(channel,100):
+            content = m.content
+            reaction = m.reactions
+            ups = 0
+            downs = 0
+            Ausgang = ""
+            for n in reaction:
+                if n.emoji == '👍':
+
+                    ups = n.count
+                if n.emoji == '👎':
+                    downs = n.count
+
+
             try:
                 if m.timestamp + datetime.timedelta(hours=26) <= now :
                     content= m.content
@@ -812,31 +918,43 @@ async def vote_background_task():
                 pass_context=True)
 
 async def Wahlergebnisse(context):
-    msg = context.message.content
-    msg = msg.replace("!Wahlergebnisse","")
-    msg = msg.split(",")
-    print (msg)
+    author = context.message.author
+    authorroles = author.roles
+    Berechtigung = False
 
-    wahldict = {}
-    for p in msg:
-        partei,stimmen = p.split(":")
-        partei = partei.strip()
-        stimmen = stimmen.strip()
-        wahldict[partei]=stimmen
+    for role in authorroles:
+        if "AdminTeam" in role.name:
+            Berechtigung = True
 
-    Wahlchannel = discord.Object(id='498487327484543006')
-    async for n in client.logs_from(Wahlchannel, 100):
-        parteien, stimmen = n.content.split(":")
-        parteien = parteien.strip()
-        stimmen = stimmen.strip()
+    if Berechtigung == False:
+        client.say("Nur das Admin Team kann diesen Befehl ausführen")
+    else:
 
-        if parteien in wahldict:
-            stimmen = wahldict[parteien]
-            nachricht = parteien + ": " + stimmen
-            await client.edit_message(n, nachricht)
-        else:
-            await client.say(parteien + " nicht gefunden.")
-    await client.say("Wahlergebnisse wurden eingetragen")
+        msg = context.message.content
+        msg = msg.replace("!Wahlergebnisse","")
+        msg = msg.split(",")
+        print (msg)
+
+        wahldict = {}
+        for p in msg:
+            partei,stimmen = p.split(":")
+            partei = partei.strip()
+            stimmen = stimmen.strip()
+            wahldict[partei]=stimmen
+
+        Wahlchannel = discord.Object(id='498487327484543006')
+        async for n in client.logs_from(Wahlchannel, 100):
+            parteien, stimmen = n.content.split(":")
+            parteien = parteien.strip()
+            stimmen = stimmen.strip()
+
+            if parteien in wahldict:
+                stimmen = wahldict[parteien]
+                nachricht = parteien + ": " + stimmen
+                await client.edit_message(n, nachricht)
+            else:
+                await client.say(parteien + " nicht gefunden.")
+        await client.say("Wahlergebnisse wurden eingetragen")
 
 @client.command(name='NewParliamentReal',
                 description='Berechne neues Parlament',
