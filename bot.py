@@ -914,9 +914,11 @@ async def vote_background_task():
 @client.event
 async def on_reaction_add(reaction,user):
     channel = reaction.message.channel
+    print(channel.id)
     abstimmungschannel = discord.Object(id='496295597632913410')
+    print(abstimmungschannel.id)
     reactionlogchannel = discord.Object(id='500952632265801730')
-    if channel == abstimmungschannel:
+    if channel.id == abstimmungschannel.id:
         await client.send_message(reactionlogchannel, user.mention + " hat abgestimmt zur nachrichtenid " + reaction.message.id + " mit " + reaction.emoji)
 
 @client.event
@@ -924,7 +926,7 @@ async def on_reaction_remove(reaction,user):
     channel = reaction.message.channel
     abstimmungschannel = discord.Object(id='496295597632913410')
     reactionlogchannel = discord.Object(id='500952632265801730')
-    if channel == abstimmungschannel:
+    if channel.id == abstimmungschannel.id:
         await client.send_message(reactionlogchannel, user.mention + " hat zur nachrichtenid " + reaction.message.id + " sein " + reaction.emoji + " zurückgenommen.")
 
 
