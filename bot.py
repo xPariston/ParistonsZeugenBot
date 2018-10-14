@@ -554,10 +554,11 @@ async def AddParty(context):
                 pChef = discord.ChannelPermissions(target= rChef, overwrite=my_perms)
                 await client.create_channel(server, partei + ' - Chat', everyone, pMitglied, pSekretär, pChef)
 
-                await client.add_roles(mention[0], rMitglied)
-                print("rMitglied wurde hinzugefügt")
+
                 await client.add_roles(mention[0], rChef)
                 print("rChef wurde hinzugefügt")
+                await client.add_roles(mention[0], rMitglied)
+                print("rMitglied wurde hinzugefügt")
 
                 await client.say("Partei " + partei + " wurde erfolgreich erstellt")
         else:
