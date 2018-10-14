@@ -190,7 +190,7 @@ async def MakeAbgeordneten(context):
                 p = p.strip()
                 seats = seats.strip()
                 if p == party:
-                    partyseatsmax == seats
+                    partyseatsmax = seats
 
             memberlist = client.get_all_members()
             for member in memberlist:
