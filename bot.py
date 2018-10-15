@@ -888,28 +888,41 @@ async def Vote(context):
                 pass_context=True)
 
 async def Ja(context):
+
+    Berechtigung = False
     msg = context.message.content
     msg = msg.replace ("!Ja","")
     autor = context.message.author
+    authorroles = autor.roles
     nummer = msg.strip()
     einsatz = "Ja-Stimmen: " + autor.mention
 
     vorschlagchannel = discord.Object(id='496295597632913410')
-    async for m in client.logs_from(vorschlagchannel, 100):
-        content = m.content
-        content = content.replace("Gesetzesvorschlag","")
-        content = content.replace("Nr.", "")
-        content = content.split("von")
-        print(content)
-        votenummer = content[0].strip()
-        print(votenummer)
-        print(nummer)
-        if votenummer == nummer:
-            output = m.content
-            output1, output2 = output.split("Ja-Stimmen: ")
-            newoutput = output1 + einsatz + output2
-            await client.edit_message(m,newoutput)
-            break
+
+    for role in authorroles:
+        if "Abgeordneter" in role.name:
+            Berechtigung = True
+
+    if Berechtigung == False:
+        await client.say("Nur Abgeordnete können diesen Befehl ausführen")
+    else:
+        async for m in client.logs_from(vorschlagchannel, 100):
+            content = m.content
+            content = content.replace("Gesetzesvorschlag","")
+            content = content.replace("Nr.", "")
+            content = content.split("von")
+            votenummer = content[0].strip()
+            if votenummer == nummer:
+                mentions = m.mentions
+                if autor in mentions:
+                    await client.say("Du hast bereits abgestimmt")
+                else:
+                    output = m.content
+                    output1, output2 = output.split("Ja-Stimmen: ")
+                    newoutput = output1 + einsatz + output2
+                    await client.edit_message(m,newoutput)
+                    await client.say("Abstimmung erfolgreich durchgeführt")
+                    break
 
 @client.command(name='Nein',
                 description='Stimme für einen Vorschlag mit Nein',
@@ -917,24 +930,39 @@ async def Ja(context):
                 pass_context=True)
 
 async def Nein(context):
+    Berechtigung = False
     msg = context.message.content
     msg = msg.replace ("!Nein","")
     autor = context.message.author
-    nummer = msg.strip
+    authorroles = autor.roles
+    nummer = msg.strip()
     einsatz = "Nein-Stimmen: " + autor.mention
 
     vorschlagchannel = discord.Object(id='496295597632913410')
-    async for m in client.logs_from(vorschlagchannel, 100):
-        content = m.content
-        content = content.replace("Gesetzesvorschlag Nr.","")
-        content = content.split("von")
-        votenummer = content[0].strip()
-        if votenummer == nummer:
-            output = m.content
-            output1, output2 = output.split("Nein-Stimmen: ")
-            newoutput = output1 + einsatz + output2
-            await client.edit_message(m,newoutput)
-            break
+
+    for role in authorroles:
+        if "Abgeordneter" in role.name:
+            Berechtigung = True
+
+    if Berechtigung == False:
+        await client.say("Nur Abgeordnete können diesen Befehl ausführen")
+    else:
+        async for m in client.logs_from(vorschlagchannel, 100):
+            content = m.content
+            content = content.replace("Gesetzesvorschlag Nr.","")
+            content = content.split("von")
+            votenummer = content[0].strip()
+            if votenummer == nummer:
+                mentions = m.mentions
+                if autor in mentions:
+                    await client.say("Du hast bereits abgestimmt")
+                else:
+                    output = m.content
+                    output1, output2 = output.split("Nein-Stimmen: ")
+                    newoutput = output1 + einsatz + output2
+                    await client.edit_message(m,newoutput)
+                    await client.say("Abstimmung erfolgreich durchgeführt")
+                    break
 
 async def vote_background_task():
     await client.wait_until_ready()
