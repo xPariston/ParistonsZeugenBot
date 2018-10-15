@@ -971,7 +971,7 @@ async def Nein(context):
                     break
 
 async def RemoveVotes():
-    vorschlagchannel = await client.get_channel(id='496295597632913410')
+    vorschlagchannel = client.get_channel(id='496295597632913410')
     server = vorschlagchannel.server
     member = server.members
 
