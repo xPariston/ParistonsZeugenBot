@@ -1008,6 +1008,16 @@ async def vote_background_task():
 #         await client.send_message(reactionlogchannel, user.mention + " hat zur nachrichtenid " + reaction.message.id + " sein " + reaction.emoji + " zurückgenommen.")
 #
 
+@client.command(name= "Reset",
+                description = 'Reset vom Counter Channel',
+                brief = 'Reset vom Counter Channel',
+                pass_context = True)
+
+async def Reset(context):
+    counterchannel = discord.Object(id='501309453358989322')
+    await client.send_message(counterchannel,"Anzahl Parlamentsbildungen: 1")
+    await client.send_message(counterchannel, "Anzahl Gesetze: 0")
+
 
 @client.command(name='Wahlergebnisse',
                 description='!Wahlergebnisse Partei 1: 33, Partei 3: 144, Partei x: 231',
