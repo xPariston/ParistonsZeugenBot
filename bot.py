@@ -982,14 +982,17 @@ async def RemoveVotes():
             if x in mentions:
                 print("in mentions")
                 memberroles = x.roles
+                bool = False
                 for roles in memberroles:
                     if "Abgeordneter" in roles.name:
-                        pass
+                        bool = True
                     else:
-                        print (content)
-                        print (x.mention)
-                        newoutput = content.replace(x.mention,"")
-                        await client.edit_message(m,newoutput)
+                        pass
+                if bool == False:
+                    print (content)
+                    print (x.mention)
+                    newoutput = content.replace(x.mention,"")
+                    await client.edit_message(m,newoutput)
 
 
 async def vote_background_task():
