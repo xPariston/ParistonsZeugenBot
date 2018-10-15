@@ -952,7 +952,7 @@ async def Vote66(context):
         msg= context.message.content
         time= context.message.timestamp + datetime.timedelta(hours=26)
         time= time.strftime("%d.%m.%Y %H:%M:%S")
-        msg= msg.replace("!Vote ","")
+        msg= msg.replace("!Vote66 ","")
         autor= context.message.author.name
         output= "Gesetzesvorschlag Art66 Nr." + nummer +" von " + autor + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
         newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
@@ -991,7 +991,7 @@ async def Vote80(context):
         msg= context.message.content
         time= context.message.timestamp + datetime.timedelta(hours=26)
         time= time.strftime("%d.%m.%Y %H:%M:%S")
-        msg= msg.replace("!Vote ","")
+        msg= msg.replace("!Vote80 ","")
         autor= context.message.author.name
         output= "Gesetzesvorschlag Art80 Nr." + nummer +" von " + autor + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
         newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
