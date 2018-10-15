@@ -1112,7 +1112,7 @@ async def vote_background_task():
     seats = 0.0
     while not client.is_closed:
         async for n in client.logs_from(seatchannel, 100):
-            Partei, Sitze = n.content.split()
+            Partei, Sitze = n.content.split(":")
             Sitze = Sitze.strip()
             seats = seats + int(Sitze)
         now= datetime.datetime.now()
