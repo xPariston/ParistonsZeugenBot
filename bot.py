@@ -986,6 +986,8 @@ async def RemoveVotes():
                     if "Abgeordneter" in roles.name:
                         pass
                     else:
+                        print (content)
+                        print (x.mention)
                         newoutput = content.replace(x.mention,"")
                         await client.edit_message(m,newoutput)
 
