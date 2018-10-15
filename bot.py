@@ -897,7 +897,8 @@ async def Ja(context):
     vorschlagchannel = discord.Object(id='496295597632913410')
     async for m in client.logs_from(vorschlagchannel, 100):
         content = m.content
-        content = content.replace("Gesetzesvorschlag Nr.","")
+        content = content.replace("Gesetzesvorschlag","")
+        content = content.replace("Nr.", "")
         content = content.split("von")
         votenummer = content[0].strip()
         print(votenummer)
