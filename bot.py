@@ -148,7 +148,8 @@ async def RemoveAbgeordneten(context):
                 if targetrole2 in member.roles:
                     await client.remove_roles(member,targetrole)
                     await client.say(member.name + " repräsentiert nun nicht mehr die Partei im Parlament!")
-                    await client.send_message(logchannel, member.name + " wurde als Repräsentant hinzugefügt")
+                    await client.send_message(logchannel, member.name + " wurde als Repräsentant entfernt")
+                    await RemoveVotes()
                     break
                 else:
                     await client.say("Abgeordneter muss aus deiner Partei sein.")
@@ -247,6 +248,7 @@ async def LeaveParty(context):
                 await client.remove_roles(author,targetrole2)
                 await client.remove_roles(author, targetrole)
                 await client.say("Du hast die Partei verlassen und deinen Parlamentsitz geräumt.")
+                await RemoveVotes()
         else:
             await client.say ("Du bist in keiner teilnehmenden Partei.")
     else:
@@ -297,6 +299,8 @@ async def KickMember(context):
             await client.say("Du musst Parteileiter oder Sekretär sein um ein Mitglied zu kicken")
     else:
         await client.say("Bitte kicke ein Mitglied mit '!AddMember @Member' hinzu")
+
+    await RemoveVotes()
 
 @client.command(name="RemoveSekretär",
                 description='!RemoveSekretär @Pariston Kick ein Sekretär aus deiner Partei. Nur Parteileiter können dies.',
@@ -474,6 +478,8 @@ async def DeleteParty(context):
 
             for role2 in DeleteList:
                 await client.delete_role(server, role2)
+
+            await RemoveVotes()
 
             channellist = server.channels
             partei = partei.lower()
@@ -963,6 +969,20 @@ async def Nein(context):
                     await client.edit_message(m,newoutput)
                     await client.say("Abstimmung erfolgreich durchgeführt")
                     break
+
+async def RemoveVotes():
+    vorschlagchannel = discord.Object(id='496295597632913410')
+    async for m in client.logs_from(vorschlagchannel, 100):
+        content = m.content
+        mentions = m.mentions
+        for member in mentions:
+            memberroles = member.roles
+            if "Abgeordneter" in memberroles:
+                pass
+            else:
+                newoutput = content.replace(member.mention,"")
+                await client.edit_message(m,newoutput)
+
 
 async def vote_background_task():
     await client.wait_until_ready()
