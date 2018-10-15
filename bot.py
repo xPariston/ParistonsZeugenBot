@@ -891,7 +891,7 @@ async def Ja(context):
     msg = context.message.content
     msg = msg.replace ("!Ja","")
     autor = context.message.author
-    nummer = msg.strip
+    nummer = msg.strip()
     einsatz = "Ja-Stimmen: " + autor.mention
 
     vorschlagchannel = discord.Object(id='496295597632913410')
