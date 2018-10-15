@@ -911,7 +911,7 @@ async def Vote(context):
                 await client.edit_message(m, "Anzahl Gesetze: " + nummer)
 
         msg= context.message.content
-        time= context.message.timestamp + datetime.timedelta(hours=24)
+        time= context.message.timestamp + datetime.timedelta(hours=26)
         time= time.strftime("%d.%m.%Y %H:%M:%S")
         msg= msg.replace("!Vote ","")
         autor= context.message.author.name
@@ -920,6 +920,83 @@ async def Vote(context):
         #await client.add_reaction(newmsg_id,emoji='👍')
         #await client.add_reaction(newmsg_id,emoji='👎')
 
+@client.command(name='Vote66',
+                description='Stelle etwas zur Wahl was mit mehr als 66% bestätigt werden muss',
+                brief='Stelle etwas zur Wahl was mit mehr als 66% bestätigt werden muss',
+                pass_context=True)
+
+async def Vote66(context):
+    author = context.message.author
+    authorroles = author.roles
+    Berechtigung = False
+    nummer=""
+
+    for role in authorroles:
+        if "Abgeordneter" in role.name:
+            Berechtigung = True
+
+    if Berechtigung == False:
+        await client.say("Nur Abgeordnete können diesen Befehl ausführen")
+    else:
+
+        nrchannel = discord.Object(id='501309453358989322')
+        async for m in client.logs_from(nrchannel,100):
+            content = m.content
+            if "Anzahl Gesetze" in content:
+                content = content.replace("Anzahl Gesetze:","")
+                nummer = int(content.strip())
+                nummer = nummer + 1
+                nummer = str(nummer)
+                await client.edit_message(m, "Anzahl Gesetze: " + nummer)
+
+        msg= context.message.content
+        time= context.message.timestamp + datetime.timedelta(hours=26)
+        time= time.strftime("%d.%m.%Y %H:%M:%S")
+        msg= msg.replace("!Vote ","")
+        autor= context.message.author.name
+        output= "Gesetzesvorschlag Art66 Nr." + nummer +" von " + autor + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
+        newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
+        #await client.add_reaction(newmsg_id,emoji='👍')
+        #await client.add_reaction(newmsg_id,emoji='👎')
+
+@client.command(name='Vote80',
+                description="Stelle etwas zur Wahl was mit mehr als 80% bestätigt werden muss",
+                brief="Stelle etwas zur Wahl was mit mehr als 80% bestätigt werden muss",
+                pass_context=True)
+
+async def Vote80(context):
+    author = context.message.author
+    authorroles = author.roles
+    Berechtigung = False
+    nummer=""
+
+    for role in authorroles:
+        if "Abgeordneter" in role.name:
+            Berechtigung = True
+
+    if Berechtigung == False:
+        await client.say("Nur Abgeordnete können diesen Befehl ausführen")
+    else:
+
+        nrchannel = discord.Object(id='501309453358989322')
+        async for m in client.logs_from(nrchannel,100):
+            content = m.content
+            if "Anzahl Gesetze" in content:
+                content = content.replace("Anzahl Gesetze:","")
+                nummer = int(content.strip())
+                nummer = nummer + 1
+                nummer = str(nummer)
+                await client.edit_message(m, "Anzahl Gesetze: " + nummer)
+
+        msg= context.message.content
+        time= context.message.timestamp + datetime.timedelta(hours=26)
+        time= time.strftime("%d.%m.%Y %H:%M:%S")
+        msg= msg.replace("!Vote ","")
+        autor= context.message.author.name
+        output= "Gesetzesvorschlag Art80 Nr." + nummer +" von " + autor + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
+        newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
+        #await client.add_reaction(newmsg_id,emoji='👍')
+        #await client.add_reaction(newmsg_id,emoji='👎')
 
 @client.command(name='Ja',
                 description='Stimme für einen Vorschlag mit Ja',
@@ -1031,7 +1108,13 @@ async def RemoveVotes():
 async def vote_background_task():
     await client.wait_until_ready()
     channel = discord.Object(id='496295597632913410')
+    seatchannel = discord.Object(id='497356738492629013')
+    seats = 0.0
     while not client.is_closed:
+        async for n in client.logs_from(seatchannel, 100):
+            Partei, Sitze = n.content.split()
+            Sitze = Sitze.strip()
+            seats = seats + int(Sitze)
         now= datetime.datetime.now()
         async for m in client.logs_from(channel,100):
             #content = m.content
@@ -1045,8 +1128,44 @@ async def vote_background_task():
             #         ups = n.count
             #     if n.emoji == '👎':
             #         downs = n.count
+            content = m.content
+            Gesetz, Abstimmung = content.split("Ja-Stimmen:")
+            JaStimmen,NeinStimmen = Abstimmung.split("Nein-Stimmen:")
+            Ja = JaStimmen.count("@")
+            Nein = NeinStimmen.count("@")
+            if "Art66" in content:
+                if Ja > seats / 3 * 2 or Nein >= seats / 3 * 1:
+                    Ausgang = ""
+                    Gesamt = Ja + Nein
 
+                    if Ja / Gesamt * 100 > 66:
+                        Ausgang = "Vorschlag frühzeitig angenommen mit %d zu %d Stimmen!" % (Ja, Nein)
+                    else:
+                        Ausgang = "Vorschlag frühzeitig abgelehnt mit %d zu %d Stimmen" % (Ja, Nein)
 
+                    await client.send_message(client.get_channel('496734924854919178'), Ausgang + "\n" + content)
+                    await client.delete_message(m)
+            elif "Art80" in content:
+                if Ja > seats / 5 * 4 or Nein >= seats / 5 * 1:
+                    Ausgang = ""
+                    Gesamt = Ja + Nein
+                    if Ja / Gesamt * 100 > 80:
+                        Ausgang = "Vorschlag frühzeitig angenommen mit %d zu %d Stimmen!" % (Ja, Nein)
+                    else:
+                        Ausgang = "Vorschlag frühzeitig abgelehnt mit %d zu %d Stimmen" % (Ja, Nein)
+
+                    await client.send_message(client.get_channel('496734924854919178'), Ausgang + "\n" + content)
+                    await client.delete_message(m)
+            else:
+                if Ja > seats/2 or Nein >= seats/2:
+                    Ausgang = ""
+                    if Ja > Nein:
+                        Ausgang = "Vorschlag frühzeitig angenommen mit %d zu %d Stimmen!" % (Ja, Nein)
+                    else:
+                        Ausgang = "Vorschlag frühzeitig abgelehnt mit %d zu %d Stimmen" % (Ja, Nein)
+
+                    await client.send_message(client.get_channel('496734924854919178'), Ausgang + "\n" + content)
+                    await client.delete_message(m)
             try:
                 if m.timestamp + datetime.timedelta(hours=26) <= now :
                     content= m.content
@@ -1083,7 +1202,7 @@ async def vote_background_task():
                 raise
 
 
-        await asyncio.sleep(60) # task runs every 60 seconds
+        await asyncio.sleep(120) # task runs every 60 seconds
 
 # @client.event
 # async def on_reaction_add(reaction,user):
