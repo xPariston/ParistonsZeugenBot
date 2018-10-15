@@ -1025,6 +1025,8 @@ async def Ja(context):
         async for m in client.logs_from(vorschlagchannel, 100):
             content = m.content
             content = content.replace("Gesetzesvorschlag","")
+            content = content.replace("Art66", "")
+            content = content.replace("Art80", "")
             content = content.replace("Nr.", "")
             content = content.split("von")
             votenummer = content[0].strip()
@@ -1065,7 +1067,10 @@ async def Nein(context):
     else:
         async for m in client.logs_from(vorschlagchannel, 100):
             content = m.content
-            content = content.replace("Gesetzesvorschlag Nr.","")
+            content = content.replace("Gesetzesvorschlag", "")
+            content = content.replace("Art66", "")
+            content = content.replace("Art80", "")
+            content = content.replace("Nr.", "")
             content = content.split("von")
             votenummer = content[0].strip()
             if votenummer == nummer:
