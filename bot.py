@@ -903,6 +903,7 @@ async def Ja(context):
         print(content)
         votenummer = content[0].strip()
         print(votenummer)
+        print(nummer)
         if votenummer == nummer:
             output = m.content
             output1, output2 = output.split("Ja-Stimmen: ")
