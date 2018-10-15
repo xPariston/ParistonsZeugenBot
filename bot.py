@@ -129,15 +129,26 @@ async def Verifizierug(context):
     serverroles = server.roles
     targetrole = ""
 
-    if "@" in msg:
-            for role in serverroles:
-                if "verifiziert" == role.name:
-                    targetrole = role
-            for member in mentions:
-                await client.add_roles(member,targetrole)
-                await client.say(member.name + " wurde erfolgreich verifiziert")
+    author = context.message.author
+    authorroles = author.roles
+    Berechtigung = False
+
+    for role in authorroles:
+        if "AdminTeam" in role.name:
+            Berechtigung = True
+
+    if Berechtigung == False:
+        await client.say("Nur das Admin Team kann diesen Befehl ausführen")
     else:
-        await client.say("Bitte verifiziere mit '!Verifizierung @Member'")
+        if "@" in msg:
+                for role in serverroles:
+                    if "verifiziert" == role.name:
+                        targetrole = role
+                for member in mentions:
+                    await client.add_roles(member,targetrole)
+                    await client.say(member.name + " wurde erfolgreich verifiziert")
+        else:
+            await client.say("Bitte verifiziere mit '!Verifizierung @Member'")
 
 @client.command(name="RemoveAbgeordneten",
                 description='!RemoveAbgeordner @Pariston Entferne ein Mitgleid deiner Partei aus dem Parlament. Nur Parteileiter und Seretäre könn dies.',
