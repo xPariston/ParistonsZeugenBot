@@ -116,6 +116,28 @@ async def AddMember(context):
     else:
         await client.say("Bitte Füge ein Mitglied mit '!AddMember @Member' hinzu")
 
+@client.command(name="Verifizierung",
+                description='!Verifizierung @user',
+                brief='!Verifizierung @user',
+                pass_context=True)
+
+async def Verifizierug(context):
+
+    msg = context.message.content
+    mentions = context.message.mentions
+    server = context.message.server
+    serverroles = server.roles
+    targetrole = ""
+
+    if "@" in msg:
+            for role in serverroles:
+                if "verifiziert" == role.name:
+                    targetrole = role
+            for member in mentions:
+                await client.add_roles(member,targetrole)
+                await client.say(member.name + " wurde erfolgreich verifiziert")
+    else:
+        await client.say("Bitte verifiziere mit '!Verifizierung @Member'")
 
 @client.command(name="RemoveAbgeordneten",
                 description='!RemoveAbgeordner @Pariston Entferne ein Mitgleid deiner Partei aus dem Parlament. Nur Parteileiter und Seretäre könn dies.',
