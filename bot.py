@@ -900,6 +900,7 @@ async def Ja(context):
         content = content.replace("Gesetzesvorschlag Nr.","")
         content = content.split("von")
         votenummer = content[0].strip()
+        print(votenummer)
         if votenummer == nummer:
             output = m.content
             output1, output2 = output.split("Ja-Stimmen: ")
