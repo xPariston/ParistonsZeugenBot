@@ -851,6 +851,7 @@ async def Vote(context):
     author = context.message.author
     authorroles = author.roles
     Berechtigung = False
+    nummer=""
 
     for role in authorroles:
         if "Abgeordneter" in role.name:
@@ -859,15 +860,77 @@ async def Vote(context):
     if Berechtigung == False:
         await client.say("Nur Abgeordnete können diesen Befehl ausführen")
     else:
+
+        nrchannel = discord.Object(id='501309453358989322')
+        async for m in client.logs_from(nrchannel,100):
+            content = m.content
+            if "Anzahl Gesetze" in content:
+                content = content.replace("Anzahl Gesetze:","")
+                nummer = int(content.strip())
+                nummer = nummer + 1
+                nummer = str(nummer)
+                await client.edit_message(m, "Anzahl Gesetze: " + nummer)
+
         msg= context.message.content
         time= context.message.timestamp + datetime.timedelta(hours=24)
         time= time.strftime("%d.%m.%Y %H:%M:%S")
         msg= msg.replace("!Vote ","")
         autor= context.message.author.mention
-        output= "Gesetzesvorschlag von " + autor + ":\n" + msg + "\nDie Wahl geht bis " + time
+        output= "Gesetzesvorschlag Nr." + nummer +" von " + autor + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
         newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
-        await client.add_reaction(newmsg_id,emoji='👍')
-        await client.add_reaction(newmsg_id,emoji='👎')
+        #await client.add_reaction(newmsg_id,emoji='👍')
+        #await client.add_reaction(newmsg_id,emoji='👎')
+
+
+@client.command(name='Ja',
+                description='Stimme für einen Vorschlag mit Ja',
+                brief='Stimme als Abgeordneter für einen Vorschlag mit Ja',
+                pass_context=True)
+
+async def Ja(context):
+    msg = context.message.content
+    msg = msg.replace ("!Ja","")
+    autor = context.message.author
+    nummer = msg.strip
+    einsatz = "Ja-Stimmen: " + autor.mention
+
+    vorschlagchannel = discord.Object(id='496295597632913410')
+    async for m in client.logs_from(vorschlagchannel, 100):
+        content = m.content
+        content = content.replace("Gesetzesvorschlag Nr.","")
+        content = content.split("von")
+        votenummer = content[0].strip()
+        if votenummer == nummer:
+            output = m.content
+            output1, output2 = output.split("Ja-Stimmen: ")
+            newoutput = output1 + einsatz + output2
+            await client.edit_message(m,newoutput)
+            break
+
+@client.command(name='Nein',
+                description='Stimme für einen Vorschlag mit Nein',
+                brief='Stimme als Abgeordneter für einen Vorschlag mit Nein',
+                pass_context=True)
+
+async def Nein(context):
+    msg = context.message.content
+    msg = msg.replace ("!Nein","")
+    autor = context.message.author
+    nummer = msg.strip
+    einsatz = "Nein-Stimmen: " + autor.mention
+
+    vorschlagchannel = discord.Object(id='496295597632913410')
+    async for m in client.logs_from(vorschlagchannel, 100):
+        content = m.content
+        content = content.replace("Gesetzesvorschlag Nr.","")
+        content = content.split("von")
+        votenummer = content[0].strip()
+        if votenummer == nummer:
+            output = m.content
+            output1, output2 = output.split("Nein-Stimmen: ")
+            newoutput = output1 + einsatz + output2
+            await client.edit_message(m,newoutput)
+            break
 
 async def vote_background_task():
     await client.wait_until_ready()
@@ -875,36 +938,48 @@ async def vote_background_task():
     while not client.is_closed:
         now= datetime.datetime.now()
         async for m in client.logs_from(channel,100):
-            content = m.content
-            reaction = m.reactions
-            ups = 0
-            downs = 0
-            Ausgang = ""
-            for n in reaction:
-                if n.emoji == '👍':
-
-                    ups = n.count
-                if n.emoji == '👎':
-                    downs = n.count
+            #content = m.content
+            # reaction = m.reactions
+            # ups = 0
+            # downs = 0
+            # Ausgang = ""
+            # for n in reaction:
+            #     if n.emoji == '👍':
+            #
+            #         ups = n.count
+            #     if n.emoji == '👎':
+            #         downs = n.count
 
 
             try:
                 if m.timestamp + datetime.timedelta(hours=26) <= now :
                     content= m.content
-                    reaction= m.reactions
-                    ups=0
-                    downs=0
-                    Ausgang=""
-                    for n in reaction:
-                        if n.emoji=='👍':
-                            ups=n.count
-                        if n.emoji=='👎':
-                            downs=n.count
-
-                    if ups > downs:
-                        Ausgang= "Vorschlag angenommen mit %d zu %d Stimmen!" % (ups,downs)
+                    Gesetz,Abstimmung = content.split("Ja-Stimmen:")
+                    JaStimmen,NeinStimmen = Abstimmung.split ("Nein-Stimmen:")
+                    JaCounter = JaStimmen.count("@")
+                    NeinCounter = NeinStimmen.count("@")
+                    Ausgang = ""
+                    if JaCounter > NeinCounter:
+                         Ausgang= "Vorschlag angenommen mit %d zu %d Stimmen!" % (JaCounter,NeinCounter)
                     else:
-                        Ausgang= "Vorschlag abgelehnt mit %d zu %d Stimmen" % (ups,downs)
+                         Ausgang= "Vorschlag abgelehnt mit %d zu %d Stimmen" % (JaCounter,NeinCounter)
+
+
+
+                    # reaction= m.reactions
+                    # ups=0
+                    # downs=0
+                    # Ausgang=""
+                    # for n in reaction:
+                    #     if n.emoji=='👍':
+                    #         ups=n.count
+                    #     if n.emoji=='👎':
+                    #         downs=n.count
+                    #
+                    # if ups > downs:
+                    #     Ausgang= "Vorschlag angenommen mit %d zu %d Stimmen!" % (ups,downs)
+                    # else:
+                    #     Ausgang= "Vorschlag abgelehnt mit %d zu %d Stimmen" % (ups,downs)
 
                     await client.send_message(client.get_channel('496734924854919178'), Ausgang + "\n" + content )
                     await client.delete_message(m)
