@@ -972,16 +972,20 @@ async def Nein(context):
 
 async def RemoveVotes():
     vorschlagchannel = discord.Object(id='496295597632913410')
+    server = vorschlagchannel.server
+    member = server.members
+
     async for m in client.logs_from(vorschlagchannel, 100):
         content = m.content
         mentions = m.mentions
-        for member in mentions:
-            memberroles = member.roles
-            if "Abgeordneter" in memberroles:
-                pass
-            else:
-                newoutput = content.replace(member.mention,"")
-                await client.edit_message(m,newoutput)
+        for x in member:
+            if x.mention in mentions:
+                memberroles = x.roles
+                if "Abgeordneter" in memberroles:
+                    pass
+                else:
+                    newoutput = content.replace(member.mention,"")
+                    await client.edit_message(m,newoutput)
 
 
 async def vote_background_task():
