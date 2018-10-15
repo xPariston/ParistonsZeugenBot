@@ -875,7 +875,7 @@ async def Vote(context):
         time= context.message.timestamp + datetime.timedelta(hours=24)
         time= time.strftime("%d.%m.%Y %H:%M:%S")
         msg= msg.replace("!Vote ","")
-        autor= context.message.author.mention
+        autor= context.message.author.name
         output= "Gesetzesvorschlag Nr." + nummer +" von " + autor + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
         newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
         #await client.add_reaction(newmsg_id,emoji='👍')
