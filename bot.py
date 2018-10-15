@@ -979,9 +979,12 @@ async def RemoveVotes():
         print("In m \n")
         content = m.content
         mentions = m.mentions
+        print("mentions: " , mentions)
         for x in member:
             print("in members \n")
-            if x.mention in mentions:
+            print(x.mention)
+
+            if x in mentions:
                 print("in mentions")
                 memberroles = x.roles
                 if "Abgeordneter" in memberroles:
