@@ -976,21 +976,16 @@ async def RemoveVotes():
     member = server.members
 
     async for m in client.logs_from(vorschlagchannel, 100):
-        print("In m \n")
         content = m.content
         mentions = m.mentions
-        print("mentions: " , mentions)
         for x in member:
-            print("in members \n")
-            print(x.mention)
-
             if x in mentions:
                 print("in mentions")
                 memberroles = x.roles
                 if "Abgeordneter" in memberroles:
                     pass
                 else:
-                    newoutput = content.replace(member.mention,"")
+                    newoutput = content.replace(x.mention,"")
                     await client.edit_message(m,newoutput)
 
 
