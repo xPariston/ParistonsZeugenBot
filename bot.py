@@ -976,10 +976,13 @@ async def RemoveVotes():
     member = server.members
 
     async for m in client.logs_from(vorschlagchannel, 100):
+        print("In m \n")
         content = m.content
         mentions = m.mentions
         for x in member:
+            print("in members \n")
             if x.mention in mentions:
+                print("in mentions")
                 memberroles = x.roles
                 if "Abgeordneter" in memberroles:
                     pass
