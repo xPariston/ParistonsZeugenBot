@@ -1397,6 +1397,7 @@ async def CheckVerkauf(context):
             if msg == Nummer:
                 newOutput = n.content.replace("Check: 0","Check: 1")
                 await client.edit_message(n,newOutput)
+                await client.say(context.message.author.mention + "hat Kauf Nr." + Nummer + " verifiziert")
                 break
 
 @client.command(name='CheckKauf',
@@ -1426,6 +1427,7 @@ async def CheckKauf(context):
             if msg == Nummer:
                 newOutput = n.content.replace("Check: 0","Check: 1")
                 await client.edit_message(n,newOutput)
+                await client.say(context.message.author.mention + "hat Kauf Nr." + Nummer + " verifiziert")
                 break
 
 @client.command(name='NewParliamentReal',
