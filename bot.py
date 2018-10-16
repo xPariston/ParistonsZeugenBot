@@ -1448,9 +1448,9 @@ async def DonationsExtern(context):
         print("nummer: ", nummer)
         if nummer == "1":
             müll,partei = msg[3].split(":")
-            partei.strip()
+            partei = partei.strip()
             müll,spende = msg[1].split(":")
-            spende.strip()
+            spende = spende.strip()
             print (partei, spende)
             spende = await rrDamage.RessToMoney(spende)
             spendendict[partei] = spendendict[partei] + spende
@@ -1462,7 +1462,9 @@ async def DonationsExtern(context):
         nummer = nummer.strip()
         if nummer == "1":
             müll,partei = msg[3].split(":")
+            partei = partei.strip()
             müll,spende = msg[1].split(":")
+            spende = spende.strip()
             spende = await rrDamage.RessToMoney(spende)
             spendendict[partei] = spendendict[partei] - spende
 
