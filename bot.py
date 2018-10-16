@@ -1430,6 +1430,38 @@ async def CheckKauf(context):
                 await client.say(context.message.author.mention + "hat Kauf Nr." + Nummer + " verifiziert")
                 break
 
+@client.command(name='DonationsExtern',
+                description='Spenden aus extrenen Käufen und Verkäufen werden hier erfasst und verrechnet.',
+                brief='Spenden aus extrenen Käufen und Verkäufen werden hier erfasst und verrechnet.',
+                pass_context=True)
+
+async def DonationsExtern(context):
+    KaufChannel = discord.Object(id='501420199723925504')
+    VerkaufChannel = discord.Object(id='501420255416025088')
+
+    spendendict = {}
+
+    async for n in client.logs_from(KaufChannel, 100):
+        msg = n.content.split("---")
+        check,nummer = msg[-1].split(":")
+        if nummer == "1":
+            müll,partei = msg[3].split(":")
+            müll,spende = msg[1].split(":")
+            spende = await rrDamage.RessToMoney(spende)
+            spendendict[partei] = spendendict[partei] + spende
+
+
+    async for n in client.logs_from(VerkaufChannel, 100):
+        msg = n.content.split("---")
+        check,nummer = msg[-1].split(":")
+        if nummer == "1":
+            müll,partei = msg[3].split(":")
+            müll,spende = msg[1].split(":")
+            spende = await rrDamage.RessToMoney(spende)
+            spendendict[partei] = spendendict[partei] - spende
+
+    await client.say(spendendict)
+
 @client.command(name='NewParliamentReal',
                 description='Berechne neues Parlament',
                 brief='Berechne neues Parlament',
