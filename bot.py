@@ -1322,10 +1322,111 @@ async def RessKauf(context):
                 await client.edit_message(n,new_output)
 
         KaufChannel = discord.Object(id='501420199723925504')
-        await client.send_message(KaufChannel,"Kauf Nr.:" + str(anzahl) + "--- Gekaufte Ressourcen: " + Ress + " --- eingereicht von: " + autor.mention +" --- Partei: " + Party + " --- Check: 0")
+        await client.send_message(KaufChannel,"Kauf Nr.:" + str(anzahl) + " --- Gekaufte Ressourcen: " + Ress + " --- eingereicht von: " + autor.mention +" --- Partei: " + Party + " --- Check: 0")
 
     else:
         await client.say("Du musst einen betrag und die Einheit für den Betrag angebene. Gold: G, Geld: $, Öl: bbl, Erz: kg, Diamanten: pcs, Uran: g. Beispiel: !RessKauf 32.000 pcs")
+
+@client.command(name='RessVerkauf',
+                description='Gib an wenn Ressourcen via Budget Transfer verkauft hast',
+                brief='Gib an wenn Ressourcen via Budget Transfer verkauft hast. Bsp: !RessKauf 33.000.000 bbl Achte auf die korrekte Einheit!',
+                pass_context=True)
+
+
+async def RessVerkauf(context):
+    content = context.message.content
+    Ress = content.replace("!RessVerkauf","")
+    Ress = Ress.strip()
+    if Ress == "":
+        await client.say("Du musst einen betrag und die Einheit für den Betrag angebene. Gold: G, Geld: $, Öl: bbl, Erz: kg, Diamanten: pcs, Uran: g. Beispiel: !RessKauf 32.000 pcs")
+    elif "$" in Ress or "kg" in Ress or "pcs" in Ress or "G" in Ress or "g" in Ress or "bbl" in Ress:
+        Ress = Ress.replace("kkkkk", ".000.000.000.000.000")
+        Ress = Ress.replace("kkkk", ".000.000.000.000")
+        Ress = Ress.replace("kkk", ".000.000.000")
+        Ress = Ress.replace("kk", ".000.000")
+        Ress = Ress.replace("k", ".000")
+        Ress = Ress.replace(".000g", "kg")
+        Ress = Ress.strip()
+        autor = context.message.author
+        try:
+            Party = await getPartyName(context)
+        except:
+            client.say("Du musst einer Partei angehören")
+            raise
+
+        counterchannel = discord.Object(id='501309453358989322')
+        async for n in client.logs_from(counterchannel, 100):
+            if "Verkäufe" in n.content:
+                müll,anzahl = n.content.split(":")
+                anzahl = anzahl.strip()
+                anzahl = int(anzahl)
+                anzahl = anzahl + 1
+                new_output= "Anzahl Verkäufe: " + str(anzahl)
+                await client.edit_message(n,new_output)
+
+        VerkaufChannel = discord.Object(id='501420255416025088')
+        await client.send_message(VerkaufChannel,"Verkauf Nr.:" + str(anzahl) + " --- Gekaufte Ressourcen: " + Ress + " --- eingereicht von: " + autor.mention +" --- Partei: " + Party + " --- Check: 0")
+
+    else:
+        await client.say("Du musst einen betrag und die Einheit für den Betrag angebene. Gold: G, Geld: $, Öl: bbl, Erz: kg, Diamanten: pcs, Uran: g. Beispiel: !RessKauf 32.000 pcs")
+
+@client.command(name='CheckVerkauf',
+                description='AdminTeam verifiziert hiermit eingereichte Verkäufe.',
+                brief='AdminTeam verifiziert hiermit eingereichte Verkäufe. Bsp.: !CheckVerkauf 5 - Verifiziert eingereichter Verkauf Nummer 5',
+                pass_context=True)
+
+async def CheckVerkauf(context):
+    author = context.message.author
+    authorroles = author.roles
+    Berechtigung = False
+
+    for role in authorroles:
+        if "AdminTeam" in role.name:
+            Berechtigung = True
+
+    if Berechtigung == False:
+        await client.say("Nur das Admin Team kann diesen Befehl ausführen")
+    else:
+        VerkaufChannel = discord.Object(id='501420255416025088')
+        msg = context.message.content.replace("!CheckVerkauf")
+        msg= msg.strip()
+        async for n in client.logs_from(VerkaufChannel, 100):
+            teile = n.content.split(":")
+            Nummer = teile[1].split("---")
+            Nummer = Nummer[0].strip()
+            if msg == Nummer:
+                newOutput = n.content.replace("Check: 0","Check: 1")
+                await client.edit_message(n,newOutput)
+                break
+
+@client.command(name='CheckKauf',
+                description='AdminTeam verifiziert hiermit eingereichte Käufe.',
+                brief='AdminTeam verifiziert hiermit eingereichte Käufe. Bsp.: !CheckVerkauf 5 - Verifiziert eingereichter Verkauf Nummer 5',
+                pass_context=True)
+
+async def CheckKauf(context):
+    author = context.message.author
+    authorroles = author.roles
+    Berechtigung = False
+
+    for role in authorroles:
+        if "AdminTeam" in role.name:
+            Berechtigung = True
+
+    if Berechtigung == False:
+        await client.say("Nur das Admin Team kann diesen Befehl ausführen")
+    else:
+        KaufChannel = discord.Object(id='501420199723925504')
+        msg = context.message.content.replace("!CheckKauf")
+        msg= msg.strip()
+        async for n in client.logs_from(KaufChannel, 100):
+            teile = n.content.split(":")
+            Nummer = teile[1].split("---")
+            Nummer = Nummer[0].strip()
+            if msg == Nummer:
+                newOutput = n.content.replace("Check: 0","Check: 1")
+                await client.edit_message(n,newOutput)
+                break
 
 @client.command(name='NewParliamentReal',
                 description='Berechne neues Parlament',
