@@ -223,6 +223,8 @@ async def MakeAbgeordneten(context):
                 p, seats = m.content.split(":")
                 p = p.strip()
                 seats = seats.strip()
+                print("partei: ",p)
+                print("seats: ",seats)
                 if p == party:
                     partyseatsmax = seats
 
@@ -232,6 +234,8 @@ async def MakeAbgeordneten(context):
                     if targetrole in member.roles:
                         partyseatsnow += 1
 
+            print (partyseatsmax)
+            print (partyseatsnow)
             if partyseatsnow == partyseatsmax:
                 await client.say("Maximale Anzahl an Abgeordneten bereits erreicht. Kicke einen Abgeordneten um einen neuen zu ernennen oder erhalte mehr Sitze.")
             else:
