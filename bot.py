@@ -373,6 +373,7 @@ async def MakeSekretär(context):
     server = context.message.server
     serverroles = server.roles
     targetrole = ""
+    targetrole2 = ""
 
     party = await getLPartyName(context)
 
@@ -381,9 +382,11 @@ async def MakeSekretär(context):
             for role in serverroles:
                 if "Sekretär - " + party == role.name:
                     targetrole = role
+                if party == role.name:
+                    targetrole2 = role
             for member in mentions:
                 sek_roles = member.roles
-                if party in sek_roles:
+                if targetrole2 in sek_roles:
                     await client.add_roles(member, targetrole)
                     await client.say(member.name + "wurde als Sekretär hinzugefügt")
                 else:
