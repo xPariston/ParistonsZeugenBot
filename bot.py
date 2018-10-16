@@ -1453,7 +1453,10 @@ async def DonationsExtern(context):
             spende = spende.strip()
             print (partei, spende)
             spende = await rrDamage.RessToMoney(spende)
-            spendendict[partei] = spendendict[partei] + spende
+            if partei in spendendict:
+                spendendict[partei] = spendendict[partei] + spende
+            else:
+                spendendict[partei] = spende
 
 
     async for n in client.logs_from(VerkaufChannel, 100):
@@ -1466,7 +1469,10 @@ async def DonationsExtern(context):
             müll,spende = msg[1].split(":")
             spende = spende.strip()
             spende = await rrDamage.RessToMoney(spende)
-            spendendict[partei] = spendendict[partei] - spende
+            if partei in spendendict:
+                spendendict[partei] = spendendict[partei] - spende
+            else:
+                spendendict[partei] = 0 - spende
 
     await client.say(spendendict)
 
