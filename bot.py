@@ -1249,6 +1249,20 @@ async def vote_background_task():
 #      await client.send_message(counterchannel, "Anzahl Käufe: 0")
 #      await client.send_message(counterchannel, "Anzahl Verkäufe: 0")
 
+@client.command(name= "ResetMarkt",
+                description = 'Reset vom Counter Channel',
+                brief = 'Reset vom Counter Channel',
+                pass_context = True)
+
+async def ResetMarkt(context):
+    counterchannel = discord.Object(id='501786454133833731')
+    await client.send_message(counterchannel,"Staatsgold: 5")
+    await client.send_message(counterchannel, "Staatsgeld: 0.8,")
+    await client.send_message(counterchannel, "Öl: 155")
+    await client.send_message(counterchannel, "Erz: 155")
+    await client.send_message(counterchannel, "Diamanten: 850000")
+    await client.send_message(counterchannel, "Uran: 1400")
+
 
 @client.command(name='Wahlergebnisse',
                 description='!Wahlergebnisse Partei 1: 33, Partei 3: 144, Partei x: 231',
