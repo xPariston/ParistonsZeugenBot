@@ -1172,7 +1172,7 @@ async def vote_background_task():
                     await client.send_message(client.get_channel('496734924854919178'), Ausgang + "\n" + content)
                     await client.delete_message(m)
             try:
-                if m.timestamp + datetime.timedelta(hours=26) <= now :
+                if m.timestamp + datetime.timedelta(hours=24) <= now :
                     content= m.content
                     Gesetz,Abstimmung = content.split("Ja-Stimmen:")
                     JaStimmen,NeinStimmen = Abstimmung.split ("Nein-Stimmen:")
@@ -1444,9 +1444,11 @@ async def DonationsExtern(context):
     async for n in client.logs_from(KaufChannel, 100):
         msg = n.content.split("---")
         check,nummer = msg[-1].split(":")
+        print("nummer: ", nummer)
         if nummer == "1":
             müll,partei = msg[3].split(":")
             müll,spende = msg[1].split(":")
+            print (partei, spende)
             spende = await rrDamage.RessToMoney(spende)
             spendendict[partei] = spendendict[partei] + spende
 
