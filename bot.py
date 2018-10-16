@@ -602,6 +602,7 @@ async def AddParty(context):
 
                 await client.add_roles(mention[0], rChef)
                 print("rChef wurde hinzugefügt")
+                await asyncio.sleep(1)
                 await client.add_roles(mention[0], rMitglied)
                 print("rMitglied wurde hinzugefügt")
 
