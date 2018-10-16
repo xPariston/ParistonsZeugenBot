@@ -1388,7 +1388,7 @@ async def CheckVerkauf(context):
         await client.say("Nur das Admin Team kann diesen Befehl ausführen")
     else:
         VerkaufChannel = discord.Object(id='501420255416025088')
-        msg = context.message.content.replace("!CheckVerkauf")
+        msg = context.message.content.replace("!CheckVerkauf","")
         msg= msg.strip()
         async for n in client.logs_from(VerkaufChannel, 100):
             teile = n.content.split(":")
@@ -1417,7 +1417,7 @@ async def CheckKauf(context):
         await client.say("Nur das Admin Team kann diesen Befehl ausführen")
     else:
         KaufChannel = discord.Object(id='501420199723925504')
-        msg = context.message.content.replace("!CheckKauf")
+        msg = context.message.content.replace("!CheckKauf","")
         msg= msg.strip()
         async for n in client.logs_from(KaufChannel, 100):
             teile = n.content.split(":")
