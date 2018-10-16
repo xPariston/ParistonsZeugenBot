@@ -1229,14 +1229,16 @@ async def vote_background_task():
 #
 
 @client.command(name= "Reset",
-                description = 'Reset vom Counter Channel',
-                brief = 'Reset vom Counter Channel',
-                pass_context = True)
+                 description = 'Reset vom Counter Channel',
+                 brief = 'Reset vom Counter Channel',
+                 pass_context = True)
 
 async def Reset(context):
-    counterchannel = discord.Object(id='501309453358989322')
-    await client.send_message(counterchannel,"Anzahl Parlamentsbildungen: 1")
-    await client.send_message(counterchannel, "Anzahl Gesetze: 0")
+     counterchannel = discord.Object(id='501309453358989322')
+     await client.send_message(counterchannel,"Anzahl Parlamentsbildungen: 1")
+     await client.send_message(counterchannel, "Anzahl Gesetze: 7")
+     await client.send_message(counterchannel, "Anzahl Käufe: 0")
+     await client.send_message(counterchannel, "Anzahl Verkäufe: 0")
 
 
 @client.command(name='Wahlergebnisse',
@@ -1282,6 +1284,22 @@ async def Wahlergebnisse(context):
             else:
                 await client.say(parteien + " nicht gefunden.")
         await client.say("Wahlergebnisse wurden eingetragen")
+
+@client.command(name='RessKauf',
+                description='Gib an wenn Ressourcen via Budget Transfer gekauft hast',
+                brief='Gib an wenn Ressourcen via Budget Transfer gekauft hast. Bsp: !RessKauf 33.000.000 bbl Achte auf die korrekte Einheit!',
+                pass_context=True)
+
+async def RessKauf(context):
+    content = context.message.content
+    Ress = content.replace("!RessKauf")
+    Ress = Ress.strip()
+    autor = context.message.author
+    exKäufeChannel = discord.Object(id='498487327484543006')
+    Party = getPartyName(context)
+
+    await client.send_message("Kauf Nr.X --- " + Ress + " --- von " + autor.mention +" --- Partei: " + Party + "Check: 0")
+
 
 @client.command(name='NewParliamentReal',
                 description='Berechne neues Parlament',
