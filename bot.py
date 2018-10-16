@@ -1397,7 +1397,7 @@ async def CheckVerkauf(context):
             if msg == Nummer:
                 newOutput = n.content.replace("Check: 0","Check: 1")
                 await client.edit_message(n,newOutput)
-                await client.say(context.message.author.mention + "hat Kauf Nr." + Nummer + " verifiziert")
+                await client.say(context.message.author.mention + " hat Kauf Nr." + Nummer + " verifiziert")
                 break
 
 @client.command(name='CheckKauf',
@@ -1427,7 +1427,7 @@ async def CheckKauf(context):
             if msg == Nummer:
                 newOutput = n.content.replace("Check: 0","Check: 1")
                 await client.edit_message(n,newOutput)
-                await client.say(context.message.author.mention + "hat Kauf Nr." + Nummer + " verifiziert")
+                await client.say(context.message.author.mention +  " hat Kauf Nr." + Nummer + " verifiziert")
                 break
 
 @client.command(name='DonationsExtern',
@@ -1453,6 +1453,7 @@ async def DonationsExtern(context):
             spende = spende.strip()
             print (partei, spende)
             spende = await rrDamage.RessToMoney(spende)
+            print("Calculation= ", spende)
             if partei in spendendict:
                 spendendict[partei] = spendendict[partei] + spende
             else:
@@ -1468,7 +1469,9 @@ async def DonationsExtern(context):
             partei = partei.strip()
             müll,spende = msg[1].split(":")
             spende = spende.strip()
+            print(partei, spende)
             spende = await rrDamage.RessToMoney(spende)
+            print("Calculation= ", spende)
             if partei in spendendict:
                 spendendict[partei] = spendendict[partei] - spende
             else:
