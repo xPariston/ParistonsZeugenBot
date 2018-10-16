@@ -1293,33 +1293,39 @@ async def Wahlergebnisse(context):
 async def RessKauf(context):
     content = context.message.content
     Ress = content.replace("!RessKauf")
-    Ress = Ress.replace("kkkkk", ".000.000.000.000.000")
-    Ress = Ress.replace("kkkk", ".000.000.000.000")
-    Ress = Ress.replace("kkk", ".000.000.000")
-    Ress = Ress.replace("kk", ".000.000")
-    Ress = Ress.replace("k", ".000")
-    Ress = Ress.replace(".000g", "kg")
     Ress = Ress.strip()
-    autor = context.message.author
-    try:
-        Party = await getPartyName(context)
-    except:
-        client.say("Du musst einer Partei angehören")
-        raise
+    if Ress == "":
+        await client.say("Du musst einen betrag und die Einheit für den Betrag angebene. Gold: G, Geld: $, Öl: bbl, Erz: kg, Diamanten: pcs, Uran: g. Beispiel: !RessKauf 32.000 pcs")
+    elif "$" in Ress or "kg" in Ress or "pcs" in Ress or "G" in Ress or "g" in Ress or "bbl" in Ress:
+        Ress = Ress.replace("kkkkk", ".000.000.000.000.000")
+        Ress = Ress.replace("kkkk", ".000.000.000.000")
+        Ress = Ress.replace("kkk", ".000.000.000")
+        Ress = Ress.replace("kk", ".000.000")
+        Ress = Ress.replace("k", ".000")
+        Ress = Ress.replace(".000g", "kg")
+        Ress = Ress.strip()
+        autor = context.message.author
+        try:
+            Party = await getPartyName(context)
+        except:
+            client.say("Du musst einer Partei angehören")
+            raise
 
-    counterchannel = discord.Object(id='501309453358989322')
-    async for n in client.logs_from(counterchannel, 100):
-        if "Käufe" in n.content:
-            müll,anzahl = n.content.split(":")
-            anzahl = anzahl.strip()
-            anzahl = int(anzahl)
-            anzahl = anzahl + 1
-            new_output= "Anzahl Käufe: " + str(anzahl)
-            await client.edit_message(n,new_output)
+        counterchannel = discord.Object(id='501309453358989322')
+        async for n in client.logs_from(counterchannel, 100):
+            if "Käufe" in n.content:
+                müll,anzahl = n.content.split(":")
+                anzahl = anzahl.strip()
+                anzahl = int(anzahl)
+                anzahl = anzahl + 1
+                new_output= "Anzahl Käufe: " + str(anzahl)
+                await client.edit_message(n,new_output)
 
-    KaufChannel = discord.Object(id='501420199723925504')
-    await client.send_message(KaufChannel,"Kauf Nr.:" + str(anzahl) + "--- Gekaufte Ressourcen: " + Ress + " --- eingereicht von: " + autor.mention +" --- Partei: " + Party + " --- Check: 0")
+        KaufChannel = discord.Object(id='501420199723925504')
+        await client.send_message(KaufChannel,"Kauf Nr.:" + str(anzahl) + "--- Gekaufte Ressourcen: " + Ress + " --- eingereicht von: " + autor.mention +" --- Partei: " + Party + " --- Check: 0")
 
+    else:
+        await client.say("Du musst einen betrag und die Einheit für den Betrag angebene. Gold: G, Geld: $, Öl: bbl, Erz: kg, Diamanten: pcs, Uran: g. Beispiel: !RessKauf 32.000 pcs")
 
 @client.command(name='NewParliamentReal',
                 description='Berechne neues Parlament',
