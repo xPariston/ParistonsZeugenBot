@@ -223,6 +223,7 @@ async def MakeAbgeordneten(context):
                 p, seats = m.content.split(":")
                 p = p.strip()
                 seats = seats.strip()
+                seats = int(seats)
                 print("partei: ",p)
                 print("seats: ",seats)
                 if p == party:
