@@ -1292,7 +1292,7 @@ async def Wahlergebnisse(context):
 
 async def RessKauf(context):
     content = context.message.content
-    Ress = content.replace("!RessKauf")
+    Ress = content.replace("!RessKauf","")
     Ress = Ress.strip()
     if Ress == "":
         await client.say("Du musst einen betrag und die Einheit für den Betrag angebene. Gold: G, Geld: $, Öl: bbl, Erz: kg, Diamanten: pcs, Uran: g. Beispiel: !RessKauf 32.000 pcs")
