@@ -1228,17 +1228,17 @@ async def vote_background_task():
 #         await client.send_message(reactionlogchannel, user.mention + " hat zur nachrichtenid " + reaction.message.id + " sein " + reaction.emoji + " zurückgenommen.")
 #
 
-@client.command(name= "Reset",
-                 description = 'Reset vom Counter Channel',
-                 brief = 'Reset vom Counter Channel',
-                 pass_context = True)
-
-async def Reset(context):
-     counterchannel = discord.Object(id='501309453358989322')
-     await client.send_message(counterchannel,"Anzahl Parlamentsbildungen: 1")
-     await client.send_message(counterchannel, "Anzahl Gesetze: 7")
-     await client.send_message(counterchannel, "Anzahl Käufe: 0")
-     await client.send_message(counterchannel, "Anzahl Verkäufe: 0")
+# @client.command(name= "Reset",
+#                  description = 'Reset vom Counter Channel',
+#                  brief = 'Reset vom Counter Channel',
+#                  pass_context = True)
+#
+# async def Reset(context):
+#      counterchannel = discord.Object(id='501309453358989322')
+#      await client.send_message(counterchannel,"Anzahl Parlamentsbildungen: 1")
+#      await client.send_message(counterchannel, "Anzahl Gesetze: 7")
+#      await client.send_message(counterchannel, "Anzahl Käufe: 0")
+#      await client.send_message(counterchannel, "Anzahl Verkäufe: 0")
 
 
 @client.command(name='Wahlergebnisse',
@@ -1293,12 +1293,32 @@ async def Wahlergebnisse(context):
 async def RessKauf(context):
     content = context.message.content
     Ress = content.replace("!RessKauf")
+    Ress = Ress.replace("kkkkk", ".000.000.000.000.000")
+    Ress = Ress.replace("kkkk", ".000.000.000.000")
+    Ress = Ress.replace("kkk", ".000.000.000")
+    Ress = Ress.replace("kk", ".000.000")
+    Ress = Ress.replace("k", ".000")
+    Ress = Ress.replace(".000g", "kg")
     Ress = Ress.strip()
     autor = context.message.author
-    exKäufeChannel = discord.Object(id='498487327484543006')
-    Party = getPartyName(context)
+    try:
+        Party = await getPartyName(context)
+    except:
+        client.say("Du musst einer Partei angehören")
+        raise
 
-    await client.send_message("Kauf Nr.X --- " + Ress + " --- von " + autor.mention +" --- Partei: " + Party + "Check: 0")
+    counterchannel = discord.Object(id='501309453358989322')
+    async for n in client.logs_from(counterchannel, 100):
+        if "Käufe" in n.content:
+            müll,anzahl = n.content.split(":")
+            anzahl = anzahl.strip()
+            anzahl = int(anzahl)
+            anzahl = anzahl + 1
+            new_output= "Anzahl Käufe: " + str(anzahl)
+            await client.edit_message(n,new_output)
+
+    KaufChannel = discord.Object(id='501420199723925504')
+    await client.send_message(KaufChannel,"Kauf Nr.:" + str(anzahl) + "--- Gekaufte Ressourcen: " + Ress + " --- eingereicht von: " + autor.mention +" --- Partei: " + Party + " --- Check: 0")
 
 
 @client.command(name='NewParliamentReal',
