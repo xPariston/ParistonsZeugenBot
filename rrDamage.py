@@ -19,7 +19,7 @@ myheader = \
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36",
     }
 
-MarkdictAktuell = {}
+
 
 async def getRawDamage(url,session):
 
@@ -209,7 +209,7 @@ async def RessToMoney(Ress,Marktdict):
     PriceUranium = 1300
 
     Value = 0
-
+    print ("in RessToMoney")
 
     if "$" in TypeOfRess:
         Value = Marktdict["Staatsgeld"] * amount

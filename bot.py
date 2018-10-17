@@ -1856,6 +1856,7 @@ async def NewParliamentDemo(context):
 
         #Spenden
         marktdict = await readMarktPreise()
+        print(marktdict)
         parteiliste = await getPartys()
 
         stateschannel = discord.Object(id='497356879840935936')
