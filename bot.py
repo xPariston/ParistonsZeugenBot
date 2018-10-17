@@ -1270,7 +1270,13 @@ async def vote_background_task():
 
 async def UpdateMarkt(context):
     Preise = await rrDamage.getMarktPreise()
-    await client.say(Preise)
+    preischannel = discord.Object(id="501786454133833731")
+    async for n in client.logs_from(preischannel, 100):
+        for stoff in Preise:
+            if stoff in n.content:
+                NewOutput = stoff + ": " + rrDamage.MakeNumber2PrettyString(Preise[stoff])
+                await client.edit_message(n,NewOutput)
+
 
 
 @client.command(name='Wahlergebnisse',

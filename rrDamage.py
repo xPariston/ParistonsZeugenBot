@@ -231,10 +231,10 @@ async def getMarktPreise():
         print("Hallo")
         marktpreise = {}
         marktdict= {}
-        marktdict["oil"] = "3"
-        marktdict["ore"] = "4"
-        marktdict["diamonds"] = "15"
-        marktdict["uranium"] = "11"
+        marktdict["Öl"] = "3"
+        marktdict["Erz"] = "4"
+        marktdict["Diamanten"] = "15"
+        marktdict["Uran"] = "11"
 
         for stoff in marktdict:
             url = "http://rivalregions.com/storage/listed/" + marktdict[stoff]
