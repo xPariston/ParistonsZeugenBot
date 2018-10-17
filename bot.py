@@ -766,11 +766,12 @@ async def AllDonations21d(context):
         counter=1
         Gesamtspendenvolumen=0
 
+        marktdict = await readMarktPreise()
         await client.say("Starte Analyse")
         for state in stateids:
             await client.say("Analysiere Staat %d"%counter)
             print("Staat Nr.%d: " %counter + state)
-            tempdict = await rrDamage.getStateDonations(state,parteiliste,profildict)
+            tempdict = await rrDamage.getStateDonations(state,parteiliste,profildict,marktdict)
             print("Staat beendet")
             counter +=1
             for p in tempdict:
@@ -1656,6 +1657,8 @@ async def NewParliamentReal(context):
 
         #Spenden
         parteiliste = await getPartys()
+        marktdict = await readMarktPreise()
+        print(marktdict)
 
         stateschannel = discord.Object(id='497356879840935936')
         stateids = []
@@ -1671,7 +1674,7 @@ async def NewParliamentReal(context):
 
         for state in stateids:
             print("Staat Nr.%d: " % counter + state)
-            tempdict = await rrDamage.getStateDonations(state, parteiliste, profildict)
+            tempdict = await rrDamage.getStateDonations(state, parteiliste, profildict,marktdict)
             print("Staat beendet")
             counter += 1
             for p in tempdict:

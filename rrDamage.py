@@ -201,15 +201,14 @@ async def RessToMoney(Ress,Marktdict):
 
     amount = int(amount.replace('.',''))
 
-    PriceStateMoney = 1
-    PriceStateGold = 500000
-    PriceOil = 150
-    PriceOre = 150
-    PriceDiamonds = 840000
-    PriceUranium = 1300
+    # PriceStateMoney = 1
+    # PriceStateGold = 500000
+    # PriceOil = 150
+    # PriceOre = 150
+    # PriceDiamonds = 840000
+    # PriceUranium = 1300
 
     Value = 0
-    print ("in RessToMoney")
 
     if "$" in TypeOfRess:
         Value = round(int(Marktdict["Staatsgeld"]) * amount)
