@@ -4,7 +4,7 @@ import datetime
 import asyncio
 import aiohttp
 import async_timeout
-import bot
+
 
 myheader = \
     {
