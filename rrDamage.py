@@ -245,6 +245,7 @@ async def getMarktPreise():
             for e in soup.find_all(attrs={"class": "white green imp small"}):
                 x = e.get_text()
                 x = x.replace("$","")
+                x = x.replace(".","")
                 x= x.strip()
                 wert += int(x)
                 counter += 1
