@@ -242,6 +242,7 @@ async def getMarktPreise():
             print(url)
             html = await fetch(session, url)
             soup = await soup_d(html)
+            print(soup.prettify())
             for e in soup.find_all(attrs={"class": "white green imp small"}):
                 print(e)
                 x = e.get_text()
