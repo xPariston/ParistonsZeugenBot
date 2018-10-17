@@ -1855,6 +1855,7 @@ async def NewParliamentDemo(context):
         await client.say(Msg + Msg1 + Msg2 + Msg3 + Msg4 + "\n")
 
         #Spenden
+        marktdict = await readMarktPreise()
         parteiliste = await getPartys()
 
         stateschannel = discord.Object(id='497356879840935936')
@@ -1871,7 +1872,7 @@ async def NewParliamentDemo(context):
 
         for state in stateids:
             print("Staat Nr.%d: " % counter + state)
-            tempdict = await rrDamage.getStateDonations(state, parteiliste, profildict)
+            tempdict = await rrDamage.getStateDonations(state, parteiliste, profildict,marktdict)
             print("Staat beendet")
             counter += 1
             for p in tempdict:
@@ -1896,7 +1897,7 @@ async def NewParliamentDemo(context):
                 müll, spende = msg[1].split(":")
                 spende = spende.strip()
                 print(partei, spende)
-                spende = await rrDamage.RessToMoney(spende)
+                spende = await rrDamage.RessToMoney(spende,marktdict)
                 print("Calculation= ", spende)
                 if partei in partydon:
                     partydon[partei] = partydon[partei] + spende

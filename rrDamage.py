@@ -195,7 +195,7 @@ async def soup_d(html, display_result=False):
         print(soup.prettify())
     return soup
 
-async def RessToMoney(Ress):
+async def RessToMoney(Ress,Marktdict):
 
     amount,TypeOfRess= Ress.split(' ')
 
@@ -210,9 +210,6 @@ async def RessToMoney(Ress):
 
     Value = 0
 
-    if MarkdictAktuell == {}:
-        print("hallo")
-        Marktdict = await bot.readMarktPreise()
 
     if "$" in TypeOfRess:
         Value = Marktdict["Staatsgeld"] * amount
@@ -289,7 +286,7 @@ async def getProfilParty(profilid,session):
     return party
 
 
-async def getRegionDonations(regionid, partylist,profildict, session):
+async def getRegionDonations(regionid, partylist,profildict, session,marktdict):
     try:
         id,adder = regionid.split("/")
         adder = int(adder)
@@ -364,9 +361,9 @@ async def getRegionDonations(regionid, partylist,profildict, session):
                     #print(Party)
                     if Party in Partydonations:
                         #print(Partydonations[Party])
-                        Partydonations[Party] = Partydonations[Party] + await RessToMoney(donation)
+                        Partydonations[Party] = Partydonations[Party] + await RessToMoney(donation,marktdict)
                     else:
-                        Partydonations[Party] = await RessToMoney(donation)
+                        Partydonations[Party] = await RessToMoney(donation,marktdict)
                         #print(RessToMoney(donation))
         counter+=1
         #print(Partydonations)
@@ -381,7 +378,7 @@ async def getRegionDonations(regionid, partylist,profildict, session):
             pass
         regionid = regionid + "/" + str(adder)
         print("Im if, regionid: ", regionid)
-        partydict = await getRegionDonations(regionid,partylist,profildict,session)
+        partydict = await getRegionDonations(regionid,partylist,profildict,session, marktdict)
         for x in partydict:
             if x in Partydonations:
                 Partydonations[x] = Partydonations[x] + partydict[x]
@@ -390,7 +387,7 @@ async def getRegionDonations(regionid, partylist,profildict, session):
 
     return Partydonations
 
-async def getStateDonations(stateid,partylist,profildict):
+async def getStateDonations(stateid,partylist,profildict, marktdict):
 
     async with aiohttp.ClientSession(headers=myheader) as session:
 
@@ -417,7 +414,7 @@ async def getStateDonations(stateid,partylist,profildict):
         counter= 1
         for region in regionlist:
             print("region nr. %d: " %counter + region)
-            tempdonations = await getRegionDonations(region,partylist,profildict,session)
+            tempdonations = await getRegionDonations(region,partylist,profildict,session, marktdict)
             for p in tempdonations:
                 if p in partydonations:
                     partydonations[p] = partydonations[p] + tempdonations[p]
