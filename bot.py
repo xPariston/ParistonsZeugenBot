@@ -1119,6 +1119,19 @@ async def RemoveVotes():
                     await client.edit_message(m,newoutput)
 
 
+async def update_markt_background_task():
+    await client.wait_until_ready()
+    while not client.is_closed:
+        Preise = await rrDamage.getMarktPreise()
+        preischannel = discord.Object(id="501786454133833731")
+        async for n in client.logs_from(preischannel, 100):
+            for stoff in Preise:
+                if stoff in n.content:
+                    NewOutput = stoff + ": " + rrDamage.MakeNumber2PrettyString(Preise[stoff])
+                    await client.edit_message(n, NewOutput)
+
+        await asyncio.sleep(14400)
+
 async def vote_background_task():
     await client.wait_until_ready()
     channel = discord.Object(id='496295597632913410')
@@ -1278,6 +1291,17 @@ async def UpdateMarkt(context):
                 await client.edit_message(n,NewOutput)
 
 
+async def readMarktPreise():
+    preischannel = discord.Object(id="501786454133833731")
+    marktdict = {}
+    print("hello")
+    async for n in client.logs_from(preischannel, 100):
+        stoff, preis = n.content.split(":")
+        stoff = stoff.strip()
+        preis = preis.replace(".","")
+        preis = preis.strip()
+        marktdict[stoff]= preis
+    return marktdict
 
 @client.command(name='Wahlergebnisse',
                 description='!Wahlergebnisse Partei 1: 33, Partei 3: 144, Partei x: 231',
@@ -2259,7 +2283,7 @@ async def on_ready():
     print('------')
 
 
-
+client.loop.create_task(update_markt_background_task())
 client.loop.create_task(vote_background_task())
 client.run(os.getenv('TOKEN'))
 

@@ -4,6 +4,7 @@ import datetime
 import asyncio
 import aiohttp
 import async_timeout
+import bot
 
 myheader = \
     {
@@ -18,6 +19,7 @@ myheader = \
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36",
     }
 
+MarkdictAktuell = {}
 
 async def getRawDamage(url,session):
 
@@ -208,18 +210,22 @@ async def RessToMoney(Ress):
 
     Value = 0
 
+    if MarkdictAktuell == {}:
+        print("hallo")
+        Marktdict = await bot.readMarktPreise()
+
     if "$" in TypeOfRess:
-        Value = PriceStateMoney * amount
+        Value = Marktdict["Staatsgeld"] * amount
     if "G" in TypeOfRess:
-        Value = PriceStateGold * amount
+        Value = Marktdict["Staatsgold"] * amount
     if "kg" in TypeOfRess:
-        Value = PriceOre * amount
+        Value = Marktdict["Öl"] * amount
     if "bbl" in TypeOfRess:
-        Value = PriceOil * amount
+        Value = Marktdict["Erz"] * amount
     if "pcs" in TypeOfRess:
-        Value = PriceDiamonds * amount
+        Value = Marktdict["Diamanten"] * amount
     if "g" in TypeOfRess:
-        Value = PriceUranium * amount
+        Value = Marktdict["Uran"] * amount
 
     return Value
 
@@ -228,7 +234,6 @@ async def getMarktPreise():
         url = "http://rivalregions.com/storage/listed/3"
         html = await fetch(session, url)
         soup = await soup_d(html)
-        print("Hallo")
         marktpreise = {}
         marktdict= {}
         marktdict["Öl"] = "3"
