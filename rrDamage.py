@@ -238,6 +238,7 @@ async def getMarktPreise():
 
         for stoff in marktdict:
             url = "http://rivalregions.com/storage/listed/" + marktdict[stoff]
+            print(stoff)
             print(url)
             html = await fetch(session, url)
             soup = await soup_d(html)
