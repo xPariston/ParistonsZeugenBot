@@ -1801,6 +1801,7 @@ async def NewParliamentDemo(context):
 
         GesamtDamage, partydictRawDmg, partydictPerDmg = await rrDamage.MultiWar(warliste, parteiliste)
 
+
         stateschannel = discord.Object(id='497356879840935936')
         stateids = []
         seats = 0
