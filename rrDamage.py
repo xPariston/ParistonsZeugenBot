@@ -223,6 +223,18 @@ async def RessToMoney(Ress):
 
     return Value
 
+async def getMarktPreise():
+    async with aiohttp.ClientSession(headers=myheader) as session:
+        url = "http://rivalregions.com/storage/listed/3"
+        html = await fetch(session, url)
+        soup = await soup_d(html)
+
+        marktpreise = {}
+
+        for e in soup.find_all(attrs={"class": "white green imp small"}):
+            x = e.get_text
+            print(x)
+
 async def getProfilParty(profilid,session):
     BaseUrl = "http://rivalregions.com/slide/profile/"
     url = BaseUrl + profilid
