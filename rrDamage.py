@@ -228,12 +228,23 @@ async def getMarktPreise():
         url = "http://rivalregions.com/storage/listed/3"
         html = await fetch(session, url)
         soup = await soup_d(html)
-
+        print("Hallo")
         marktpreise = {}
+        marktdict= {}
+        marktdict[oil] = "3"
+        marktdict[ore] = "4"
+        marktdict[diamonds] = "15"
+        marktdict[uranium] = "11"
 
-        for e in soup.find_all(attrs={"class": "white green imp small"}):
-            x = e.get_text
-            print(x)
+        for stoff in marktdict:
+            url = "http://rivalregions.com/storage/listed/" + marktdict[stoff]
+            html = await fetch(session, url)
+            soup = await soup_d(html)
+            for e in soup.find_all(attrs={"class": "white green imp small"}):
+                x = e.get_text()
+                marktpreise[stoff] = x
+
+        return marktpreise
 
 async def getProfilParty(profilid,session):
     BaseUrl = "http://rivalregions.com/slide/profile/"

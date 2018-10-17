@@ -1270,6 +1270,7 @@ async def vote_background_task():
 
 async def UpdateMarkt(context):
     Preise = await rrDamage.getMarktPreise()
+    await client.say(Preise)
 
 
 @client.command(name='Wahlergebnisse',
