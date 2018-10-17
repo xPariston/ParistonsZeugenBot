@@ -238,16 +238,17 @@ async def getMarktPreise():
 
         for stoff in marktdict:
             url = "http://rivalregions.com/storage/listed/" + marktdict[stoff]
-            print(stoff)
-            print(url)
             html = await fetch(session, url)
             soup = await soup_d(html)
-            print(soup.prettify())
+            counter = 0
+            wert = 0
             for e in soup.find_all(attrs={"class": "white green imp small"}):
-                print(e)
                 x = e.get_text()
-                print(x)
-                marktpreise[stoff] = x
+                wert += int(x)
+                counter += 1
+                if counter == 3:
+                    marktpreise[stoff] = str(round(wert/3))
+                    break
 
         return marktpreise
 
