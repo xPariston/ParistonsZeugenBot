@@ -1269,7 +1269,7 @@ async def vote_background_task():
                 pass_context = True)
 
 async def UpdateMarkt(context):
-    Preise = await rrDamage.getMarktpreise()
+    Preise = await rrDamage.getMarktPreise()
 
 
 @client.command(name='Wahlergebnisse',
