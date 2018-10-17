@@ -212,17 +212,17 @@ async def RessToMoney(Ress,Marktdict):
     print ("in RessToMoney")
 
     if "$" in TypeOfRess:
-        Value = Marktdict["Staatsgeld"] * amount
+        Value = round(int(Marktdict["Staatsgeld"]) * amount)
     if "G" in TypeOfRess:
-        Value = Marktdict["Staatsgold"] * amount
+        Value = int(Marktdict["Staatsgold"]) * amount
     if "kg" in TypeOfRess:
-        Value = Marktdict["Öl"] * amount
+        Value = int(Marktdict["Öl"]) * amount
     if "bbl" in TypeOfRess:
-        Value = Marktdict["Erz"] * amount
+        Value = int(Marktdict["Erz"]) * amount
     if "pcs" in TypeOfRess:
-        Value = Marktdict["Diamanten"] * amount
+        Value = int(Marktdict["Diamanten"]) * amount
     if "g" in TypeOfRess:
-        Value = Marktdict["Uran"] * amount
+        Value = int(Marktdict["Uran"]) * amount
 
     return Value
 
