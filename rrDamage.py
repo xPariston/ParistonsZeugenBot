@@ -71,7 +71,7 @@ async def RefineDamage(url,partylist,session):
 
     return Gesamtdamage,partydictRawDmg,partydictPerDmg
 
-async def MultiWar(urllist,partylist):
+async def MultiWar(urllist,partylist,days):
     async with aiohttp.ClientSession(headers=myheader) as session:
         Gesamtdamage = 0
         partydictRawDmg = {}
@@ -93,7 +93,7 @@ async def MultiWar(urllist,partylist):
 
         return Gesamtdamage,partydictRawDmg,partydictPerDmg
 
-async def getStateWars7d(stateid):
+async def getStateWars7d(stateid,days):
     async with aiohttp.ClientSession(headers=myheader) as session:
         regionlist = []
         StateUrl="http://rivalregions.com/listed/state/"
@@ -114,7 +114,7 @@ async def getStateWars7d(stateid):
             regionlist.append(id)
 
         now = datetime.datetime.now()
-        siebenDays = now + datetime.timedelta(days=-21)
+        siebenDays = now + datetime.timedelta(days=-days)
         yesterday= now + datetime.timedelta(days=-1)
 
         warlistState = []
@@ -285,7 +285,7 @@ async def getProfilParty(profilid,session):
     return party
 
 
-async def getRegionDonations(regionid, partylist,profildict, session,marktdict):
+async def getRegionDonations(regionid, partylist,profildict, session,marktdict, days):
     try:
         id,adder = regionid.split("/")
         adder = int(adder)
@@ -303,7 +303,7 @@ async def getRegionDonations(regionid, partylist,profildict, session,marktdict):
     #soup = bs4.BeautifulSoup(r)
 
     now = datetime.datetime.now()
-    siebenDays = now + datetime.timedelta(days=-21)
+    siebenDays = now + datetime.timedelta(days=-days)
     datebool=[]
 
     for dates in soup.find_all(attrs={"class": "list_avatar pointer small"}):
@@ -377,7 +377,7 @@ async def getRegionDonations(regionid, partylist,profildict, session,marktdict):
             pass
         regionid = regionid + "/" + str(adder)
         print("Im if, regionid: ", regionid)
-        partydict = await getRegionDonations(regionid,partylist,profildict,session, marktdict)
+        partydict = await getRegionDonations(regionid,partylist,profildict,session, marktdict,days)
         for x in partydict:
             if x in Partydonations:
                 Partydonations[x] = Partydonations[x] + partydict[x]
@@ -386,7 +386,7 @@ async def getRegionDonations(regionid, partylist,profildict, session,marktdict):
 
     return Partydonations
 
-async def getStateDonations(stateid,partylist,profildict, marktdict):
+async def getStateDonations(stateid,partylist,profildict, marktdict, days):
 
     async with aiohttp.ClientSession(headers=myheader) as session:
 
@@ -413,7 +413,7 @@ async def getStateDonations(stateid,partylist,profildict, marktdict):
         counter= 1
         for region in regionlist:
             print("region nr. %d: " %counter + region)
-            tempdonations = await getRegionDonations(region,partylist,profildict,session, marktdict)
+            tempdonations = await getRegionDonations(region,partylist,profildict,session, marktdict, days)
             for p in tempdonations:
                 if p in partydonations:
                     partydonations[p] = partydonations[p] + tempdonations[p]
