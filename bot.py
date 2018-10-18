@@ -1095,6 +1095,7 @@ async def Nein(context):
                     await client.say("Abstimmung erfolgreich durchgeführt")
                     break
 
+
 async def RemoveVotes():
     vorschlagchannel = client.get_channel(id='496295597632913410')
     server = vorschlagchannel.server
@@ -1135,10 +1136,11 @@ async def update_markt_background_task():
 
 async def vote_background_task():
     await client.wait_until_ready()
-    channel = discord.Object(id='496295597632913410')
-    seatchannel = discord.Object(id='497356738492629013')
-    seats = 0.0
     while not client.is_closed:
+        print("Run Background Task")
+        channel = discord.Object(id='496295597632913410')
+        seatchannel = discord.Object(id='497356738492629013')
+        seats = 0.0
         async for n in client.logs_from(seatchannel, 100):
             Partei, Sitze = n.content.split(":")
             Sitze = Sitze.strip()
