@@ -2159,7 +2159,7 @@ async def Bayern14D(context):
         partydonPro = {}
 
         Msg = "\n---SPENDENERGEBNISSE---\n\n"
-        Msg1 = "Gesamtspenden des Staatenbundes während der letzten 21 Tagen: " + rrDamage.MakeNumber2PrettyString(
+        Msg1 = "Gesamtwert der Spenden im Königreich Bayern während der letzten 14 Tage: " + rrDamage.MakeNumber2PrettyString(
             Gesamtspendenvolumen) + "\n\n"
         Msg2 = "Spendenvolumen der Parteien:\n"
         Msg3 = "\nProzentuale Spenden der Parteien:\n"
