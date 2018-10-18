@@ -1705,6 +1705,7 @@ async def NewParliamentReal(context):
                 print(partei, spende)
                 spende = await rrDamage.RessToMoney(spende, marktdict)
                 print("Calculation= ", spende)
+                Gesamtspendenvolumen = Gesamtspendenvolumen + spende
                 if partei in partydon:
                     partydon[partei] = partydon[partei] + spende
                 else:
@@ -1722,6 +1723,7 @@ async def NewParliamentReal(context):
                 print(partei, spende)
                 spende = await rrDamage.RessToMoney(spende)
                 print("Calculation= ", spende)
+                Gesamtspendenvolumen = Gesamtspendenvolumen - spende
                 if partei in partydon:
                     partydon[partei] = partydon[partei] - spende
                 else:
@@ -1946,6 +1948,7 @@ async def NewParliamentDemo(context):
                 print(partei, spende)
                 spende = await rrDamage.RessToMoney(spende,marktdict)
                 print("Calculation= ", spende)
+                Gesamtspendenvolumen = Gesamtspendenvolumen + spende
                 if partei in partydon:
                     partydon[partei] = partydon[partei] + spende
                 else:
@@ -1963,6 +1966,7 @@ async def NewParliamentDemo(context):
                 print(partei, spende)
                 spende = await rrDamage.RessToMoney(spende)
                 print("Calculation= ", spende)
+                Gesamtspendenvolumen = Gesamtspendenvolumen - spende
                 if partei in partydon:
                     partydon[partei] = partydon[partei] - spende
                 else:
