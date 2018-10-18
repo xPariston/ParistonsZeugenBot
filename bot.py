@@ -1566,6 +1566,7 @@ async def NewParliamentReal(context):
     if Berechtigung == False:
         await client.say("Nur das Admin Team kann diesen Befehl ausführen")
     else:
+        days = 21
         #Wahl
         Wahlchannel = discord.Object(id='498487327484543006')
         Stimmliste = []
@@ -1624,7 +1625,7 @@ async def NewParliamentReal(context):
 
         Totalwarurllist = []
         for id in stateids:
-            warlist = await rrDamage.getStateWars7d(id)
+            warlist = await rrDamage.getStateWars7d(id,days)
             for war in warlist:
                 warurl = warbase + war
                 Totalwarurllist.append(warurl)
@@ -1646,7 +1647,7 @@ async def NewParliamentReal(context):
 
         Kriegssitze = partydictPerDmg
         Msg = "\n---KRIEGSERGEBNISSE---\n\n"
-        Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen während der letzten 21 Tagen und aus der Kriegsliste (insgesamt:%d): " % TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
+        Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen während der letzten %d Tagen und aus der Kriegsliste (insgesamt:%d): " % (days,TotalWars) + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
         Msg2 = "Roher Schaden der Parteien:\n"
         Msg3 = "\nProzentualer Schaden der Parteien:\n"
         Msg4 = "\nAufteilung der Sitze nach Schaden im Parlament (%d Prozent nach Schaden verteilen):\n" % WarProzent
@@ -1681,7 +1682,7 @@ async def NewParliamentReal(context):
 
         for state in stateids:
             print("Staat Nr.%d: " % counter + state)
-            tempdict = await rrDamage.getStateDonations(state, parteiliste, profildict,marktdict)
+            tempdict = await rrDamage.getStateDonations(state, parteiliste, profildict,marktdict,days)
             print("Staat beendet")
             counter += 1
             for p in tempdict:
@@ -1735,7 +1736,7 @@ async def NewParliamentReal(context):
         partydonPro = {}
 
         Msg = "\n---SPENDENERGEBNISSE---\n\n"
-        Msg1 = "Gesamtspenden des Staatenbundes während der letzten 21 Tagen: " + rrDamage.MakeNumber2PrettyString(
+        Msg1 = "Gesamtspenden des Staatenbundes während der letzten %d Tagen: " %days + rrDamage.MakeNumber2PrettyString(
             Gesamtspendenvolumen) + "\n\n"
         Msg2 = "Spendenvolumen der Parteien:\n"
         Msg3 = "\nProzentuale Spenden der Parteien:\n"
@@ -1807,6 +1808,7 @@ async def NewParliamentDemo(context):
     if Berechtigung == False:
         await client.say("Nur das Admin Team kann diesen Befehl ausführen")
     else:
+        days = 21
         #Wahl
         Wahlchannel = discord.Object(id='498487327484543006')
         Stimmliste = []
@@ -1866,7 +1868,7 @@ async def NewParliamentDemo(context):
 
         Totalwarurllist = []
         for id in stateids:
-            warlist = await rrDamage.getStateWars7d(id)
+            warlist = await rrDamage.getStateWars7d(id,days)
             for war in warlist:
                 warurl = warbase + war
                 Totalwarurllist.append(warurl)
@@ -1888,7 +1890,7 @@ async def NewParliamentDemo(context):
 
         Kriegssitze = partydictPerDmg
         Msg = "\n---KRIEGSERGEBNISSE---\n\n"
-        Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen während der letzten 21 Tagen und aus der Kriegsliste (insgesamt:%d): " % TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
+        Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen während der letzten %d Tagen und aus der Kriegsliste (insgesamt:%d): " % (days,TotalWars) + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
         Msg2 = "Roher Schaden der Parteien:\n"
         Msg3 = "\nProzentualer Schaden der Parteien:\n"
         Msg4 = "\nAufteilung der Sitze nach Schaden im Parlament (%d Prozent nach Schaden verteilen):\n" % WarProzent
@@ -1923,7 +1925,7 @@ async def NewParliamentDemo(context):
 
         for state in stateids:
             print("Staat Nr.%d: " % counter + state)
-            tempdict = await rrDamage.getStateDonations(state, parteiliste, profildict,marktdict)
+            tempdict = await rrDamage.getStateDonations(state, parteiliste, profildict,marktdict,days)
             print("Staat beendet")
             counter += 1
             for p in tempdict:
@@ -1978,7 +1980,7 @@ async def NewParliamentDemo(context):
         partydonPro = {}
 
         Msg = "\n---SPENDENERGEBNISSE---\n\n"
-        Msg1 = "Gesamtspenden des Staatenbundes während der letzten 21 Tagen: " + rrDamage.MakeNumber2PrettyString(
+        Msg1 = "Gesamtspenden des Staatenbundes während der letzten %d Tagen: " %days + rrDamage.MakeNumber2PrettyString(
             Gesamtspendenvolumen) + "\n\n"
         Msg2 = "Spendenvolumen der Parteien:\n"
         Msg3 = "\nProzentuale Spenden der Parteien:\n"
