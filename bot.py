@@ -1684,6 +1684,44 @@ async def NewParliamentReal(context):
                 else:
                     partydon[p] = tempdict[p]
 
+        KaufChannel = discord.Object(id='501420199723925504')
+        VerkaufChannel = discord.Object(id='501420255416025088')
+
+        async for n in client.logs_from(KaufChannel, 100):
+            msg = n.content.split("---")
+            check, nummer = msg[-1].split(":")
+            nummer = nummer.strip()
+            print("nummer: ", nummer)
+            if nummer == "1":
+                müll, partei = msg[3].split(":")
+                partei = partei.strip()
+                müll, spende = msg[1].split(":")
+                spende = spende.strip()
+                print(partei, spende)
+                spende = await rrDamage.RessToMoney(spende, marktdict)
+                print("Calculation= ", spende)
+                if partei in partydon:
+                    partydon[partei] = partydon[partei] + spende
+                else:
+                    partydon[partei] = spende
+
+        async for n in client.logs_from(VerkaufChannel, 100):
+            msg = n.content.split("---")
+            check, nummer = msg[-1].split(":")
+            nummer = nummer.strip()
+            if nummer == "1":
+                müll, partei = msg[3].split(":")
+                partei = partei.strip()
+                müll, spende = msg[1].split(":")
+                spende = spende.strip()
+                print(partei, spende)
+                spende = await rrDamage.RessToMoney(spende)
+                print("Calculation= ", spende)
+                if partei in partydon:
+                    partydon[partei] = partydon[partei] - spende
+                else:
+                    partydon[partei] = 0 - spende
+
         print("Alle Staaten beendet")
         partydonPro = {}
 
