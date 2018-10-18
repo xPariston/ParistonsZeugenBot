@@ -71,7 +71,7 @@ async def RefineDamage(url,partylist,session):
 
     return Gesamtdamage,partydictRawDmg,partydictPerDmg
 
-async def MultiWar(urllist,partylist,days):
+async def MultiWar(urllist,partylist):
     async with aiohttp.ClientSession(headers=myheader) as session:
         Gesamtdamage = 0
         partydictRawDmg = {}
