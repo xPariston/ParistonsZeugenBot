@@ -168,11 +168,29 @@ async def KriegsAnalyse(url):
         soup = await soup_d(html)
 
         print ("in Kriegsanalyse, url: ",url)
-        print(soup.prettify())
+
         for e in soup.find_all(attrs={"class": "minwidth"}):
-            print(e)
             text = e.get_text()
-            print (text)
+            müll,text= text.split("series: [{ name: 'Damage', data:")
+            text,müll = text.split(",negativeColor:")
+            text = text.replace("[","")
+            text = text.replace("]", "")
+            liste = text.split(",")
+
+        GesamtDamage = []
+        Differenz = []
+
+        counter = 0
+        for point in liste:
+            if counter % 2 == 0:
+                GesamtDamage.append(int(point))
+            if counter % 2 == 1:
+                Differenz.append(int(point))
+
+        print("GesamtDamage: ",GesamtDamage)
+        print("Differnz: ", Differenz)
+
+
 
 def MakeNumber2PrettyString(number):
     number = str(number)
