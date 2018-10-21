@@ -192,9 +192,9 @@ async def KriegsAnalyse(url):
         Dmg1h = Differenz[-60]-Differenz[-1]
         Dmg30min= Differenz[-30]-Differenz[-1]
         Dmg10min= Differenz[-10]-Differenz[-1]
-        print("1h: ",Dmg1h)
-        print("Halbe Stunde: ", Dmg30min)
-        print("10 min: ", Dmg10min)
+        print("1h: ",MakeNumber2PrettyString(Dmg1h))
+        print("Halbe Stunde: ", MakeNumber2PrettyString(Dmg30min))
+        print("10 min: ", MakeNumber2PrettyString(Dmg10min))
 
 
 
