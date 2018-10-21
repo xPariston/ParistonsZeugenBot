@@ -186,6 +186,7 @@ async def KriegsAnalyse(url):
                 GesamtDamage.append(int(point))
             if counter % 2 == 1:
                 Differenz.append(int(point))
+            counter +=1
 
         print("GesamtDamage: ",GesamtDamage)
         print("Differnz: ", Differenz)
