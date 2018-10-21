@@ -162,6 +162,15 @@ async def getStateWars7d(stateid,days):
         print("WarListState: ",warlistState)
         return warlistState
 
+async def KriegsAnalyse(url):
+    async with aiohttp.ClientSession(headers=myheader) as session:
+        html = await fetch(session, url)
+        soup = await soup_d(html)
+
+        for e in soup.find_all(attrs={"class": "minwidth"}):
+            print(e)
+            text = e.get_text()
+            print (text)
 
 def MakeNumber2PrettyString(number):
     number = str(number)

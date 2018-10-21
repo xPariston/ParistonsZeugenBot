@@ -807,6 +807,18 @@ async def AllDonations21d(context):
         print(Msg1 + Msg2 + Msg3 + Msg4)
         await asyncio.shield(client.send_message(context.message.channel, Msg1 + Msg2 + Msg3 + Msg4))
 
+@client.command(name='AnalyseWar',
+                description='Analysiere einen Krieg',
+                brief='Analysiere einen Krieg',
+                pass_context=True)
+
+async def AnalyseWar(context):
+    msg = context.message.content.replace("!AnalyseWar","")
+    msg = msg.replace("#","")
+    msg = msg.strip()
+    await rrDamage.KriegsAnalyse(msg)
+
+
 
 @client.command(name="StateAndListWars",
                 description='Analysiere Kriege die in den letzten 21 Tage beendet wurden in unseren Regionen und alle Links aus der Datenbank.',
