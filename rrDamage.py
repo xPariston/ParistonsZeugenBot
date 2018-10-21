@@ -172,7 +172,7 @@ async def KriegsAnalyse(url):
         for e in soup.find_all(attrs={"class": "minwidth"}):
             text = e.get_text()
             müll,text= text.split("series: [{ name: 'Damage', data:")
-            text,müll = text.split(",negativeColor:")
+            text,müll = text.split(", negativeColor:")
             text = text.replace("[","")
             text = text.replace("]", "")
             liste = text.split(",")
