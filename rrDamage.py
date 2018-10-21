@@ -167,6 +167,7 @@ async def KriegsAnalyse(url):
         html = await fetch(session, url)
         soup = await soup_d(html)
 
+        print ("in Kriegsanalyse")
         for e in soup.find_all(attrs={"class": "minwidth"}):
             print(e)
             text = e.get_text()
