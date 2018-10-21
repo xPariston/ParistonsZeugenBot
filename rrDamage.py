@@ -189,9 +189,9 @@ async def KriegsAnalyse(url):
 
             counter +=1
 
-        Dmg1h = Differenz[-60]-Differenz[-1]
-        Dmg30min= Differenz[-30]-Differenz[-1]
-        Dmg10min= Differenz[-10]-Differenz[-1]
+        Dmg1h = -Differenz[-61]-Differenz[-1]
+        Dmg30min= -Differenz[-31]-Differenz[-1]
+        Dmg10min= -Differenz[-11]-Differenz[-1]
         print("1h: ",MakeNumber2PrettyString(Dmg1h))
         print("Halbe Stunde: ", MakeNumber2PrettyString(Dmg30min))
         print("10 min: ", MakeNumber2PrettyString(Dmg10min))
