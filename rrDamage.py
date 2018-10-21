@@ -179,6 +179,8 @@ async def KriegsAnalyse(url):
 
         GesamtDamage = []
         Differenz = []
+        ListeAtkDmg = []
+        ListeDeffDmg = []
 
         counter = 0
         for point in liste:
@@ -186,10 +188,16 @@ async def KriegsAnalyse(url):
                 GesamtDamage.append(int(point))
             if counter % 2 == 1:
                 Differenz.append(int(point))
+                listwert = int(counter / 2)
+                ListeAtkDmg.append((GesamtDamage[listwert]/2) - (Differenz[listwert]/2))
+                ListeDeffDmg.append((GesamtDamage[listwert] / 2) + (Differenz[listwert] / 2))
             counter +=1
 
         print("GesamtDamage: ",GesamtDamage)
         print("Differnz: ", Differenz)
+        print("Attacke: ", ListeAtkDmg)
+        print("Defense: ", ListeDeffDmg)
+
 
 
 
