@@ -814,7 +814,7 @@ async def AllDonations21d(context):
 
 async def AnalyseWar(context):
     msg = context.message.content.replace("!AnalyseWar","")
-    msg = msg.replace("#","")
+    msg = msg.replace("#war/details","graph/damage")
     msg = msg.strip()
     await rrDamage.KriegsAnalyse(msg)
 
