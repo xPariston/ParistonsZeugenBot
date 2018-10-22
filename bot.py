@@ -816,7 +816,8 @@ async def AnalyseWar(context):
     msg = context.message.content.replace("!AnalyseWar","")
     msg = msg.replace("#war/details","graph/damage")
     msg = msg.strip()
-    await rrDamage.KriegsAnalyse(msg)
+    dmg1h, dmg30min, dmg10min = await rrDamage.KriegsAnalyse(msg)
+    await client.say(dmg1h + "\n" + dmg30min + "\n" + dmg10min )
 
 
 
