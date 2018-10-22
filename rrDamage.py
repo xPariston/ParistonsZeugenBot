@@ -203,7 +203,6 @@ async def KriegsAnalyse(url):
         return Dmg1h,Dmg30min,Dmg10min
 
 
-
 def MakeNumber2PrettyString(number):
     number = str(number)
     length = len(number)
