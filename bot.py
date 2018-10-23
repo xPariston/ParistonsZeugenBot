@@ -1823,6 +1823,7 @@ async def NewParliamentReal(context):
             if Sitzverteilung[sitze]== 0:
                 VerschenkteProzente += ParteiStimmenProzente[sitze]
 
+        print("VerschenkteProzente: ", VerschenkteProzente)
         AnzahlParteien = 0
         for sitze in ParteiStimmenProzente:
             if Sitzverteilung[sitze] > 0:
