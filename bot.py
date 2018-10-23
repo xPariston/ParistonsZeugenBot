@@ -1840,20 +1840,20 @@ async def NewParliamentReal(context):
 
         await client.say(msg + msg1 + msg2 + "\n")
 
-        # Sitzchannel = discord.Object(id='497356738492629013')
+        Sitzchannel = discord.Object(id='497356738492629013')
         # Neuesitze=""
         # parlamentsparteien = []
         # alteSitze = []
         # server = context.message.server
         # memberlist = server.members
         # serverroles = server.roles
-        # async for n in client.logs_from(Sitzchannel, 100):
+        async for n in client.logs_from(Sitzchannel, 100):
         #     parteiold,sitzeold = n.content.split(":")
         #     parteiold = parteiold.strip()
         #     sitzeold = sitzeold.strip()
         #     parlamentsparteien.append(parteiold)
         #     alteSitze.append(int(sitzeold))
-        #     await client.delete_message(n)
+            await client.delete_message(n)
         #
         # parteirole = ""
         # targetrole = ""
