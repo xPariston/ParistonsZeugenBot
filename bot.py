@@ -466,6 +466,23 @@ async def getPartyName(context):
     return party
 
 
+async def getPartyNameNormal(context):
+    authorroles = context.message.author.roles
+    party = ""
+
+    for roles in authorroles:
+        if "Leiter" in roles.name:
+            party = roles.name.replace("Leiter -", "")
+            party = party.strip()
+        if "Sekretär" in roles.name:
+            party = roles.name.replace("Sekretär -", "")
+            party = party.strip()
+        if "Mitglied" in roles.name:
+            party = roles.name.replace("Sekretär -", "")
+            party = party.strip()
+    return party
+
+
 @client.command(name="DeleteParty",
                 description='Lösche eine Partei.',
                 brief='Lösche eine Partei.',
@@ -591,7 +608,7 @@ async def AddParty(context):
 
                 await client.send_message(client.get_channel('497356738492629013'),partei + ": 0")
                 await client.send_message(client.get_channel('498487327484543006'), partei + ": 0")
-                rMitglied = await client.create_role(context.message.server, name= partei, colour=discord.Colour(value= c1))
+                rMitglied = await client.create_role(context.message.server, name= "Mitglied " + partei, colour=discord.Colour(value= c1))
                 rSekretär = await client.create_role(context.message.server, name= nSekretär, colour=discord.Colour(value= c2))
                 rChef = await client.create_role(context.message.server, name=nChef , colour=discord.Colour(value= c3))
 
@@ -1389,9 +1406,9 @@ async def RessKauf(context):
         Ress = Ress.strip()
         autor = context.message.author
         try:
-            Party = await getPartyName(context)
+            Party = await getPartyNameNormal(context)
         except:
-            client.say("Du musst einer Partei angehören")
+            await client.say("Du musst einer Partei angehören")
             raise
 
         counterchannel = discord.Object(id='501309453358989322')
