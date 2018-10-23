@@ -1875,9 +1875,10 @@ async def NewParliamentReal(context):
                                 if targetrole in member.roles:
                                     AnzahlAbgeordnete +=1
                                     parteimember.append(member)
+                                    print("Parteimembername: ",member.name)
                         diff = Sitzverteilung[Partei]-AnzahlAbgeordnete
                         print("diff = ", diff)
-                        if diff < 0:
+                        if diff < 0 and diff != 0:
                             count = 0
                             while diff < 0:
                                 print("Lösche Abgeordnetenrolle von Partei: ", Partei)
