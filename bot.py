@@ -1860,9 +1860,9 @@ async def NewParliamentReal(context):
         counter=0
 
         for oldPartei in parlamentsparteien:
-            for Partei in ParteiStimmenProzente:
+            for Partei in Sitzverteilung:
                 if oldPartei == Partei:
-                    diff = alteSitze[counter]-ParteiStimmenProzente[Partei]
+                    diff = alteSitze[counter]-Sitzverteilung[Partei]
                     AnzahlAbgeordnete = 0
                     if diff > 0:
                         parteimember = []
@@ -1876,7 +1876,7 @@ async def NewParliamentReal(context):
                                 if targetrole in member.roles:
                                     AnzahlAbgeordnete +=1
                                     parteimember.append(member)
-                        diff = ParteiStimmenProzente[Partei]-AnzahlAbgeordnete
+                        diff = Sitzverteilung[Partei]-AnzahlAbgeordnete
                         print("diff = ", diff)
                         if diff < 0:
                             count = 0
@@ -1888,8 +1888,8 @@ async def NewParliamentReal(context):
 
 
 
-        for Sitze in ParteiStimmenProzente:
-            await client.send_message(Sitzchannel,Sitze + ": " + str(ParteiStimmenProzente[Sitze]))
+        for Sitze in Sitzverteilung:
+            await client.send_message(Sitzchannel,Sitze + ": " + str(Sitzverteilung[Sitze]))
 
         await client.say("Parlament wurde neu erstellt.")
 
