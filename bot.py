@@ -1866,7 +1866,7 @@ async def NewParliamentReal(context):
                     if diff > 0:
                         parteimember = []
                         for roles in serverroles:
-                            if Partei in roles.name:
+                            if Partei == roles.name:
                                 parteirole = roles
                             if "Abgeordneter" in roles.name:
                                 targetrole = roles
