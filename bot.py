@@ -1841,50 +1841,49 @@ async def NewParliamentReal(context):
         await client.say(msg + msg1 + msg2 + "\n")
 
         Sitzchannel = discord.Object(id='497356738492629013')
-        # Neuesitze=""
-        # parlamentsparteien = []
-        # alteSitze = []
-        # server = context.message.server
-        # memberlist = server.members
-        # serverroles = server.roles
+        Neuesitze=""
+        parlamentsparteien = []
+        alteSitze = []
+        server = context.message.server
+        memberlist = server.members
+        serverroles = server.roles
         async for n in client.logs_from(Sitzchannel, 100):
-        #     parteiold,sitzeold = n.content.split(":")
-        #     parteiold = parteiold.strip()
-        #     sitzeold = sitzeold.strip()
-        #     parlamentsparteien.append(parteiold)
-        #     alteSitze.append(int(sitzeold))
+            parteiold,sitzeold = n.content.split(":")
+            parteiold = parteiold.strip()
+            sitzeold = sitzeold.strip()
+            parlamentsparteien.append(parteiold)
+            alteSitze.append(int(sitzeold))
             await client.delete_message(n)
-        #
-        # parteirole = ""
-        # targetrole = ""
-        # counter=0
-        #
-        # for oldPartei in parlamentsparteien:
-        #     for Partei in Sitzverteilung:
-        #         if oldPartei == Partei:
-        #             diff = alteSitze[counter]-Sitzverteilung[Partei]
-        #             AnzahlAbgeordnete = 0
-        #             if diff > 0:
-        #                 parteimember = []
-        #                 for roles in serverroles:
-        #                     if Partei in roles.name:
-        #                         parteirole = roles
-        #                     if "Abgeordneter" in roles.name:
-        #                         targetrole = roles
-        #                 for member in memberlist:
-        #                     if parteirole in member.roles:
-        #                         if targetrole in member.roles:
-        #                             AnzahlAbgeordnete +=1
-        #                             parteimember.append(member)
-        #                 diff = Sitzverteilung[Partei]-AnzahlAbgeordnete
-        #                 print("diff = ", diff)
-        #                 if diff < 0:
-        #                     count = 0
-        #                     while diff < 0:
-        #                         print("Lösche Abgeordnetenrolle von Partei: ", Partei)
-        #                         await client.remove_roles(parteimember[count],targetrole)
-        #                         count += 1
-        #                         diff += 1
+        parteirole = ""
+        targetrole = ""
+        counter=0
+
+        for oldPartei in parlamentsparteien:
+            for Partei in Sitzverteilung:
+                if oldPartei == Partei:
+                    diff = alteSitze[counter]-Sitzverteilung[Partei]
+                    AnzahlAbgeordnete = 0
+                    if diff > 0:
+                        parteimember = []
+                        for roles in serverroles:
+                            if Partei in roles.name:
+                                parteirole = roles
+                            if "Abgeordneter" in roles.name:
+                                targetrole = roles
+                        for member in memberlist:
+                            if parteirole in member.roles:
+                                if targetrole in member.roles:
+                                    AnzahlAbgeordnete +=1
+                                    parteimember.append(member)
+                        diff = Sitzverteilung[Partei]-AnzahlAbgeordnete
+                        print("diff = ", diff)
+                        if diff < 0:
+                            count = 0
+                            while diff < 0:
+                                print("Lösche Abgeordnetenrolle von Partei: ", Partei)
+                                await client.remove_roles(parteimember[count],targetrole)
+                                count += 1
+                                diff += 1
 
 
         for Sitze in Sitzverteilung:
