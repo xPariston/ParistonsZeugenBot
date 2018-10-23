@@ -1834,6 +1834,7 @@ async def NewParliamentReal(context):
                                     AnzahlAbgeordnete +=1
                                     parteimember.append(member)
                         diff = ParteiStimmenProzente[Partei]-AnzahlAbgeordnete
+                        print("diff = ", diff)
                         if diff < 0:
                             count = 0
                             while diff < 0:
