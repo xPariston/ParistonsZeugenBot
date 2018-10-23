@@ -1887,7 +1887,6 @@ async def NewParliamentReal(context):
         #                         diff += 1
 
 
-
         for Sitze in Sitzverteilung:
             await client.send_message(Sitzchannel,Sitze + ": " + str(Sitzverteilung[Sitze]))
 
