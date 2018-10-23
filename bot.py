@@ -608,7 +608,7 @@ async def AddParty(context):
 
                 await client.send_message(client.get_channel('497356738492629013'),partei + ": 0")
                 await client.send_message(client.get_channel('498487327484543006'), partei + ": 0")
-                rMitglied = await client.create_role(context.message.server, name= "Mitglied " + partei, colour=discord.Colour(value= c1))
+                rMitglied = await client.create_role(context.message.server, name= partei, colour=discord.Colour(value= c1))
                 rSekretär = await client.create_role(context.message.server, name= nSekretär, colour=discord.Colour(value= c2))
                 rChef = await client.create_role(context.message.server, name=nChef , colour=discord.Colour(value= c3))
 
@@ -1405,24 +1405,31 @@ async def RessKauf(context):
         Ress = Ress.replace(".000g", "kg")
         Ress = Ress.strip()
         autor = context.message.author
-        try:
-            Party = await getPartyNameNormal(context)
-        except:
+        authorroles = autor.roles
+        autorpartei = ""
+
+        parteiliste = await getPartys()
+        for partei in parteiliste:
+            for role in authorroles:
+                if partei == role.name:
+                    autorpartei = partei
+
+        if autorpartei == "":
             await client.say("Du musst einer Partei angehören")
-            raise
+        else:
 
-        counterchannel = discord.Object(id='501309453358989322')
-        async for n in client.logs_from(counterchannel, 100):
-            if "Käufe" in n.content:
-                müll,anzahl = n.content.split(":")
-                anzahl = anzahl.strip()
-                anzahl = int(anzahl)
-                anzahl = anzahl + 1
-                new_output= "Anzahl Käufe: " + str(anzahl)
-                await client.edit_message(n,new_output)
+            counterchannel = discord.Object(id='501309453358989322')
+            async for n in client.logs_from(counterchannel, 100):
+                if "Käufe" in n.content:
+                    müll,anzahl = n.content.split(":")
+                    anzahl = anzahl.strip()
+                    anzahl = int(anzahl)
+                    anzahl = anzahl + 1
+                    new_output= "Anzahl Käufe: " + str(anzahl)
+                    await client.edit_message(n,new_output)
 
-        KaufChannel = discord.Object(id='501420199723925504')
-        await client.send_message(KaufChannel,"Kauf Nr.:" + str(anzahl) + " --- Gekaufte Ressourcen: " + Ress + " --- eingereicht von: " + autor.mention +" --- Partei: " + Party + " --- Check: 0")
+            KaufChannel = discord.Object(id='501420199723925504')
+            await client.send_message(KaufChannel,"Kauf Nr.:" + str(anzahl) + " --- Gekaufte Ressourcen: " + Ress + " --- eingereicht von: " + autor.mention +" --- Partei: " + autorpartei + " --- Check: 0")
 
     else:
         await client.say("Du musst einen betrag und die Einheit für den Betrag angebene. Gold: G, Geld: $, Öl: bbl, Erz: kg, Diamanten: pcs, Uran: g. Beispiel: !RessKauf 32.000 pcs")
