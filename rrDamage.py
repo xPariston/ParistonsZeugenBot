@@ -53,7 +53,7 @@ async def RefineDamage(url,partylist,session):
     partydictPerDmg={}
 
     for n1,Rang in enumerate(partys):
-        for n2,p in enumerate(partylist):
+        #for n2,p in enumerate(partylist):
             #if Rang == p:
                 dmg=damage[n1].replace('.','')
                 dmg=int(dmg)
