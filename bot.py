@@ -744,7 +744,7 @@ async def StateWars21d(context):
         GesamtDamage, partydictRawDmg, partydictPerDmg = await rrDamage.MultiWar(Totalwarurllist, parteiliste)
 
         for x in partydictRawDmg:
-            print(x,": ",rrDamage.MakeNumber2PrettyString(partydictRawDmg[x]),"\n")
+            await client.say(x,": ",rrDamage.MakeNumber2PrettyString(partydictRawDmg[x]),"\n")
         Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen(%d) während der letzten %d Tage: "%(TotalWars ,days) + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
         Msg2 = "Roher Schaden der Parteien:\n"
         Msg3 = "\nProzentualer Schaden der Parteien:\n"
@@ -1860,6 +1860,7 @@ async def NewParliamentReal(context):
         parteirole = ""
         targetrole = ""
         counter=0
+        AbgeordnetenWatch = discord.Object(id='500952715917000715')
 
         for oldPartei in parlamentsparteien:
             for Partei in Sitzverteilung:
@@ -1886,9 +1887,10 @@ async def NewParliamentReal(context):
                             while diff < 0:
                                 print("Lösche Abgeordnetenrolle von Partei: ", Partei)
                                 await client.remove_roles(parteimember[count],targetrole)
+                                await client.send_message(AbgeordnetenWatch,parteimember[count].mention + "wurde in Folge der Wahl aus dem Parlamet entlassen")
                                 count += 1
                                 diff += 1
-
+        await RemoveVotes()
 
         for Sitze in Sitzverteilung:
             await client.send_message(Sitzchannel,Sitze + ": " + str(Sitzverteilung[Sitze]))
