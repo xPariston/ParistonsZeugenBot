@@ -75,10 +75,9 @@ async def RefineDamage(url,partylist,session):
 async def MultiWar(urllist,partylist):
     async with aiohttp.ClientSession(headers=myheader) as session:
 
-        urlcopy = urllist
+        urlcopy = urllist.copy()
 
         counter1=0
-        counter2=0
         for url in urllist:
             counter2=0
             for url2 in urllist:
