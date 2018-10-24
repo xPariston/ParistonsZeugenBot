@@ -74,6 +74,14 @@ async def RefineDamage(url,partylist,session):
 
 async def MultiWar(urllist,partylist):
     async with aiohttp.ClientSession(headers=myheader) as session:
+
+        for url in urllist:
+            for url2 in urllist:
+                if url == url2:
+                    print ("Remove ",url)
+                    urllist.remove(url)
+
+
         Gesamtdamage = 0
         partydictRawDmg = {}
         partydictPerDmg = {}
@@ -87,6 +95,7 @@ async def MultiWar(urllist,partylist):
                     partydictRawDmg[i] += PartRawDmg[i]
                 else:
                     partydictRawDmg[i] = PartRawDmg[i]
+            print(partydictRawDmg)
 
         for i in partydictRawDmg:
             Percent = partydictRawDmg[i]/Gesamtdamage * 100
