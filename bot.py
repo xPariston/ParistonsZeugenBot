@@ -1145,7 +1145,7 @@ async def VoteP(context):
         msg= "Neue Präsidentschaftswahlen! \n"
         counter = 1
         for kandidat in Kandidatenlist:
-            nummer = str(counter)
+            nummer = counter
             msg = msg + "Kandidat Nr.%d: " %nummer + kandidat.name +"\n Ja-Stimmen Nr.%d: \n\n" %nummer
             counter+=1
 
