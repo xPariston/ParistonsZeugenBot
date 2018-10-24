@@ -693,6 +693,9 @@ async def WarListAnalyse(context):
 
         GesamtDamage,partydictRawDmg,partydictPerDmg = await rrDamage.MultiWar(warliste,parteiliste)
 
+        for x in partydictRawDmg:
+            if partydictRawDmg[x] > 100000000:
+                await client.say(x + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[x]) + "\n")
         Msg1= "Gesamtschaden des Staatenbundes: " + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
         Msg2= "Roher Schaden der Parteien:\n"
         Msg3= "\nProzentualer Schaden der Parteien:\n"
