@@ -1183,7 +1183,6 @@ async def PJa(context):
         async for m in client.logs_from(präsichannel, 100):
             content = m.content
             content = content.replace("Ja-Stimmen Nr.%d:" %nummer,"Ja-Stimmen Nr.%d:" %nummer + autor.mention+ " " )
-            content = content.split("Ja-Stimmen: ")
             mentions = m.mentions
             if autor in mentions:
                 await client.say("Du hast bereits abgestimmt")
