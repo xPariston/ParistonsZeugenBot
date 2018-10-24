@@ -702,13 +702,13 @@ async def WarListAnalyse(context):
             Msg3 += i + ": " + str(round(partydictPerDmg[i],2)) + "%\n"
         await client.say(Msg1 + Msg2 + Msg3)
 
-@client.command(name="StateWars21d",
+@client.command(name="StateWars",
                 description='Analysiere Kriege die in den letzten 21 Tage beendet wurden in unseren Regionen.',
                 brief='Kriegsanalyse von allen Kriegen in unseren Regionen letzten 21 Tage',
                 pass_context=True)
 
 
-async def StateWars21d(context):
+async def StateWars(context):
     author = context.message.author
     authorroles = author.roles
     Berechtigung = False
