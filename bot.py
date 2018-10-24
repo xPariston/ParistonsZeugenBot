@@ -743,6 +743,8 @@ async def StateWars21d(context):
 
         GesamtDamage, partydictRawDmg, partydictPerDmg = await rrDamage.MultiWar(Totalwarurllist, parteiliste)
 
+        for x in partydictRawDmg:
+            print(x,": ",rrDamage.MakeNumber2PrettyString(partydictRawDmg[x]),"\n")
         Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen(%d) während der letzten %d Tage: "%(TotalWars ,days) + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
         Msg2 = "Roher Schaden der Parteien:\n"
         Msg3 = "\nProzentualer Schaden der Parteien:\n"
