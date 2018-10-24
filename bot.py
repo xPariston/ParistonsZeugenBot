@@ -253,6 +253,48 @@ async def MakeAbgeordneten(context):
     else:
         await client.say("Bitte ernenne ein Abgeordneten mit '!MakeAbgeordneter @Member'")
 
+@client.command(name="MakeKandidat",
+                description='!MakeKandidat @Pariston. Nur Parteileiter könn dies.',
+                brief='!MakeKandidat @Pariston. Stelle ein Präsikandidaten auf. Nur Parteileiter könn dies.',
+                pass_context=True)
+
+async def MakeKandidat(context):
+    msg = context.message.content
+    mentions = context.message.mentions
+    server = context.message.server
+    serverroles = server.roles
+    targetrole = ""
+    targetrole2 =""
+
+    party = await getLPartyName(context)
+
+    if "@" in msg:
+        if party != "":
+            for role in serverroles:
+                if "Kandidat" == role.name:
+                    targetrole = role
+                if party == role.name:
+                    targetrole2 = role
+
+            oldKandidat=""
+            memberlist = client.get_all_members()
+            for member in memberlist:
+                if targetrole2 in member.roles:
+                    if targetrole in member.roles:
+                        await client.remove_roles(member,targetrole)
+
+            for member in mentions:
+                if targetrole2 in member.roles:
+                    await client.add_roles(member,targetrole)
+                    await client.say(member.name + " ist nun neuer Kandidat für die Präsidentschaft!")
+                    break
+                else:
+                    await client.say("User muss in deiner Partei sein um Kandidat zu werden.")
+        else:
+            await client.say("Du musst Parteileiter sein um ein Präsidentschaftskandidaten zu ernennen")
+    else:
+        await client.say("Bitte ernenne ein Kandidaten mit '!MakeKandidat @Member'")
+
 
 @client.command(name="LeaveParty",
                 description='Verlasse deine Partei',
@@ -265,8 +307,11 @@ async def LeaveParty(context):
     author = context.message.author
     targetrole = ""
     targetrole2 = ""
+    targetrole3 = ""
     Leiterbool = False
     Abgeordneterbool = False
+    Kandidatbool = False
+
 
     for partei in parteiliste:
         for role in authorroles:
@@ -277,16 +322,30 @@ async def LeaveParty(context):
             if "Abgeordneter" == role.name:
                 Abgeordneterbool = True
                 targetrole2 = role
+            if "Kandidat" == role.name:
+                Kandidatbool = True
     if Leiterbool == False:
         if targetrole != "":
-            if Abgeordneterbool == False:
-                await client.remove_roles(author,targetrole)
-                await client.say ("Du hast die Partei verlassen.")
+            if Kandidatbool == False:
+                if Abgeordneterbool == False:
+                    await client.remove_roles(author,targetrole)
+                    await client.say ("Du hast die Partei verlassen.")
+                else:
+                    await client.remove_roles(author,targetrole2)
+                    await client.remove_roles(author, targetrole)
+                    await client.say("Du hast die Partei verlassen und deinen Parlamentsitz geräumt.")
+                    await RemoveVotes()
             else:
-                await client.remove_roles(author,targetrole2)
-                await client.remove_roles(author, targetrole)
-                await client.say("Du hast die Partei verlassen und deinen Parlamentsitz geräumt.")
-                await RemoveVotes()
+                if Abgeordneterbool == False:
+                    await client.remove_roles(author,targetrole)
+                    await client.remove_roles(author,targetrole3)
+                    await client.say ("Du hast die Partei verlassen und bist kein Kandidat mehr.")
+                else:
+                    await client.remove_roles(author,targetrole2)
+                    await client.remove_roles(author, targetrole)
+                    await client.remove_roles(author,targetrole3)
+                    await client.say("Du hast die Partei verlassen, deinen Parlamentsitz geräumt und deine Kandidatur aufgegeben. Wow, da muss es echt gekracht haben damit es soweit kommt. Kopf hoch, Spiel geht weiter! Ich wünsch dir viel Glück!")
+                    await RemoveVotes()
         else:
             await client.say ("Du bist in keiner teilnehmenden Partei.")
     else:
@@ -307,7 +366,7 @@ async def KickMember(context):
     targetrole2 = ""
     targetrole3 = ""
     targetrole4 = ""
-
+    targetrole5 = ""
     party = await getPartyName(context)
 
     if "@" in msg:
@@ -320,7 +379,10 @@ async def KickMember(context):
                 if "Sekretär -" + party == role.name:
                     targetrole3 = role
                 if "Abgeordneter" == role.name:
-                    targetrole4 = role.name
+                    targetrole4 = role
+                if "Kandidat" == role.name:
+                    targetrole5 = role
+
             for member in mentions:
                 if targetrole2 in authorroles:
                     await client.say("Ein Leader kann sich nicht aus der eigenen Partei kicken. Bitte das Admin Team die Partei zu löschen oder wechsel den Parteileiter mit !ChangeLeader")
@@ -328,10 +390,12 @@ async def KickMember(context):
                     await client.remove_roles(member,targetrole3)
                     await client.remove_roles(member, targetrole)
                     await client.remove_roles(member, targetrole4)
+                    await client.remove_roles(member, targetrole5)
                     await client.say(member.name + " wurde aus der Partei gegickt")
                 else:
                     await client.remove_roles(member, targetrole)
                     await client.remove_roles(member, targetrole4)
+                    await client.remove_roles(member, targetrole5)
                     await client.say(member.name + " wurde aus der Partei gegickt")
         else:
             await client.say("Du musst Parteileiter oder Sekretär sein um ein Mitglied zu kicken")
@@ -693,9 +757,9 @@ async def WarListAnalyse(context):
 
         GesamtDamage,partydictRawDmg,partydictPerDmg = await rrDamage.MultiWar(warliste,parteiliste)
 
-        for x in partydictRawDmg:
-            if partydictRawDmg[x] > 100000000:
-                await client.say(x + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[x]) + "\n")
+        #for x in partydictRawDmg:
+        #    if partydictRawDmg[x] > 100000000:
+        #        await client.say(x + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[x]) + "\n")
         Msg1= "Gesamtschaden des Staatenbundes: " + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
         Msg2= "Roher Schaden der Parteien:\n"
         Msg3= "\nProzentualer Schaden der Parteien:\n"
@@ -746,17 +810,17 @@ async def StateWars(context):
 
         GesamtDamage, partydictRawDmg, partydictPerDmg = await rrDamage.MultiWar(Totalwarurllist, parteiliste)
 
-        for x in partydictRawDmg:
-            if partydictRawDmg[x] > 100000000:
-                await client.say(x + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[x]) + "\n")
-        # Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen(%d) während der letzten %d Tage: "%(TotalWars ,days) + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
-        # Msg2 = "Roher Schaden der Parteien:\n"
-        # Msg3 = "\nProzentualer Schaden der Parteien:\n"
-        # for j in partydictRawDmg:
-        #     Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[j]) + '\n'
-        # for i in partydictPerDmg:
-        #     Msg3 += i + ": " + str(round(partydictPerDmg[i], 2)) + "%\n"
-        # await client.say(Msg1 + Msg2 + Msg3)
+        #for x in partydictRawDmg:
+        #    if partydictRawDmg[x] > 100000000:
+        #        await client.say(x + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[x]) + "\n")
+        Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen(%d) während der letzten %d Tage: "%(TotalWars ,days) + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
+        Msg2 = "Roher Schaden der Parteien:\n"
+        Msg3 = "\nProzentualer Schaden der Parteien:\n"
+        for j in partydictRawDmg:
+            Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[j]) + '\n'
+        for i in partydictPerDmg:
+            Msg3 += i + ": " + str(round(partydictPerDmg[i], 2)) + "%\n"
+        await client.say(Msg1 + Msg2 + Msg3)
 
 @client.command(name="AllDonations21d",
                 description='Analysiere alle Spenden in unseren Regionen in den letzten 21 Tagen.',
@@ -1059,6 +1123,8 @@ async def VoteP(context):
     for role in authorroles:
         if "BundBot" in role.name:
             Berechtigung = True
+        if "AdminTeam" in role.name:
+            Berechtigung = True
 
     if Berechtigung == False:
         await client.say("Nur BundBot kann diesen Befehl ausführen")
@@ -1116,20 +1182,15 @@ async def PJa(context):
     else:
         async for m in client.logs_from(präsichannel, 100):
             content = m.content
-            content = content.replace("Ja-Stimmen Nr.%d:" %nummer,"Ja-Stimmen Nr.%d:" %nummer + autor.mention )
+            content = content.replace("Ja-Stimmen Nr.%d:" %nummer,"Ja-Stimmen Nr.%d:" %nummer + autor.mention+ " " )
             content = content.split("Ja-Stimmen: ")
-            votenummer = content[0].strip()
-            if votenummer == nummer:
-                mentions = m.mentions
-                if autor in mentions:
-                    await client.say("Du hast bereits abgestimmt")
-                else:
-                    output = m.content
-                    output1, output2 = output.split("Ja-Stimmen: ")
-                    newoutput = output1 + einsatz + output2
-                    await client.edit_message(m,newoutput)
-                    await client.say("Abstimmung erfolgreich durchgeführt")
-                    break
+            mentions = m.mentions
+            if autor in mentions:
+                await client.say("Du hast bereits abgestimmt")
+            else:
+                await client.edit_message(m,content)
+                await client.say("Abstimmung erfolgreich durchgeführt")
+                break
 
 
 @client.command(name='Ja',
@@ -1354,6 +1415,10 @@ async def vote_background_task():
                     await client.delete_message(m)
             except:
                 raise
+        präsichannel = discord.Object(id='504584939245797402')
+        async for m in client.logs_from(präsichannel, 100):
+            content = m.content
+
 
 
         await asyncio.sleep(120) # task runs every 60 seconds
@@ -1987,6 +2052,7 @@ async def NewParliamentReal(context):
             await client.send_message(Sitzchannel,Sitze + ": " + str(Sitzverteilung[Sitze]))
 
         await client.say("Parlament wurde neu erstellt.")
+        await client.say("!VoteP")
 
 @client.command(name='NewParliamentDemo',
                 description='Simuliere neues Parlament',
