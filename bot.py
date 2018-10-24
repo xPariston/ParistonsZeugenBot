@@ -744,7 +744,8 @@ async def StateWars21d(context):
         GesamtDamage, partydictRawDmg, partydictPerDmg = await rrDamage.MultiWar(Totalwarurllist, parteiliste)
 
         for x in partydictRawDmg:
-            await client.say(x + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[x]) + "\n")
+            if partydictRawDmg[x] > 1000000000 or partydictRawDmg[x]< -1000000000:
+                await client.say(x + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[x]) + "\n")
         Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen(%d) während der letzten %d Tage: "%(TotalWars ,days) + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
         Msg2 = "Roher Schaden der Parteien:\n"
         Msg3 = "\nProzentualer Schaden der Parteien:\n"
@@ -1040,6 +1041,93 @@ async def Vote80(context):
         newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
         #await client.add_reaction(newmsg_id,emoji='👍')
         #await client.add_reaction(newmsg_id,emoji='👎')
+
+@client.command(name='VoteP',
+                description="PräsiWahl",
+                brief="PräsiWahl",
+                pass_context=True)
+
+async def VoteP(context):
+    author = context.message.author
+    authorroles = author.roles
+    Berechtigung = False
+    nummer=""
+
+    for role in authorroles:
+        if "BundBot" in role.name:
+            Berechtigung = True
+
+    if Berechtigung == False:
+        await client.say("Nur BundBot kann diesen Befehl ausführen")
+    else:
+        #Alle Leiter und Kandidaten holen
+        server = context.message.server
+        serverroles = server.roles
+        servermember = server.members
+        Kandidatenlist = []
+        for member in server.members:
+            memberroles = member.roles
+            for role in memberroles:
+                if "Leiter" in role.name:
+                    Kandidatenlist.append(member)
+                if "Kandidat" in role.name:
+                    Kandidatenlist.append(member)
+
+        msg= "Neue Präsidentschaftswahlen! \n"
+        counter = 1
+        for kandidat in Kandidatenlist:
+            nummer = str(counter)
+            msg = msg + "Kandidat Nr.%d: " %nummer + kandidat.name +"\n Ja-Stimmen Nr.%d: \n\n" %nummer
+            counter+=1
+
+        time= context.message.timestamp + datetime.timedelta(hours=26)
+        time= time.strftime("%d.%m.%Y %H:%M:%S")
+        msg= msg.replace("!VoteP ","")
+        msg= msg + "Die Wahl geht bis " + time
+        newmsg_id = await client.send_message(client.get_channel('504584939245797402'), msg)
+
+
+@client.command(name='Ja',
+                description='Stimme für einen Vorschlag mit Ja',
+                brief='Stimme als Abgeordneter für einen Präsidenten mit PJa und dr Kandidatennummer. Bsp: !PJa 12',
+                pass_context=True)
+
+async def PJa(context):
+
+    Berechtigung = False
+    msg = context.message.content
+    msg = msg.replace ("!PJa","")
+    autor = context.message.author
+    authorroles = autor.roles
+    nummer = int(msg.strip())
+    einsatz = "Ja-Stimmen: " + autor.mention
+
+    präsichannel = discord.Object(id='504584939245797402')
+
+    for role in authorroles:
+        if "Abgeordneter" in role.name:
+            Berechtigung = True
+
+    if Berechtigung == False:
+        await client.say("Nur Abgeordnete können diesen Befehl ausführen")
+    else:
+        async for m in client.logs_from(präsichannel, 100):
+            content = m.content
+            content = content.replace("Ja-Stimmen Nr.%d:" %nummer,"Ja-Stimmen Nr.%d:" %nummer + autor.mention )
+            content = content.split("Ja-Stimmen: ")
+            votenummer = content[0].strip()
+            if votenummer == nummer:
+                mentions = m.mentions
+                if autor in mentions:
+                    await client.say("Du hast bereits abgestimmt")
+                else:
+                    output = m.content
+                    output1, output2 = output.split("Ja-Stimmen: ")
+                    newoutput = output1 + einsatz + output2
+                    await client.edit_message(m,newoutput)
+                    await client.say("Abstimmung erfolgreich durchgeführt")
+                    break
+
 
 @client.command(name='Ja',
                 description='Stimme für einen Vorschlag mit Ja',
