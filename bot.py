@@ -1087,7 +1087,7 @@ async def VoteP(context):
         newmsg_id = await client.send_message(client.get_channel('504584939245797402'), msg)
 
 
-@client.command(name='Ja',
+@client.command(name='PJa',
                 description='Stimme für einen Vorschlag mit Ja',
                 brief='Stimme als Abgeordneter für einen Präsidenten mit PJa und dr Kandidatennummer. Bsp: !PJa 12',
                 pass_context=True)
