@@ -712,6 +712,7 @@ async def StateWars21d(context):
     author = context.message.author
     authorroles = author.roles
     Berechtigung = False
+    days= 6
 
     for role in authorroles:
         if "AdminTeam" in role.name:
@@ -734,7 +735,7 @@ async def StateWars21d(context):
         TotalWars=0
         Totalwarurllist=[]
         for id in stateids:
-            warlist= await rrDamage.getStateWars7d(id)
+            warlist= await rrDamage.getStateWars7d(id,days)
             for war in warlist:
                 warurl= warbase + war
                 Totalwarurllist.append(warurl)
@@ -742,7 +743,7 @@ async def StateWars21d(context):
 
         GesamtDamage, partydictRawDmg, partydictPerDmg = await rrDamage.MultiWar(Totalwarurllist, parteiliste)
 
-        Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen(%d) während der letzten 21 Tage: "%TotalWars + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
+        Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen(%d) während der letzten %d Tage: "%(TotalWars ,days) + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
         Msg2 = "Roher Schaden der Parteien:\n"
         Msg3 = "\nProzentualer Schaden der Parteien:\n"
         for j in partydictRawDmg:
