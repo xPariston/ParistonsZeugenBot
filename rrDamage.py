@@ -85,7 +85,7 @@ async def MultiWar(urllist,partylist):
                         print ("Remove ",url)
                         urllist.remove(url)
                 counter2 +=1
-            counter1 +=0
+            counter1 +=1
 
         print(urllist)
         Gesamtdamage = 0
