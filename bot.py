@@ -744,16 +744,16 @@ async def StateWars(context):
         GesamtDamage, partydictRawDmg, partydictPerDmg = await rrDamage.MultiWar(Totalwarurllist, parteiliste)
 
         for x in partydictRawDmg:
-            if partydictRawDmg[x] > 1000000000 or partydictRawDmg[x]< -1000000000:
+            if partydictRawDmg[x] > 100000000:
                 await client.say(x + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[x]) + "\n")
-        Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen(%d) während der letzten %d Tage: "%(TotalWars ,days) + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
-        Msg2 = "Roher Schaden der Parteien:\n"
-        Msg3 = "\nProzentualer Schaden der Parteien:\n"
-        for j in partydictRawDmg:
-            Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[j]) + '\n'
-        for i in partydictPerDmg:
-            Msg3 += i + ": " + str(round(partydictPerDmg[i], 2)) + "%\n"
-        await client.say(Msg1 + Msg2 + Msg3)
+        # Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen(%d) während der letzten %d Tage: "%(TotalWars ,days) + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
+        # Msg2 = "Roher Schaden der Parteien:\n"
+        # Msg3 = "\nProzentualer Schaden der Parteien:\n"
+        # for j in partydictRawDmg:
+        #     Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[j]) + '\n'
+        # for i in partydictPerDmg:
+        #     Msg3 += i + ": " + str(round(partydictPerDmg[i], 2)) + "%\n"
+        # await client.say(Msg1 + Msg2 + Msg3)
 
 @client.command(name="AllDonations21d",
                 description='Analysiere alle Spenden in unseren Regionen in den letzten 21 Tagen.',
