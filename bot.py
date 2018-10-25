@@ -1580,6 +1580,8 @@ async def vote_background_task():
         async for m in client.logs_from(präsichannel, 100):
             if m.timestamp + datetime.timedelta(hours=24) <= now:
 
+                print(m.content)
+
                 server = client.get_server("496286798624849921")
                 memberlist = client.get_all_members()
                 serverroles = server.roles
