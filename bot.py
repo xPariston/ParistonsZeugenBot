@@ -27,10 +27,123 @@ Antwort9='Niemand' #Vorbild
 Antwort10='Pirat' #Früheres Leben
 
 
+@client.command(name="MakeVize",
+                description='!MakeVize @Pariston. Nur Präsidenten könn dies.',
+                brief='!MakeVize @Pariston. Nur Präsidenten könn dies.',
+                pass_context=True)
+
+async def MakeVize(context):
+    msg = context.message.content
+    autor = context.message.author
+    mentions = context.message.mentions
+    server = context.message.server
+    serverroles = server.roles
+    targetrole = ""
+    targetrole2 =""
+
+    for role in serverroles:
+        if role.name == "Präsident":
+            targetrole = role
+        if role.name == "Vize-Präsident":
+            targetrole2 = role
+
+    if "@" in msg:
+        if targetrole in autor.roles:
+            oldVize=""
+            memberlist = client.get_all_members()
+            for member in memberlist:
+                if targetrole2 in member.roles:
+                    await client.remove_roles(member,targetrole2)
+
+            for member in mentions:
+                await client.add_roles(member,targetrole2)
+                await client.say(member.name + " ist nun neuer Vize-Präsident!")
+                break
+        else:
+            await client.say("Du musst Präsident sein um einen Vize-Präsident ernennen")
+    else:
+        await client.say("Bitte ernenne einen Vize-Präsidenten mit '!MakeVize @Member'")
+
+@client.command(name="MakeMinister",
+                description='!MakeMinister @Pariston. Nur Präsidenten und Vize-Präsidenten können dies.',
+                brief='!MakeMinister @Pariston. Nur Präsidenten und Vize-Präsidenten können dies.',
+                pass_context=True)
+
+async def MakeMinister(context):
+    msg = context.message.content
+    autor = context.message.author
+    mentions = context.message.mentions
+    server = context.message.server
+    serverroles = server.roles
+    targetrole = ""
+    targetrole2 = ""
+    targetrole3 = ""
+
+    for role in serverroles:
+        if role.name == "Präsident":
+            targetrole = role
+        if role.name == "Vize-Präsident":
+            targetrole2 = role
+        if role.name == "Minister":
+            targetrole3 = role
+
+    if "@" in msg:
+        if targetrole in autor.roles or targetrole2 in autor.roles:
+            for member in mentions:
+                await client.add_roles(member,targetrole3)
+                await client.say(member.name + " ist nun neuer Minister!")
+                break
+        else:
+            await client.say("Du musst Präsident oder Vize-Präsident sein um einen Minister zu ernennen")
+    else:
+        await client.say("Bitte ernenne einen Minister mit '!MakeMinister @Member'")
+
+
+
+
+@client.command(name="RemoveMinister",
+                description='!RemoveMinister @Pariston. Nur Präsidenten und Vize-Präsidenten können dies.',
+                brief='!RemoveMinister @Pariston. Nur Präsidenten und Vize-Präsidenten können dies.',
+                pass_context=True)
+
+async def RemoveMinister(context):
+    msg = context.message.content
+    autor = context.message.author
+    mentions = context.message.mentions
+    server = context.message.server
+    serverroles = server.roles
+    targetrole = ""
+    targetrole2 = ""
+    targetrole3 = ""
+
+    for role in serverroles:
+        if role.name == "Präsident":
+            targetrole = role
+        if role.name == "Vize-Präsident":
+            targetrole2 = role
+        if role.name == "Minister":
+            targetrole3 = role
+
+    if "@" in msg:
+        if targetrole in autor.roles or targetrole2 in autor.roles:
+            for member in mentions:
+                if targetrole3 in member.roles:
+                    await client.remove_roles(member,targetrole3)
+                    await client.say(member.name + " ist nun nicht mehr Minister!")
+                    break
+                else:
+                    await client.say("Der Spieler ist kein Minsiter")
+        else:
+            await client.say("Du musst Präsident oder Vize-Präsident sein um einen Minister zu entfernen")
+    else:
+        await client.say("Bitte entferne einen Minister mit '!RemoveMinister @Member'")
+
+
 @client.command(name="EditPartyName",
                 description='Ändere den Namen einer Partei. Schreibe dazu !EditPartyName AlterParteiname,NeuerParteiname.',
                 brief='!EditPartyName AlterParteiname,NeuerParteiname.',
                 pass_context=True)
+
 
 async def EditPartyName(context):
     author = context.message.author
@@ -1031,6 +1144,45 @@ async def Vote(context):
         #await client.add_reaction(newmsg_id,emoji='👍')
         #await client.add_reaction(newmsg_id,emoji='👎')
 
+@client.command(name='VoteMisstrauen',
+                description='Stelle ein Misstrauensvotum gegen den amtierenden Präsidenten',
+                brief='Stelle ein Misstrauensvotum gegen den amtierenden Präsidenten',
+                pass_context=True)
+
+async def VoteMisstrauen(context):
+    author = context.message.author
+    authorroles = author.roles
+    Berechtigung = False
+    nummer=""
+
+    for role in authorroles:
+        if "Abgeordneter" in role.name:
+            Berechtigung = True
+
+    if Berechtigung == False:
+        await client.say("Nur Abgeordnete können diesen Befehl ausführen")
+    else:
+
+        nrchannel = discord.Object(id='501309453358989322')
+        async for m in client.logs_from(nrchannel,100):
+            content = m.content
+            if "Anzahl Gesetze" in content:
+                content = content.replace("Anzahl Gesetze:","")
+                nummer = int(content.strip())
+                nummer = nummer + 1
+                nummer = str(nummer)
+                await client.edit_message(m, "Anzahl Gesetze: " + nummer)
+
+        msg= context.message.content
+        time= context.message.timestamp + datetime.timedelta(hours=26)
+        time= time.strftime("%d.%m.%Y %H:%M:%S")
+        msg= "Misstrauensvotum gegen den amtierenden Präsidenten. Stimme mit Ja wenn der Präsident abgesetzt werden soll. Bei Erfolg wird eine Neuwahl eingeleitet. Während dieser Zeit bleibt der Präsident im Amt."
+        autor= context.message.author.name
+        output= "Gesetzesvorschlag Misstrauensvotum Nr." + nummer +" von " + autor + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
+        newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
+        #await client.add_reaction(newmsg_id,emoji='👍')
+        #await client.add_reaction(newmsg_id,emoji='👎')
+
 @client.command(name='Vote66',
                 description='Stelle etwas zur Wahl was mit mehr als 66% bestätigt werden muss',
                 brief='Stelle etwas zur Wahl was mit mehr als 66% bestätigt werden muss',
@@ -1383,13 +1535,21 @@ async def vote_background_task():
             try:
                 if m.timestamp + datetime.timedelta(hours=24) <= now :
                     content= m.content
+                    getMisstrauen = content.split("Nr.")
+                    getMisstrauen = getMisstrauen[0]
+                    misstrauen = False
+                    if "Misstrauensvotum" in getMisstrauen:
+                        misstrauen = True
                     Gesetz,Abstimmung = content.split("Ja-Stimmen:")
                     JaStimmen,NeinStimmen = Abstimmung.split ("Nein-Stimmen:")
                     JaCounter = JaStimmen.count("@")
                     NeinCounter = NeinStimmen.count("@")
                     Ausgang = ""
                     if JaCounter > NeinCounter:
-                         Ausgang= "Vorschlag angenommen mit %d zu %d Stimmen!" % (JaCounter,NeinCounter)
+                        Ausgang= "Vorschlag angenommen mit %d zu %d Stimmen!" % (JaCounter,NeinCounter)
+                        if misstrauen == True:
+
+                            await client.send_message(client.get_channel('496295550895783937'), "!PVote")
                     else:
                          Ausgang= "Vorschlag abgelehnt mit %d zu %d Stimmen" % (JaCounter,NeinCounter)
 
@@ -1414,9 +1574,112 @@ async def vote_background_task():
                     await client.delete_message(m)
             except:
                 raise
+
+
         präsichannel = discord.Object(id='504584939245797402')
         async for m in client.logs_from(präsichannel, 100):
-            content = m.content
+            if m.timestamp + datetime.timedelta(hours=24) <= now:
+
+                server = m.server
+                memberlist = server.members
+                serverroles = server.roles
+
+                targetrole = ""
+                targetrole2=""
+                targetrole3=""
+
+                for role in serverroles:
+                    if role.name == "Präsident":
+                        targetrole = role
+                    if role.name == "Vize-Präsident":
+                        targetrole2 = role
+                    if role.name == "Minister":
+                        targetrole3 = role
+
+                namen = []
+                stimmen= []
+
+                msg = m.content.split("Kandidat Nr.")
+                count = 0
+                for i in msg:
+                    if count != 0:
+                        name = i.split(" ")
+                        name = name[1]
+                        name = name.strip()
+                        namen.append(name)
+
+                    count += 1
+
+                content = m.content
+                content = content.split("Ja-Stimmen Nr.")
+                counter= 0
+                for s in content:
+                    if counter != 0:
+                        votes = s.count("@")
+                        stimmen.append(votes)
+                        counter += 1
+
+                merge ={}
+
+
+                for count, n in enumerate(namen):
+                    merge[n]=stimmen[count]
+
+
+                Gewinner=[]
+                max = 0
+                for e in merge:
+                    if merge[e] == max:
+                        Gewinner.append(e)
+                    elif merge[e]>max:
+                        max = stimmen[e]
+                        Gewinner.clear()
+                        Gewinner.append(e)
+
+                ergebnischannel = discord.Object(id='496734924854919178')
+
+
+                if len(Gewinner)>1:
+                    winner = random.choice(Gewinner)
+                    for member in memberlist:
+                        if targetrole in member.roles:
+                            await client.remove_roles(member, targetrole)
+                        if targetrole2 in member.roles:
+                            await client.remove_roles(member, targetrole2)
+                        if targetrole3 in member.roles:
+                            await client.remove_roles(member, targetrole3)
+                        if member.name == winner:
+                            await client.add_roles(member, targetrole)
+
+                    output = "Ergebnisse der Präsidentschaftswahlen! \n"
+                    for n in merge:
+                        output = output + n + ": %d Stimmen \n" % merge[n]
+
+                    output = output + "\n Gleichstand! Es wurde durch Zufall der zwischen den Gewinnern entschieden. Gewinner der Wahl ist " + winner
+                    await client.send_message(ergebnischannel, output)
+                else:
+                    for member in memberlist:
+                        if targetrole in member.roles:
+                            await client.remove_roles(member, targetrole)
+                        if targetrole2 in member.roles:
+                            await client.remove_roles(member, targetrole2)
+                        if targetrole3 in member.roles:
+                            await client.remove_roles(member, targetrole3)
+                        if member.name == Gewinner[0]:
+                            await client.add_roles(member, targetrole)
+
+                    output = "Ergebnisse der Präsidentschaftswahlen! \n"
+                    for n in merge:
+                        output = output + n + ": %d Stimmen \n" %merge[n]
+
+                    output = output + "\nGewinner der Wahl ist " + Gewinner[0]
+
+                    await client.send_message(ergebnischannel,output)
+
+                await client.delete_message(m)
+
+
+
 
 
 
