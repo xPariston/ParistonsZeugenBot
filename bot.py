@@ -1582,7 +1582,6 @@ async def vote_background_task():
 
                 print(m.content)
 
-
                 server = client.get_server("496286798624849921")
                 memberlist = client.get_all_members()
                 serverroles = server.roles
@@ -1613,6 +1612,7 @@ async def vote_background_task():
                         namen.append(name)
 
                     count += 1
+                print(namen)
 
                 content = m.content
                 content = content.split("Ja-Stimmen Nr.")
@@ -1621,7 +1621,7 @@ async def vote_background_task():
                     if counter != 0:
                         votes = s.count("@")
                         stimmen.append(votes)
-                        counter += 1
+                    counter += 1
 
                 merge ={}
 
