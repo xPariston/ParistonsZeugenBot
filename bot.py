@@ -1584,6 +1584,7 @@ async def vote_background_task():
                 memberlist = client.get_all_members()
                 serverroles = server.roles
 
+
                 targetrole = ""
                 targetrole2=""
                 targetrole3=""
