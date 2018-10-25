@@ -1629,12 +1629,13 @@ async def vote_background_task():
                 for count, n in enumerate(namen):
                     print(count)
                     print(len(stimmen))
-                    merge[n]=stimmen[count]
+                    merge[n]=int(stimmen[count])
 
 
                 Gewinner=[]
                 max = 0
                 for e in merge:
+                    print(merge[e])
                     if merge[e] == max:
                         Gewinner.append(e)
                     elif merge[e]>max:
