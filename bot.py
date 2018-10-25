@@ -1639,7 +1639,7 @@ async def vote_background_task():
                     if merge[e] == max:
                         Gewinner.append(e)
                     elif merge[e]>max:
-                        max = stimmen[e]
+                        max = merge[e]
                         Gewinner.clear()
                         Gewinner.append(e)
 
