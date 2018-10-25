@@ -1635,10 +1635,10 @@ async def vote_background_task():
                 Gewinner=[]
                 max = 0
                 for e in merge:
-                    if merge[e] == max:
+                    if int(merge[e]) == max:
                         Gewinner.append(e)
-                    elif merge[e]>max:
-                        max = stimmen[e]
+                    elif int(merge[e])>max:
+                        max = int(stimmen[e])
                         Gewinner.clear()
                         Gewinner.append(e)
 
@@ -1659,7 +1659,7 @@ async def vote_background_task():
 
                     output = "Ergebnisse der Präsidentschaftswahlen! \n"
                     for n in merge:
-                        output = output + n + ": %d Stimmen \n" % merge[n]
+                        output = output + n + ": %d Stimmen \n" % int(merge[n])
 
                     output = output + "\n Gleichstand! Es wurde durch Zufall der zwischen den Gewinnern entschieden. Gewinner der Wahl ist " + winner
                     await client.send_message(ergebnischannel, output)
@@ -1676,7 +1676,7 @@ async def vote_background_task():
 
                     output = "Ergebnisse der Präsidentschaftswahlen! \n"
                     for n in merge:
-                        output = output + n + ": %d Stimmen \n" %merge[n]
+                        output = output + n + ": %d Stimmen \n" %int(merge[n])
 
                     output = output + "\nGewinner der Wahl ist " + Gewinner[0]
 
