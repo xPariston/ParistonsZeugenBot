@@ -1298,7 +1298,7 @@ async def VoteP(context):
         counter = 1
         for kandidat in Kandidatenlist:
             nummer = counter
-            msg = msg + "Kandidat Nr.%d: " %nummer + kandidat.name +"\n Ja-Stimmen Nr.%d: \n\n" %nummer
+            msg = msg + "Kandidat Nr.%d: >>" %nummer + kandidat.name + "<<" +"\n Ja-Stimmen Nr.%d: \n\n" %nummer
             counter+=1
 
         time= context.message.timestamp + datetime.timedelta(hours=26)
@@ -1606,9 +1606,9 @@ async def vote_background_task():
                 count = 0
                 for i in msg:
                     if count != 0:
-                        name = i.split(" ")
-                        name = name[1]
-                        name = name.strip()
+                        name = i.split(">>")
+                        name = name[1].split("<<")
+                        name = name[0]
                         namen.append(name)
 
                     count += 1
