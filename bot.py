@@ -1622,8 +1622,10 @@ async def vote_background_task():
 
                 merge ={}
 
-
+                print(stimmen)
                 for count, n in enumerate(namen):
+                    print(count)
+                    print(len(stimmen))
                     merge[n]=stimmen[count]
 
 
