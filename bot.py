@@ -1581,7 +1581,7 @@ async def vote_background_task():
             if m.timestamp + datetime.timedelta(hours=24) <= now:
 
                 server = m.server
-                memberlist = await client.get_all_members()
+                memberlist = client.get_all_members()
                 serverroles = server.roles
 
                 targetrole = ""
