@@ -1545,22 +1545,34 @@ async def vote_background_task():
                     getMisstrauen = content.split("Nr.")
                     getMisstrauen = getMisstrauen[0]
                     misstrauen = False
+                    Ausgang = ""
+                    JaCounter = Ja
+                    NeinCounter = Nein
                     if "Misstrauensvotum" in getMisstrauen:
                         misstrauen = True
-                    Gesetz,Abstimmung = content.split("Ja-Stimmen:")
-                    JaStimmen,NeinStimmen = Abstimmung.split ("Nein-Stimmen:")
-                    JaCounter = JaStimmen.count("@")
-                    NeinCounter = NeinStimmen.count("@")
-                    Ausgang = ""
-                    if JaCounter > NeinCounter:
+                    if "Art66" in content:
+                        if Ja /3 * 1 > Nein / 3 * 2:
+                            Ausgang = "Vorschlag angenommen mit %d zu %d Stimmen!" % (Ja, Nein)
+                        else:
+                            Ausgang = "Vorschlag abgelehnt mit %d zu %d Stimmen" % (Ja, Nein)
+
+                    elif misstrauen == True:
+                        if Ja / 3 * 1 > Nein / 3 * 2:
+                            Ausgang = "Vorschlag angenommen mit %d zu %d Stimmen!" % (Ja, Nein)
+                        else:
+                            Ausgang = "Vorschlag abgelehnt mit %d zu %d Stimmen" % (Ja, Nein)
+                        await client.send_message(client.get_channel('496295550895783937'), "!PVote")
+
+                    elif "Art80" in content:
+                        if Ja / 5 * 1 > Nein / 5 * 4:
+                            Ausgang = "Vorschlag frühzeitig angenommen mit %d zu %d Stimmen!" % (Ja, Nein)
+                        else:
+                            Ausgang = "Vorschlag frühzeitig abgelehnt mit %d zu %d Stimmen" % (Ja, Nein)
+
+                    elif JaCounter > NeinCounter:
                         Ausgang= "Vorschlag angenommen mit %d zu %d Stimmen!" % (JaCounter,NeinCounter)
-                        if misstrauen == True:
-
-                            await client.send_message(client.get_channel('496295550895783937'), "!PVote")
                     else:
-                         Ausgang= "Vorschlag abgelehnt mit %d zu %d Stimmen" % (JaCounter,NeinCounter)
-
-
+                        Ausgang= "Vorschlag abgelehnt mit %d zu %d Stimmen" % (JaCounter,NeinCounter)
 
                     # reaction= m.reactions
                     # ups=0
