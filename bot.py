@@ -696,6 +696,7 @@ async def DeleteParty(context):
             rolelist = server.roles
             targetrole = ""
             targetrole2 = ""
+            targetrole3 = ""
             DeleteList = []
             for role in rolelist:
                 if partei in role.name:
@@ -704,12 +705,18 @@ async def DeleteParty(context):
                     targetrole2 = role
                 if "Abgeordneter" == role.name:
                     targetrole = role
+                if "Kandidat" == role.name:
+                    targetrole3 = role
+
 
             memberlist = client.get_all_members()
             for member in memberlist:
                 if targetrole2 in member.roles:
                     if targetrole in member.roles:
                         await client.remove_roles(member,targetrole)
+                    if targetrole3 in member.roles:
+                        await client.remove_roles(member,targetrole3)
+
 
             for role2 in DeleteList:
                 await client.delete_role(server, role2)
