@@ -222,8 +222,26 @@ async def AddMember(context):
                 if party == role.name:
                     targetrole = role
             for member in mentions:
-                await client.add_roles(member,targetrole)
-                await client.say(member.name + " wurde der Partei hinzugefügt")
+                memberroles = member.roles
+                bool = False
+                for roles in memberroles:
+                    if role.name == "AdminTeam":
+                        pass
+                    elif role.name == "verifiziert":
+                        pass
+                    elif role.name == "Präsident":
+                        pass
+                    elif role.name == "Minister":
+                        pass
+                    elif role.name == "Vize-Präsident":
+                        pass
+                    else:
+                        bool = True
+                if bool == False:
+                    await client.add_roles(member,targetrole)
+                    await client.say(member.name + " wurde der Partei hinzugefügt")
+                else:
+                    await client.say(member.name + " befindet sich bereits in einer anderen Partei.")
         else:
             await client.say("Du musst Parteileiter oder Sekretär sein um ein Mitglied hinzuzufügen")
     else:
@@ -570,7 +588,7 @@ async def MakeSekretär(context):
                 sek_roles = member.roles
                 if targetrole2 in sek_roles:
                     await client.add_roles(member, targetrole)
-                    await client.say(member.name + "wurde als Sekretär hinzugefügt")
+                    await client.say(member.name + " wurde als Sekretär hinzugefügt")
                 else:
                     await client.say("User muss Teil der Partei sein.")
         else:
