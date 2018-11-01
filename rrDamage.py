@@ -287,7 +287,7 @@ async def RessToMoney(Ress,Marktdict):
     if "g" in TypeOfRess:
         Value = int(Marktdict["Uran"]) * amount
 
-    return Value
+    return int(Value)
 
 async def getMarktPreise():
     async with aiohttp.ClientSession(headers=myheader) as session:
