@@ -1801,7 +1801,7 @@ async def readMarktPreise():
         stoff = stoff.strip()
 
         preis = preis.strip()
-        if len(preis) < 3:
+        if len(preis) < 4 :
             pass
         else:
             preis = preis.replace(".", "")
