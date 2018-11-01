@@ -224,7 +224,7 @@ async def AddMember(context):
             for member in mentions:
                 memberroles = member.roles
                 bool = False
-                for roles in memberroles:
+                for role in memberroles:
                     if role.name == "AdminTeam":
                         pass
                     elif role.name == "verifiziert":
