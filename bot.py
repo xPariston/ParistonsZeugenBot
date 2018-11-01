@@ -1801,6 +1801,8 @@ async def readMarktPreise():
         stoff = stoff.strip()
         preis = preis.replace(".","")
         preis = preis.strip()
+        if preis.startswith("0") == True:
+            preis = "0." + preis [1:-1]
         marktdict[stoff]= preis
     return marktdict
 
