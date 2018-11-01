@@ -359,7 +359,7 @@ async def getRegionDonations(regionid, partylist,profildict, session,marktdict, 
     BaseUrl = "http://rivalregions.com/listed/donated_regions/"
     url = BaseUrl + regionid
     print(url)
-
+    print(marktdict)
     html = await fetch(session, url)
     soup = await soup_d(html)
 
@@ -422,6 +422,7 @@ async def getRegionDonations(regionid, partylist,profildict, session,marktdict, 
                 donation = donation.get_text()
                 if Partybool == True:
                     #print(Party)
+                    print(donation)
                     if Party in Partydonations:
                         #print(Partydonations[Party])
                         Partydonations[Party] = Partydonations[Party] + await RessToMoney(donation,marktdict)
