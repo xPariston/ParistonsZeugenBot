@@ -973,7 +973,7 @@ async def AllDonations21d(context):
     author = context.message.author
     authorroles = author.roles
     Berechtigung = False
-
+    days = 21
     for role in authorroles:
         if "AdminTeam" in role.name:
             Berechtigung = True
@@ -1000,7 +1000,7 @@ async def AllDonations21d(context):
         for state in stateids:
             await client.say("Analysiere Staat %d"%counter)
             print("Staat Nr.%d: " %counter + state)
-            tempdict = await rrDamage.getStateDonations(state,parteiliste,profildict,marktdict)
+            tempdict = await rrDamage.getStateDonations(state,parteiliste,profildict,marktdict,days)
             print("Staat beendet")
             counter +=1
             for p in tempdict:
