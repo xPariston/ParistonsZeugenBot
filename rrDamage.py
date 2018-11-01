@@ -275,9 +275,9 @@ async def RessToMoney(Ress,Marktdict):
     Value = 0
 
     if "$" in TypeOfRess:
-        Value = round(int(Marktdict["Staatsgeld"]) * amount)
+        Value = round(float(Marktdict["Staatsgeld"]) * amount)
     if "G" in TypeOfRess:
-        Value = int(Marktdict["Staatsgold"]) * amount
+        Value = float(Marktdict["Staatsgold"]) * amount
     if "kg" in TypeOfRess:
         Value = int(Marktdict["Öl"]) * amount
     if "bbl" in TypeOfRess:
