@@ -228,7 +228,7 @@ async def AddMember(context):
                     print(role.name)
                     if role.name == "@everyone":
                         pass
-                    if role.name == "AdminTeam":
+                    elif role.name == "AdminTeam":
                         pass
                     elif role.name == "verifiziert":
                         pass
