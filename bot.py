@@ -2714,6 +2714,7 @@ async def Bayern14D(context):
         counter = 1
         Gesamtspendenvolumen = 0
 
+
         for state in stateids:
             print("Staat Nr.%d: " % counter + state)
             tempdict = await rrDamage.getStateDonations(state, parteiliste, profildict,marktdict,days)
