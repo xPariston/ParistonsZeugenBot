@@ -1799,10 +1799,12 @@ async def readMarktPreise():
     async for n in client.logs_from(preischannel, 100):
         stoff, preis = n.content.split(":")
         stoff = stoff.strip()
-        preis = preis.replace(".","")
+
         preis = preis.strip()
         if preis.startswith("0") == True:
-            preis = "0." + preis [1:-1]
+            pass
+        else:
+            preis = preis.replace(".", "")
         marktdict[stoff]= preis
     return marktdict
 
