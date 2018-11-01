@@ -2575,11 +2575,11 @@ async def NewParliamentDemo(context):
         print(Msg + Msg1 + Msg2 + Msg3 + Msg4)
         await asyncio.shield(client.send_message(context.message.channel, Msg + Msg1 + Msg2 + Msg3 + Msg4 + "\n"))
 
-        msg= "\n\n---GESAMTERGEBNISS---\n\n"
-        msg1= "Addierte Prozente der Parteien: \n"
+        msg = "\n\n---GESAMTERGEBNISS---\n\n"
+        msg1 = "Addierte Prozente der Parteien: \n"
         for partei in ParteiStimmenProzente:
             try:
-                ParteiStimmenProzente[partei]+= Kriegssitze[partei]
+                ParteiStimmenProzente[partei] += Kriegssitze[partei]
             except:
                 pass
             try:
@@ -2587,17 +2587,36 @@ async def NewParliamentDemo(context):
             except:
                 pass
 
-            msg1= msg1 + partei + ": " + str(round(ParteiStimmenProzente[partei],2)) +"\n"
+            msg1 = msg1 + partei + ": " + str(round(ParteiStimmenProzente[partei], 2)) + "\n"
         msg1 = msg1 + "\n"
+
+        # Sitzverteilung
         Gesamtsitze = seats
-        msg2 = "Sitzverteilung im Parlament bei %d Sitzen\n" %Gesamtsitze
+        Sitzverteilung = {}
+        msg2 = "Sitzverteilung im Parlament bei %d Sitzen\n" % Gesamtsitze
         for sitze in ParteiStimmenProzente:
-            ParteiStimmenProzente[sitze] = round(Gesamtsitze / 100 * ParteiStimmenProzente[sitze])
-            msg2 = msg2 + "Sitze" + sitze + ": " + str(ParteiStimmenProzente[sitze]) + "\n"
+            Sitzverteilung[sitze] = round(Gesamtsitze / 100 * ParteiStimmenProzente[sitze])
 
+        VerschenkteProzente = 0.0
+        for sitze in ParteiStimmenProzente:
+            if Sitzverteilung[sitze] == 0:
+                VerschenkteProzente += ParteiStimmenProzente[sitze]
 
-        await client.say(msg + msg1 + msg2)
-        print(ParteiStimmenProzente)
+        print("VerschenkteProzente: ", VerschenkteProzente)
+        AnzahlParteien = 0
+        for sitze in ParteiStimmenProzente:
+            if Sitzverteilung[sitze] > 0:
+                AnzahlParteien += 1
+
+        for sitze in ParteiStimmenProzente:
+            if Sitzverteilung[sitze] > 0:
+                ParteiStimmenProzente[sitze] += VerschenkteProzente / AnzahlParteien
+
+        for sitze in ParteiStimmenProzente:
+            Sitzverteilung[sitze] = round(Gesamtsitze / 100 * ParteiStimmenProzente[sitze])
+            msg2 = msg2 + "Sitze" + sitze + ": " + str(Sitzverteilung[sitze]) + "\n"
+
+        await client.say(msg + msg1 + msg2 + "\n")
 
 
 
