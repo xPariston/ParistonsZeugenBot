@@ -2610,7 +2610,7 @@ async def NewParliamentDemo(context):
 
         print (PlatzArray)
         times = Gesamtsitze
-        for i in times:
+        for i in range(times):
             max = 0
             maxindex1 = 0
             maxindex2 = 0
