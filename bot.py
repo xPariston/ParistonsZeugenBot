@@ -2269,11 +2269,11 @@ async def NewParliamentReal(context):
         print(Msg + Msg1 + Msg2 + Msg3 + Msg4)
         await asyncio.shield(client.send_message(context.message.channel, Msg + Msg1 + Msg2 + Msg3 + Msg4 + "\n"))
 
-        msg= "\n\n---GESAMTERGEBNISS---\n\n"
-        msg1= "Addierte Prozente der Parteien: \n"
+        msg = "\n\n---GESAMTERGEBNISS---\n\n"
+        msg1 = "Addierte Prozente der Parteien: \n"
         for partei in ParteiStimmenProzente:
             try:
-                ParteiStimmenProzente[partei]+= Kriegssitze[partei]
+                ParteiStimmenProzente[partei] += Kriegssitze[partei]
             except:
                 pass
             try:
@@ -2281,35 +2281,71 @@ async def NewParliamentReal(context):
             except:
                 pass
 
-            msg1= msg1 + partei + ": " + str(round(ParteiStimmenProzente[partei],2)) +"\n"
+            msg1 = msg1 + partei + ": " + str(round(ParteiStimmenProzente[partei], 2)) + "% \n"
         msg1 = msg1 + "\n"
 
-        #Sitzverteilung
+        # Sitzverteilung
         Gesamtsitze = seats
         Sitzverteilung = {}
-        msg2 = "Sitzverteilung im Parlament bei %d Sitzen\n" %Gesamtsitze
-        for sitze in ParteiStimmenProzente:
-            Sitzverteilung[sitze] = round(Gesamtsitze / 100 * ParteiStimmenProzente[sitze])
+        AnzahlParteien = len(parteiliste)
+        SaintLoireDivisor = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5,
+                             17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5, 24.5, 25.5, 26.5, 27.5, 28.5, 29.5, 30.5]
+        LengthSLD = len(SaintLoireDivisor)
+        PlatzArray = np.zeros((LengthSLD, AnzahlParteien))
+        RangArray = np.zeros((LengthSLD, AnzahlParteien))
 
-        VerschenkteProzente = 0.0
-        for sitze in ParteiStimmenProzente:
-            if Sitzverteilung[sitze]== 0:
-                VerschenkteProzente += ParteiStimmenProzente[sitze]
+        for count, divisor in enumerate(SaintLoireDivisor):
+            for count2, Partei in enumerate(ParteiStimmenProzente):
+                PlatzArray[count, count2] = ParteiStimmenProzente[Partei] / divisor
 
-        print("VerschenkteProzente: ", VerschenkteProzente)
-        AnzahlParteien = 0
-        for sitze in ParteiStimmenProzente:
-            if Sitzverteilung[sitze] > 0:
-                AnzahlParteien += 1
+        print(PlatzArray)
+        times = Gesamtsitze
+        for i in range(times):
+            max = 0
+            maxindex1 = 0
+            maxindex2 = 0
+            for count, divisor in enumerate(SaintLoireDivisor):
+                for count2, Partei in enumerate(ParteiStimmenProzente):
+                    if PlatzArray[count, count2] > max:
+                        max = PlatzArray[count, count2]
+                        maxindex1 = count
+                        maxindex2 = count2
+            PlatzArray[maxindex1, maxindex2] = 0
+            RangArray[maxindex1, maxindex2] = i + 1
 
-        for sitze in ParteiStimmenProzente:
-            if Sitzverteilung[sitze] > 0:
-                ParteiStimmenProzente[sitze] += VerschenkteProzente / AnzahlParteien
+        print(RangArray)
 
-        for sitze in ParteiStimmenProzente:
-            Sitzverteilung[sitze] = round(Gesamtsitze / 100 * ParteiStimmenProzente[sitze])
-            msg2 = msg2 + "Sitze" + sitze + ": " + str(Sitzverteilung[sitze]) + "\n"
+        sitzeliste = np.zeros(AnzahlParteien)
+        for count, divisor in enumerate(SaintLoireDivisor):
+            for count2, Partei in enumerate(ParteiStimmenProzente):
+                if RangArray[count, count2] > 0:
+                    sitzeliste[count2] += 1
 
+        for j, partei in enumerate(parteiliste):
+            Sitzverteilung[partei] = int(sitzeliste[j])
+
+        msg2 = "Sitzverteilung im Parlament bei %d Sitzen\n" % Gesamtsitze
+
+        # for sitze in ParteiStimmenProzente:
+        #     Sitzverteilung[sitze] = round(Gesamtsitze / 100 * ParteiStimmenProzente[sitze])
+        #
+        # VerschenkteProzente = 0.0
+        # for sitze in ParteiStimmenProzente:
+        #     if Sitzverteilung[sitze] == 0:
+        #         VerschenkteProzente += ParteiStimmenProzente[sitze]
+
+        # print("VerschenkteProzente: ", VerschenkteProzente)
+        # AnzahlParteien = 0
+        # for sitze in ParteiStimmenProzente:
+        #     if Sitzverteilung[sitze] > 0:
+        #         AnzahlParteien += 1
+        #
+        # for sitze in ParteiStimmenProzente:
+        #     if Sitzverteilung[sitze] > 0:
+        #         ParteiStimmenProzente[sitze] += VerschenkteProzente / AnzahlParteien
+
+        for partei in Sitzverteilung:
+            msg2 = msg2 + "Sitze " + partei + ": " + str(Sitzverteilung[partei]) + "\n"
 
         await client.say(msg + msg1 + msg2 + "\n")
 
@@ -2655,7 +2691,7 @@ async def NewParliamentDemo(context):
         #         ParteiStimmenProzente[sitze] += VerschenkteProzente / AnzahlParteien
 
         for partei in Sitzverteilung:
-            msg2 = msg2 + "Sitze" + partei + ": " + str(Sitzverteilung[partei]) + "\n"
+            msg2 = msg2 + "Sitze " + partei + ": " + str(Sitzverteilung[partei]) + "\n"
 
         await client.say(msg + msg1 + msg2 + "\n")
 
