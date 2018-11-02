@@ -5,7 +5,7 @@ import asyncio
 import datetime
 import os
 import rrDamage
-import numpy
+import numpy as np
 
 BOT_PREFIX = ("!")
 
@@ -2601,8 +2601,8 @@ async def NewParliamentDemo(context):
         AnzahlParteien = len(parteiliste)
         SaintLoireDivisor = [0.5 , 1.5 , 2.5 , 3.5, 4.5 , 5.5, 6.5, 7.5, 8.5, 9.5 , 10.5, 11.5, 12.5, 13.5 ,14.5 ,15.5, 16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5, 24.5, 25.5, 26.5, 27.5, 28.5,29.5,30.5]
         LengthSLD = len(SaintLoireDivisor)
-        PlatzArray = numpy.zeros(LengthSLD, AnzahlParteien)
-        RangArray = numpy.zeros(LengthSLD, AnzahlParteien)
+        PlatzArray = np.zeros((LengthSLD, AnzahlParteien))
+        RangArray = np.zeros((LengthSLD, AnzahlParteien))
 
         for count, divisor in enumerate(SaintLoireDivisor):
             for count2,Partei in enumerate(ParteiStimmenProzente):
