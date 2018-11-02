@@ -2623,7 +2623,7 @@ async def NewParliamentDemo(context):
             PlatzArray[maxindex1,maxindex2] = 0
             RangArray [maxindex1,maxindex2] = i + 1
 
-            print(RangArray)
+        print(RangArray)
 
 
 
