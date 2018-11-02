@@ -2592,7 +2592,7 @@ async def NewParliamentDemo(context):
             except:
                 pass
 
-            msg1 = msg1 + partei + ": " + str(round(ParteiStimmenProzente[partei], 2)) + "\n"
+            msg1 = msg1 + partei + ": " + str(round(ParteiStimmenProzente[partei], 2)) + "% \n"
         msg1 = msg1 + "\n"
 
         # Sitzverteilung
@@ -2626,14 +2626,13 @@ async def NewParliamentDemo(context):
         print(RangArray)
 
         sitzeliste = np.zeros(AnzahlParteien)
-        for i in range(times):
-            for count, divisor in enumerate(SaintLoireDivisor):
-                for count2, Partei in enumerate(ParteiStimmenProzente):
-                    if RangArray[count, count2] > 0:
-                        sitzeliste[count2] += 1
+        for count, divisor in enumerate(SaintLoireDivisor):
+            for count2, Partei in enumerate(ParteiStimmenProzente):
+                if RangArray[count, count2] > 0:
+                    sitzeliste[count2] += 1
 
         for j,partei in enumerate(parteiliste):
-            Sitzverteilung[partei] = sitzeliste[j]
+            Sitzverteilung[partei] = int(sitzeliste[j])
 
         msg2 = "Sitzverteilung im Parlament bei %d Sitzen\n" % Gesamtsitze
 
