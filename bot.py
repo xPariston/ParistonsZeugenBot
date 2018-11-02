@@ -2606,7 +2606,7 @@ async def NewParliamentDemo(context):
 
         for count, divisor in enumerate(SaintLoireDivisor):
             for count2,Partei in enumerate(ParteiStimmenProzente):
-                PlatzArray[count,count2]= ParteiStimmenProzente[Partei] / Partei
+                PlatzArray[count,count2]= ParteiStimmenProzente[Partei] / divisor
 
         print (PlatzArray)
         times = Gesamtsitze
