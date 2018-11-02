@@ -422,7 +422,7 @@ async def getRegionDonations(regionid, partylist,profildict, session,marktdict, 
                 donation = donation.get_text()
                 if Partybool == True:
                     #print(Party)
-                    print(donation)
+                    #print(donation)
                     if Party in Partydonations:
                         #print(Partydonations[Party])
                         Partydonations[Party] = Partydonations[Party] + await RessToMoney(donation,marktdict)

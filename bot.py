@@ -5,6 +5,7 @@ import asyncio
 import datetime
 import os
 import rrDamage
+import numpy
 
 BOT_PREFIX = ("!")
 
@@ -2597,7 +2598,38 @@ async def NewParliamentDemo(context):
         # Sitzverteilung
         Gesamtsitze = seats
         Sitzverteilung = {}
+        AnzahlParteien = len(parteiliste)
+        SaintLoireDivisor = [0.5 , 1.5 , 2.5 , 3.5, 4.5 , 5.5, 6.5, 7.5, 8.5, 9.5 , 10.5, 11.5, 12.5, 13.5 ,14.5 ,15.5, 16.5, 17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5, 24.5, 25.5, 26.5, 27.5, 28.5,29.5,30.5]
+        LengthSLD = len(SaintLoireDivisor)
+        PlatzArray = numpy.zeros(LengthSLD, AnzahlParteien)
+        RangArray = numpy.zeros(LengthSLD, AnzahlParteien)
+
+        for count, divisor in enumerate(SaintLoireDivisor):
+            for count2,Partei in enumerate(ParteiStimmenProzente):
+                PlatzArray[count,count2]= ParteiStimmenProzente[Partei] / Partei
+
+        print (PlatzArray)
+        times = Gesamtsitze
+        for i in times:
+            max = 0
+            maxindex1 = 0
+            maxindex2 = 0
+            for count, divisor in enumerate(SaintLoireDivisor):
+                for count2, Partei in enumerate(ParteiStimmenProzente):
+                    if PlatzArray[count, count2] > max:
+                        max = PlatzArray[count,count2]
+                        maxindex1 = count
+                        maxindex2 = count2
+            PlatzArray[maxindex1,maxindex2] = 0
+            RangArray [maxindex1,maxindex2] = i + 1
+
+            print(RangArray)
+
+
+
+
         msg2 = "Sitzverteilung im Parlament bei %d Sitzen\n" % Gesamtsitze
+
         for sitze in ParteiStimmenProzente:
             Sitzverteilung[sitze] = round(Gesamtsitze / 100 * ParteiStimmenProzente[sitze])
 
