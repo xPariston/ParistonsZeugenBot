@@ -850,33 +850,37 @@ async def getPartys():
 
 
 
-@client.command(name="WarAnalyse",
-                description='Analysiere einen Krieg auf Teilnahme unserer Parteien. Poste dafür den Link des Krieges hinter dem Befehl.',
-                brief='Einzelkrieganalyse',
-                pass_context=True)
+# @client.command(name="WarAnalyse",
+#                 description='Analysiere einen Krieg auf Teilnahme unserer Parteien. Poste dafür den Link des Krieges hinter dem Befehl.',
+#                 brief='Einzelkrieganalyse',
+#                 pass_context=True)
 
 async def WarAnalyse(context):
+    msg = context.message.content.strip()
+    msg = msg.replace("WarAnalyse","")
+    if msg == "":
+        await client.say("Füge hinter dem Befehl einen Kriegslink ein, welcher kein mobiler ist.")
+    else:
+        parteiliste= await getPartys()
+        warurl = context.message.content
+        warurl = warurl.replace('!WarAnalyse','')
+        warurl = warurl.strip()
 
-    parteiliste= await getPartys()
-    warurl = context.message.content
-    warurl = warurl.replace('!WarAnalyse','')
-    warurl = warurl.strip()
+        GesamtDamage,partydictRawDmg,partydictPerDmg = rrDamage.RefineDamage(warurl,parteiliste)
 
-    GesamtDamage,partydictRawDmg,partydictPerDmg = rrDamage.RefineDamage(warurl,parteiliste)
+        Msg1= "Gesamtschaden des Staatenbundes: " + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
+        Msg2= "Roher Schaden der Parteien:\n"
+        Msg3= "\nProzentualer Schaden der Parteien:\n"
+        for j in partydictRawDmg:
+            Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[j])+ '\n'
+        for i in partydictPerDmg:
+            Msg3 += i + ": " + str(round(partydictPerDmg[i],2)) + "%\n"
+        await client.say(Msg1 + Msg2 + Msg3)
 
-    Msg1= "Gesamtschaden des Staatenbundes: " + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
-    Msg2= "Roher Schaden der Parteien:\n"
-    Msg3= "\nProzentualer Schaden der Parteien:\n"
-    for j in partydictRawDmg:
-        Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydictRawDmg[j])+ '\n'
-    for i in partydictPerDmg:
-        Msg3 += i + ": " + str(round(partydictPerDmg[i],2)) + "%\n"
-    await client.say(Msg1 + Msg2 + Msg3)
-
-@client.command(name="WarListAnalyse",
-                description='Analysiere Kriege aus Datenbank auf Teilnahme unserer Parteien.',
-                brief='Kriegsanalyse von allen Kriegen',
-                pass_context=True)
+# @client.command(name="WarListAnalyse",
+#                 description='Analysiere Kriege aus Datenbank auf Teilnahme unserer Parteien.',
+#                 brief='Kriegsanalyse von allen Kriegen',
+#                 pass_context=True)
 
 async def WarListAnalyse(context):
     author = context.message.author
@@ -911,17 +915,17 @@ async def WarListAnalyse(context):
             Msg3 += i + ": " + str(round(partydictPerDmg[i],2)) + "%\n"
         await client.say(Msg1 + Msg2 + Msg3)
 
-@client.command(name="StateWars",
-                description='Analysiere Kriege die in den letzten 21 Tage beendet wurden in unseren Regionen.',
-                brief='Kriegsanalyse von allen Kriegen in unseren Regionen letzten 21 Tage',
-                pass_context=True)
+# @client.command(name="StateWars",
+#                 description='Analysiere Kriege die in den letzten 21 Tage beendet wurden in unseren Regionen.',
+#                 brief='Kriegsanalyse von allen Kriegen in unseren Regionen letzten 21 Tage',
+#                 pass_context=True)
 
 
 async def StateWars(context):
     author = context.message.author
     authorroles = author.roles
     Berechtigung = False
-    days= 6
+    days= 21
 
     for role in authorroles:
         if "AdminTeam" in role.name:
@@ -964,10 +968,10 @@ async def StateWars(context):
             Msg3 += i + ": " + str(round(partydictPerDmg[i], 2)) + "%\n"
         await client.say(Msg1 + Msg2 + Msg3)
 
-@client.command(name="AllDonations21d",
-                description='Analysiere alle Spenden in unseren Regionen in den letzten 21 Tagen.',
-                brief='Spendenanalyse aller Regionen in den letzten 21 Tagen',
-                pass_context=True)
+# @client.command(name="AllDonations21d",
+#                 description='Analysiere alle Spenden in unseren Regionen in den letzten 21 Tagen.',
+#                 brief='Spendenanalyse aller Regionen in den letzten 21 Tagen',
+#                 pass_context=True)
 
 
 async def AllDonations21d(context):
@@ -1043,18 +1047,22 @@ async def AllDonations21d(context):
                 pass_context=True)
 
 async def AnalyseWar(context):
+
     msg = context.message.content.replace("!AnalyseWar","")
-    msg = msg.replace("#war/details","graph/damage")
-    msg = msg.strip()
-    dmg1h, dmg30min, dmg10min = await rrDamage.KriegsAnalyse(msg)
-    await client.say(dmg1h + "\n" + dmg30min + "\n" + dmg10min )
+    if msg == "":
+        await client.say("Setze hinter den Befehl einen Kriegslink (nicht mobil).")
+    else:
+        msg = msg.replace("#war/details","graph/damage")
+        msg = msg.strip()
+        dmg1h, dmg30min, dmg10min = await rrDamage.KriegsAnalyse(msg)
+        await client.say(dmg1h + "\n" + dmg30min + "\n" + dmg10min )
 
 
 
-@client.command(name="StateAndListWars",
-                description='Analysiere Kriege die in den letzten 21 Tage beendet wurden in unseren Regionen und alle Links aus der Datenbank.',
-                brief='Kriegsanalyse von allen Kriegen in unseren Regionen letzten 21 Tage und aus der Datenbank',
-                pass_context=True)
+# @client.command(name="StateAndListWars",
+#                 description='Analysiere Kriege die in den letzten 21 Tage beendet wurden in unseren Regionen und alle Links aus der Datenbank.',
+#                 brief='Kriegsanalyse von allen Kriegen in unseren Regionen letzten 21 Tage und aus der Datenbank',
+#                 pass_context=True)
 
 
 async def StateAndListWars(context):
