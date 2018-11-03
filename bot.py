@@ -2448,7 +2448,7 @@ async def NewParliamentDemo(context):
             msg3= msg3 + partei + ": " + str(ParteiStimmenProzente[partei]) + "% \n"
         msg3 = msg3 + "\n"
         for p in ParteiStimmenProzente:
-            ParteiStimmenProzente[p] = WahlProzent/100 * ParteiStimmenProzente[p]
+            ParteiStimmenProzente[p] = round(WahlProzent/100 * ParteiStimmenProzente[p],2)
             msg4 = msg4 + p + ": " + str(ParteiStimmenProzente[p]) + "% \n"
         msg4 = msg4 + "\n"
 
