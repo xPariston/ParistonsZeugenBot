@@ -1778,10 +1778,10 @@ async def vote_background_task():
 #     await client.send_message(counterchannel, "Diamanten: 850000")
 #     await client.send_message(counterchannel, "Uran: 1400")
 
-@client.command(name= "UpdateMarkt",
-                description = 'Reset vom Counter Channel',
-                brief = 'Reset vom Counter Channel',
-                pass_context = True)
+# @client.command(name= "UpdateMarkt",
+#                 description = 'Reset vom Counter Channel',
+#                 brief = 'Reset vom Counter Channel',
+#                 pass_context = True)
 
 async def UpdateMarkt(context):
     Preise = await rrDamage.getMarktPreise()
@@ -2697,10 +2697,10 @@ async def NewParliamentDemo(context):
 
 
 
-@client.command(name='Bayern14D',
-                description='Simuliere Bayern in den letzten 14D',
-                brief='Simuliere Bayern in den letzten 14D',
-                pass_context=True)
+# @client.command(name='Bayern14D',
+#                 description='Simuliere Bayern in den letzten 14D',
+#                 brief='Simuliere Bayern in den letzten 14D',
+#                 pass_context=True)
 
 async def Bayern14D(context):
     author = context.message.author
