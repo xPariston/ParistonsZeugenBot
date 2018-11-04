@@ -328,7 +328,7 @@ async def RemoveAbgeordneten(context):
 
 @client.command(name="MakeAbgeordneten",
                 description='!MakeAbgeordnet @Pariston Füge ein Mitgleid deiner Partei ins Parlament hinzu. Nur Parteileiter und Seretäre könn dies.',
-                brief='!MakeAbgeordneter @Pariston Füge ein Mitgleid deiner Partei ins Parlament hinzu. Nur Parteileiter und Seretäre könn dies.',
+                brief='!MakeAbgeordneten @Pariston Füge ein Mitgleid deiner Partei ins Parlament hinzu. Nur Parteileiter und Seretäre könn dies.',
                 pass_context=True)
 
 async def MakeAbgeordneten(context):
