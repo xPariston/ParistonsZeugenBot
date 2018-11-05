@@ -1522,7 +1522,7 @@ async def update_markt_background_task():
                             partyname = role.name
                     output.append(partyname + ": " + member.name)
         output.sort()
-        msg = "Anzahl Parlamentarier: " + str(len(output)) +"\n"
+        msg = "Anzahl Parlamentarier: " + str(len(output)) +"\n\n"
         msg = msg + "Liste aller Abgeordneten:\n"
         for out in output:
             msg = msg + out +"\n"
@@ -1541,6 +1541,7 @@ async def update_markt_background_task():
                     await client.edit_message(n, NewOutput)
 
         await asyncio.sleep(14400)
+
 
 async def vote_background_task():
     await client.wait_until_ready()
