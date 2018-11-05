@@ -1520,7 +1520,7 @@ async def update_markt_background_task():
                             pass
                         else:
                             partyname = role.name
-            output.append(partyname + ": " + member.name)
+                    output.append(partyname + ": " + member.name)
         output.sort()
         msg = "Liste aller Abgeordneten:\n"
         for out in output:
