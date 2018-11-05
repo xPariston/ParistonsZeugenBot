@@ -1505,7 +1505,6 @@ async def update_markt_background_task():
             await client.delete_message(n)
 
         memberlist = client.get_all_members()
-
         output=[]
         for member in memberlist:
             memberroles = member.roles
