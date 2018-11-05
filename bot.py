@@ -1530,6 +1530,7 @@ async def update_markt_background_task():
 
 
 
+
         Preise = await rrDamage.getMarktPreise()
         preischannel = discord.Object(id="501786454133833731")
         async for n in client.logs_from(preischannel, 100):
