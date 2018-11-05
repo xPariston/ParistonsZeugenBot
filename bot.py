@@ -12,6 +12,8 @@ BOT_PREFIX = ("!")
 client = Bot(command_prefix=BOT_PREFIX)
 
 profildict={}
+nonpartyroles = ["Präsident", "Vize-Präsident","verifiziert","@everyone","AdminTeam","Minister","Kandidat","Abgeordneter"]
+
 WarProzent= 30.
 SpendenProzent = 30.
 WahlProzent = 40.
@@ -1497,6 +1499,37 @@ async def RemoveVotes():
 async def update_markt_background_task():
     await client.wait_until_ready()
     while not client.is_closed:
+
+        channel = discord.Object(id='508969715830489119')
+        async for n in client.logs_from(channel, 100):
+            await client.delete_message(n)
+
+        memberlist = client.get_all_members()
+
+        output=[]
+        for member in memberlist:
+            memberroles = member.roles
+            for roles in memberroles:
+                if "Abgeordneter" in roles.name:
+                    for role in memberroles:
+                        if role.name in nonpartyroles:
+                            pass
+                        elif "Sekretär" in role.name:
+                            pass
+                        elif "Leiter" in role.name:
+                            pass
+                        else:
+                            partyname = role.name
+            output.append(partyname + ": " + member.name)
+        output.sort()
+        msg = "Liste aller Abgeordneten:\n"
+        for out in output:
+            msg = msg + out +"\n"
+
+        await client.send_message(channel,msg)
+
+
+
         Preise = await rrDamage.getMarktPreise()
         preischannel = discord.Object(id="501786454133833731")
         async for n in client.logs_from(preischannel, 100):
