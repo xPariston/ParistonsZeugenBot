@@ -1509,6 +1509,7 @@ async def update_markt_background_task():
         output=[]
         for member in memberlist:
             memberroles = member.roles
+            partyname = ""
             for roles in memberroles:
                 if "Abgeordneter" in roles.name:
                     for role in memberroles:
