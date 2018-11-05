@@ -2445,7 +2445,8 @@ async def NewParliamentReal(context):
             await client.send_message(Sitzchannel,Sitze + ": " + str(Sitzverteilung[Sitze]))
 
         await client.say("Parlament wurde neu erstellt.")
-        await client.say("!VoteP")
+        channel = discord.Object('496295550895783937')
+        await client.send_message(channel,"!VoteP")
 
 @client.command(name='NewParliamentDemo',
                 description='Simuliere neues Parlament',
