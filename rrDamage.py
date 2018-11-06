@@ -171,7 +171,7 @@ async def getStateWars(stateid,days):
                         attacklist.append(1)
                     else:
                         attacklist.append(0)
-                count = +1
+                count += 1
 
             warcounter = 0
             todaycounter = 0
