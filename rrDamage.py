@@ -165,6 +165,7 @@ async def getStateWars(stateid,days):
             for e in soup.find_all(attrs={"width": "190"}):
                 if count % 2 == 0:
                     x = str(e)
+                    print (x)
                     if "map/details/"+i in x:
                         attacklist.append(1)
                     else:
@@ -197,6 +198,7 @@ async def getStateWars(stateid,days):
                         warlistState.append(warlist[i])
 
             for count2,war in enumerate(warlist):
+                print("count2 =",count2)
                 if attacklist[count2] == 1:
                     try:
                         warlistState.remove(war)
