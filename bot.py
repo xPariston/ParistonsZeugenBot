@@ -12,7 +12,7 @@ BOT_PREFIX = ("!")
 client = Bot(command_prefix=BOT_PREFIX)
 
 profildict={}
-nonpartyroles = ["Präsident", "Vize-Präsident","verifiziert","@everyone","AdminTeam","Minister","Kandidat","Abgeordneter"]
+nonpartyroles = ["Präsident", "Händler", "Vize-Präsident","verifiziert","@everyone","AdminTeam","Minister","Kandidat","Abgeordneter"]
 
 WarProzent= 30.
 SpendenProzent = 30.
@@ -28,6 +28,69 @@ Antwort7='Mecklenburg-Vorpommern'
 Antwort8='Kuras'
 Antwort9='Niemand' #Vorbild
 Antwort10='Pirat' #Früheres Leben
+
+
+@client.command(name="MakeHändler",
+                description='!MakeHändler @Pariston. Nur AdminTeam Mitglieder können dies.',
+                brief='!MakeHändler @Pariston. Nur AdminTeam Mitglieder können dies.',
+                pass_context=True)
+
+async def MakeHändler(context):
+    msg = context.message.content
+    autor = context.message.author
+    mentions = context.message.mentions
+    server = context.message.server
+    serverroles = server.roles
+    targetrole = ""
+    targetrole2 = ""
+
+    for role in serverroles:
+        if role.name == "AdminTeam":
+            targetrole = role
+        if role.name == "Händler":
+            targetrole2 = role
+
+    if "@" in msg:
+        if targetrole in autor.roles:
+            for member in mentions:
+                await client.add_roles(member,targetrole2)
+                await client.say(member.name + " ist nun Händler!")
+                break
+        else:
+            await client.say("Du musst Teil des AdminTeams sein um Händler zu ernnen")
+    else:
+        await client.say("Bitte ernenne einen Händler mit '!MakeHändler @Member'")
+
+@client.command(name="RemoveHändler",
+                description='!RemoveHändler @Pariston. Nur AdminTeam Mitglieder können dies.',
+                brief='!RemoveHändler @Pariston. Nur AdminTeam Mitglieder können dies.',
+                pass_context=True)
+
+async def RemoveHändler(context):
+    msg = context.message.content
+    autor = context.message.author
+    mentions = context.message.mentions
+    server = context.message.server
+    serverroles = server.roles
+    targetrole = ""
+    targetrole2 = ""
+
+    for role in serverroles:
+        if role.name == "AdminTeam":
+            targetrole = role
+        if role.name == "Händler":
+            targetrole2 = role
+
+    if "@" in msg:
+        if targetrole in autor.roles:
+            for member in mentions:
+                await client.remove_roles(member,targetrole2)
+                await client.say(member.name + " ist nun nicht mehr Händler!")
+                break
+        else:
+            await client.say("Du musst Teil des AdminTeams sein um Händler zu entfernen")
+    else:
+        await client.say("Bitte entferne einen Händler mit '!RemoveHändler @Member'")
 
 
 @client.command(name="MakeVize",
@@ -229,17 +292,7 @@ async def AddMember(context):
                 bool = False
                 for role in memberroles:
                     print(role.name)
-                    if role.name == "@everyone":
-                        pass
-                    elif role.name == "AdminTeam":
-                        pass
-                    elif role.name == "verifiziert":
-                        pass
-                    elif role.name == "Präsident":
-                        pass
-                    elif role.name == "Minister":
-                        pass
-                    elif role.name == "Vize-Präsident":
+                    if role.name in nonpartyroles:
                         pass
                     else:
                         bool = True
