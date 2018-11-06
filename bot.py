@@ -2331,7 +2331,7 @@ async def NewParliamentReal(context):
                 müll, spende = msg[1].split(":")
                 spende = spende.strip()
                 print(partei, spende)
-                spende = await rrDamage.RessToMoney(spende)
+                spende = await rrDamage.RessToMoney(spende,marktdict)
                 print("Calculation= ", spende)
                 Gesamtspendenvolumen = Gesamtspendenvolumen - spende
                 if partei in partydon:
@@ -2679,7 +2679,7 @@ async def NewParliamentDemo(context):
                 müll, spende = msg[1].split(":")
                 spende = spende.strip()
                 print(partei, spende)
-                spende = await rrDamage.RessToMoney(spende)
+                spende = await rrDamage.RessToMoney(spende,marktdict)
                 print("Calculation= ", spende)
                 Gesamtspendenvolumen = Gesamtspendenvolumen - spende
                 if partei in partydon:
