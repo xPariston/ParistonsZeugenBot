@@ -117,7 +117,7 @@ async def MultiWar(urllist,partylist):
 
         return Gesamtdamage,partydictRawDmg,partydictPerDmg
 
-async def getStateWars7d(stateid,days):
+async def getStateWars(stateid,days):
     async with aiohttp.ClientSession(headers=myheader) as session:
         regionlist = []
         StateUrl="http://rivalregions.com/listed/state/"
@@ -159,6 +159,18 @@ async def getStateWars7d(stateid,days):
                 id = ids[2]
                 warlist.append(id)
 
+
+            attacklist = []
+            count=0
+            for e in soup.find_all(attrs={"width": "190"}):
+                if count % 2 == 0:
+                    x = str(e)
+                    if "map/details/"+i in x:
+                        attacklist.append(1)
+                    else:
+                        attacklist.append(0)
+                count = +1
+
             warcounter = 0
             todaycounter = 0
             datelist = []
@@ -183,6 +195,14 @@ async def getStateWars7d(stateid,days):
                 for i in range(warcounter):
                     if i >= todaycounter:
                         warlistState.append(warlist[i])
+
+            for count2,war in enumerate(warlist):
+                if attacklist[count2] == 1:
+                    try:
+                        warlistState.remove(war)
+                    except:
+                        print("pass")
+
         print("WarListState: ",warlistState)
         return warlistState
 

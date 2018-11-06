@@ -970,10 +970,10 @@ async def WarListAnalyse(context):
             Msg3 += i + ": " + str(round(partydictPerDmg[i],2)) + "%\n"
         await client.say(Msg1 + Msg2 + Msg3)
 
-# @client.command(name="StateWars",
-#                 description='Analysiere Kriege die in den letzten 21 Tage beendet wurden in unseren Regionen.',
-#                 brief='Kriegsanalyse von allen Kriegen in unseren Regionen letzten 21 Tage',
-#                 pass_context=True)
+@client.command(name="StateWars",
+                description='Analysiere Kriege die in den letzten 21 Tage beendet wurden in unseren Regionen.',
+                brief='Kriegsanalyse von allen Kriegen in unseren Regionen letzten 21 Tage',
+                pass_context=True)
 
 
 async def StateWars(context):
@@ -1003,7 +1003,7 @@ async def StateWars(context):
         TotalWars=0
         Totalwarurllist=[]
         for id in stateids:
-            warlist= await rrDamage.getStateWars7d(id,days)
+            warlist= await rrDamage.getStateWars(id,days)
             for war in warlist:
                 warurl= warbase + war
                 Totalwarurllist.append(warurl)
@@ -1155,7 +1155,7 @@ async def StateAndListWars(context):
 
         Totalwarurllist = []
         for id in stateids:
-            warlist = await rrDamage.getStateWars7d(id)
+            warlist = await rrDamage.getStateWars(id)
             for war in warlist:
                 warurl = warbase + war
                 Totalwarurllist.append(warurl)
@@ -1227,7 +1227,7 @@ async def Vote(context):
                 await client.edit_message(m, "Anzahl Gesetze: " + nummer)
 
         msg= context.message.content
-        time= context.message.timestamp + datetime.timedelta(hours=26)
+        time= context.message.timestamp + datetime.timedelta(hours=25)
         time= time.strftime("%d.%m.%Y %H:%M:%S")
         msg= msg.replace("!Vote ","")
         autor= context.message.author.name
@@ -1266,7 +1266,7 @@ async def VoteMisstrauen(context):
                 await client.edit_message(m, "Anzahl Gesetze: " + nummer)
 
         msg= context.message.content
-        time= context.message.timestamp + datetime.timedelta(hours=26)
+        time= context.message.timestamp + datetime.timedelta(hours=25)
         time= time.strftime("%d.%m.%Y %H:%M:%S")
         msg= "Misstrauensvotum gegen den amtierenden Präsidenten. Stimme mit Ja wenn der Präsident abgesetzt werden soll. Bei Erfolg wird eine Neuwahl eingeleitet. Während dieser Zeit bleibt der Präsident im Amt."
         autor= context.message.author.name
@@ -1305,7 +1305,7 @@ async def Vote66(context):
                 await client.edit_message(m, "Anzahl Gesetze: " + nummer)
 
         msg= context.message.content
-        time= context.message.timestamp + datetime.timedelta(hours=26)
+        time= context.message.timestamp + datetime.timedelta(hours=25)
         time= time.strftime("%d.%m.%Y %H:%M:%S")
         msg= msg.replace("!Vote66 ","")
         autor= context.message.author.name
@@ -1344,7 +1344,7 @@ async def Vote80(context):
                 await client.edit_message(m, "Anzahl Gesetze: " + nummer)
 
         msg= context.message.content
-        time= context.message.timestamp + datetime.timedelta(hours=26)
+        time= context.message.timestamp + datetime.timedelta(hours=25)
         time= time.strftime("%d.%m.%Y %H:%M:%S")
         msg= msg.replace("!Vote80 ","")
         autor= context.message.author.name
@@ -1393,7 +1393,7 @@ async def VoteP(context):
             msg = msg + "Kandidat Nr.%d: >>" %nummer + kandidat.name + "<<" +"\n Ja-Stimmen Nr.%d: \n\n" %nummer
             counter+=1
 
-        time= context.message.timestamp + datetime.timedelta(hours=26)
+        time= context.message.timestamp + datetime.timedelta(hours=25)
         time= time.strftime("%d.%m.%Y %H:%M:%S")
         msg= msg.replace("!VoteP ","")
         msg= msg + "Die Wahl geht bis " + time
@@ -2232,7 +2232,7 @@ async def NewParliamentReal(context):
 
         Totalwarurllist = []
         for id in stateids:
-            warlist = await rrDamage.getStateWars7d(id,days)
+            warlist = await rrDamage.getStateWars(id,days)
             for war in warlist:
                 warurl = warbase + war
                 Totalwarurllist.append(warurl)
@@ -2579,7 +2579,7 @@ async def NewParliamentDemo(context):
 
         Totalwarurllist = []
         for id in stateids:
-            warlist = await rrDamage.getStateWars7d(id,days)
+            warlist = await rrDamage.getStateWars(id,days)
             for war in warlist:
                 warurl = warbase + war
                 Totalwarurllist.append(warurl)
@@ -2865,7 +2865,7 @@ async def Bayern14D(context):
 
         Totalwarurllist = []
         for id in stateids:
-            warlist = await rrDamage.getStateWars7d(id,days)
+            warlist = await rrDamage.getStateWars(id,days)
             for war in warlist:
                 warurl = warbase + war
                 Totalwarurllist.append(warurl)
