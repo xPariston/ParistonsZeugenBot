@@ -199,13 +199,15 @@ async def getStateWars(stateid,days):
                         warlistState.append(warlist[i])
 
             print(warlist)
+            print("AttackList: ",attacklist)
             for count2,war in enumerate(warlist):
                 print("count2 =",count2)
                 if attacklist[count2] == 1:
                     try:
                         warlistState.remove(war)
+                        print("Remove: ",war)
                     except:
-                        print("pass")
+                        print("pass: ", war)
 
         print("WarListState: ",warlistState)
         return warlistState
