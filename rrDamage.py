@@ -149,6 +149,7 @@ async def getStateWars(stateid,days):
             html = await fetch(session, RegionWarUrl)
             soup = await soup_d(html)
 
+            print("url: ",RegionWarUrl)
             warlist = []
             for w in soup.find_all(attrs={"class": "list_avatar yellow pointer"}):
                 x = str(w)
@@ -197,6 +198,7 @@ async def getStateWars(stateid,days):
                     if i >= todaycounter:
                         warlistState.append(warlist[i])
 
+            print(warlist)
             for count2,war in enumerate(warlist):
                 print("count2 =",count2)
                 if attacklist[count2] == 1:
