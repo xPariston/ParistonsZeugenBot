@@ -142,6 +142,7 @@ async def getStateWars(stateid,days):
         yesterday= now + datetime.timedelta(days=-1)
 
         warlistState = []
+        deletedWars = []
 
         BaseUrl = "http://rivalregions.com/war/top/"
         for i in regionlist:
@@ -204,6 +205,7 @@ async def getStateWars(stateid,days):
                 print("count2 =",count2)
                 if attacklist[count2] == 1:
                     print("miss war", war)
+                    deletedWars.append(war)
                 else:
                     if war in warlistState2:
                         print("append war ", war)
@@ -211,6 +213,10 @@ async def getStateWars(stateid,days):
                     else:
                         print("war out of date", war)
 
+        for wars in deletedWars:
+            if wars in warlistState:
+                warlistState.remove(wars)
+                print("Remove from statewars: ",wars)
         print("WarListState: ",warlistState)
         return warlistState
 
