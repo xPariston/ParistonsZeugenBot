@@ -1508,8 +1508,6 @@ async def Ja(context):
             votenummer = content[0].strip()
             oautormention = content[1].split(":")
             oautormention = oautormention[0].strip()
-            print(str(oautormention))
-            print(str(autor.mention))
 
             normalbool = False
 
@@ -1517,8 +1515,11 @@ async def Ja(context):
                 mentions = m.mentions
                 autorcount = 0
                 if autor in mentions:
+                    print(str(oautormention))
+                    print(str(autor.mention))
                     if str(oautormention) == str(autor.mention):
                         for user in mentions:
+                            print("im if")
                             print (user.mention)
                             print (autorcount)
                             if str(user) == str(autor.mention):
