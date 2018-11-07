@@ -1156,13 +1156,15 @@ async def StateAndListWars(context):
 
         warbase = "http://rivalregions.com/listed/partydamage/"
 
-        Totalwarurllist = []
-        for id in stateids:
-            warlist = await rrDamage.getStateWars(id)
-            for war in warlist:
-                warurl = warbase + war
-                Totalwarurllist.append(warurl)
-                TotalWars += 1
+        days = 21
+        Totalwarurllist = await rrDamage.getAllStateWars(stateids, days)
+        TotalWars = len(Totalwarurllist)
+        # for id in stateids:
+        #     warlist = await rrDamage.getStateWars(id)
+        #     for war in warlist:
+        #         warurl = warbase + war
+        #         Totalwarurllist.append(warurl)
+        #         TotalWars += 1
 
         GesamtDamage2, partydictRawDmg2, partydictPerDmg2 = await rrDamage.MultiWar(Totalwarurllist, parteiliste)
         GesamtDamage += GesamtDamage2
@@ -1234,7 +1236,7 @@ async def Vote(context):
         time= time.strftime("%d.%m.%Y %H:%M:%S")
         msg= msg.replace("!Vote ","")
         autor= context.message.author.name
-        output= "Gesetzesvorschlag Nr." + nummer +" von " + autor.mention + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
+        output= "Gesetzesvorschlag Nr." + nummer +" von " + author.mention + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
         newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
         #await client.add_reaction(newmsg_id,emoji='👍')
         #await client.add_reaction(newmsg_id,emoji='👎')
@@ -1273,7 +1275,7 @@ async def VoteMisstrauen(context):
         time= time.strftime("%d.%m.%Y %H:%M:%S")
         msg= "Misstrauensvotum gegen den amtierenden Präsidenten. Stimme mit Ja wenn der Präsident abgesetzt werden soll. Bei Erfolg wird eine Neuwahl eingeleitet. Während dieser Zeit bleibt der Präsident im Amt."
         autor= context.message.author.name
-        output= "Gesetzesvorschlag Misstrauensvotum Nr." + nummer +" von " + autor.mention + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
+        output= "Gesetzesvorschlag Misstrauensvotum Nr." + nummer +" von " + author.mention + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
         newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
         #await client.add_reaction(newmsg_id,emoji='👍')
         #await client.add_reaction(newmsg_id,emoji='👎')
@@ -1312,7 +1314,7 @@ async def Vote66(context):
         time= time.strftime("%d.%m.%Y %H:%M:%S")
         msg= msg.replace("!Vote66 ","")
         autor= context.message.author.name
-        output= "Gesetzesvorschlag Art66 Nr." + nummer +" von " + autor.mention + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
+        output= "Gesetzesvorschlag Art66 Nr." + nummer +" von " + author.mention + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
         newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
         #await client.add_reaction(newmsg_id,emoji='👍')
         #await client.add_reaction(newmsg_id,emoji='👎')
@@ -1351,7 +1353,7 @@ async def Vote80(context):
         time= time.strftime("%d.%m.%Y %H:%M:%S")
         msg= msg.replace("!Vote80 ","")
         autor= context.message.author.name
-        output= "Gesetzesvorschlag Art80 Nr." + nummer +" von " + autor.mention + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
+        output= "Gesetzesvorschlag Art80 Nr." + nummer +" von " + author.mention + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
         newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
         #await client.add_reaction(newmsg_id,emoji='👍')
         #await client.add_reaction(newmsg_id,emoji='👎')
@@ -2333,14 +2335,6 @@ async def NewParliamentReal(context):
         TotalWars = 0
         parteiliste = await getPartys()
 
-        warchannel = discord.Object(id='497356837679529994')
-        warliste = []
-        async for n in client.logs_from(warchannel, 100):
-            warliste.append(n.content)
-            TotalWars += 1
-
-        GesamtDamage, partydictRawDmg, partydictPerDmg = await rrDamage.MultiWar(warliste, parteiliste)
-
         stateschannel = discord.Object(id='497356879840935936')
         stateids = []
         seats = 0
@@ -2353,15 +2347,31 @@ async def NewParliamentReal(context):
 
         warbase = "http://rivalregions.com/listed/partydamage/"
 
-        Totalwarurllist = []
-        for id in stateids:
-            warlist = await rrDamage.getStateWars(id,days)
-            for war in warlist:
-                warurl = warbase + war
-                Totalwarurllist.append(warurl)
-                TotalWars += 1
+        Totalwarurllist = await rrDamage.getAllStateWars(stateids, days)
+        TotalWars = TotalWars + len(Totalwarurllist)
+        # for id in stateids:
+        #     warlist = await rrDamage.getStateWars(id)
+        #     for war in warlist:
+        #         warurl = warbase + war
+        #         Totalwarurllist.append(warurl)
+        #         TotalWars += 1
 
         GesamtDamage2, partydictRawDmg2, partydictPerDmg2 = await rrDamage.MultiWar(Totalwarurllist, parteiliste)
+
+        warchannel = discord.Object(id='497356837679529994')
+        warliste = []
+        async for n in client.logs_from(warchannel, 100):
+            wurl = n.content.replace("#", "")
+            wurl = wurl.replace("m.", "")
+            warliste.append(wurl)
+            TotalWars += 1
+
+        for e in warliste:
+            if e in Totalwarurllist:
+                print("Remove url aus listwars: ", e)
+                warliste.remove(e)
+        GesamtDamage, partydictRawDmg, partydictPerDmg = await rrDamage.MultiWar(warliste, parteiliste)
+
         GesamtDamage += GesamtDamage2
 
         print("Damage vor Verrrechnung: PartydictRawDmg1", partydictRawDmg, " PartydictRawDmg2: ", partydictRawDmg2)
@@ -2679,13 +2689,7 @@ async def NewParliamentDemo(context):
         TotalWars = 0
         parteiliste = await getPartys()
 
-        warchannel = discord.Object(id='497356837679529994')
-        warliste = []
-        async for n in client.logs_from(warchannel, 100):
-            warliste.append(n.content)
-            TotalWars += 1
 
-        GesamtDamage, partydictRawDmg, partydictPerDmg = await rrDamage.MultiWar(warliste, parteiliste)
 
 
         stateschannel = discord.Object(id='497356879840935936')
@@ -2700,15 +2704,32 @@ async def NewParliamentDemo(context):
 
         warbase = "http://rivalregions.com/listed/partydamage/"
 
-        Totalwarurllist = []
-        for id in stateids:
-            warlist = await rrDamage.getStateWars(id,days)
-            for war in warlist:
-                warurl = warbase + war
-                Totalwarurllist.append(warurl)
-                TotalWars += 1
+        Totalwarurllist = await rrDamage.getAllStateWars(stateids, days)
+        TotalWars = TotalWars + len(Totalwarurllist)
+        # for id in stateids:
+        #     warlist = await rrDamage.getStateWars(id)
+        #     for war in warlist:
+        #         warurl = warbase + war
+        #         Totalwarurllist.append(warurl)
+        #         TotalWars += 1
 
         GesamtDamage2, partydictRawDmg2, partydictPerDmg2 = await rrDamage.MultiWar(Totalwarurllist, parteiliste)
+
+        warchannel = discord.Object(id='497356837679529994')
+        warliste = []
+        async for n in client.logs_from(warchannel, 100):
+            wurl = n.content.replace("#","")
+            wurl = wurl.replace("m.","")
+            warliste.append(wurl)
+            TotalWars += 1
+
+        for e in warliste:
+            if e in Totalwarurllist:
+                print("Remove url aus listwars: ",e)
+                warliste.remove(e)
+
+        GesamtDamage, partydictRawDmg, partydictPerDmg = await rrDamage.MultiWar(warliste, parteiliste)
+
         GesamtDamage += GesamtDamage2
 
         print("Damage vor Verrrechnung: PartydictRawDmg1", partydictRawDmg, " PartydictRawDmg2: ", partydictRawDmg2)
@@ -2986,13 +3007,14 @@ async def Bayern14D(context):
 
         warbase = "http://rivalregions.com/listed/partydamage/"
 
-        Totalwarurllist = []
-        for id in stateids:
-            warlist = await rrDamage.getStateWars(id,days)
-            for war in warlist:
-                warurl = warbase + war
-                Totalwarurllist.append(warurl)
-                TotalWars += 1
+        Totalwarurllist = await rrDamage.getAllStateWars(stateids, days)
+        TotalWars = TotalWars + len(Totalwarurllist)
+        # for id in stateids:
+        #     warlist = await rrDamage.getStateWars(id)
+        #     for war in warlist:
+        #         warurl = warbase + war
+        #         Totalwarurllist.append(warurl)
+        #         TotalWars += 1
 
         GesamtDamage2, partydictRawDmg2, partydictPerDmg2 = await rrDamage.MultiWar(Totalwarurllist, parteiliste)
         GesamtDamage += GesamtDamage2
