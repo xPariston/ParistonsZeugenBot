@@ -1383,7 +1383,7 @@ async def RemoveVote(context):
         print (votenummer)
         print (nummer)
 
-        if votenummer == nummer:
+        if str(votenummer) == str(nummer):
             print (oautor)
             print (autor)
             if oautor == autor:
