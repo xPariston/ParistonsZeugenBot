@@ -1384,6 +1384,8 @@ async def RemoveVote(context):
         votenummer = content[0].strip()
 
         if votenummer == nummer:
+            print (oautor)
+            print (autor)
             if oautor == autor:
                 await client.delete_message(m)
                 await client.say("Deine Abstimmung wurde zurückgezogen")
@@ -1515,21 +1517,15 @@ async def Ja(context):
                 mentions = m.mentions
                 autorcount = 0
                 if autor in mentions:
-                    print(str(oautormention))
-                    print(str(autor.mention))
                     if str(oautormention) == str(autor.mention):
                         eins,zwei = m.content.split("Ja-Stimmen:")
-                        print (eins)
-                        print (zwei)
                         if str(autor.mention) in zwei:
-                            print("Jawohl!")
+                            normalbool = True
                     else:
-                        await client.say("Du hast bereits abgestimmt")
                         normalbool = True
-                if autorcount > 1:
+
+                if normalbool == True:
                     await client.say("Du hast bereits abgestimmt")
-                elif normalbool == True:
-                    pass
                 else:
                     output = m.content
                     output1, output2 = output.split("Ja-Stimmen: ")
