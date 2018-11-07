@@ -1515,7 +1515,7 @@ async def Ja(context):
                 mentions = m.mentions
                 autorcount = 0
                 if autor in mentions:
-                    if str(oautormention) == str(autor):
+                    if str(oautormention) == str(autor.mention):
                         autorcount += 1
                         print("autorcount: ",autorcount)
                     else:
