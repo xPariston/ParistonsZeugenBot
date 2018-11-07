@@ -1364,14 +1364,12 @@ async def Vote80(context):
                 pass_context=True)
 
 async def RemoveVote(context):
-    Berechtigung = False
     msg = context.message.content
     msg = msg.replace("!RemoveVote", "")
     autor = context.message.author
-    authorroles = autor.roles
     nummer = int(msg.strip())
 
-    präsichannel = discord.Object(id='504584939245797402')
+    präsichannel = discord.Object(id='496295597632913410')
 
     async for m in client.logs_from(präsichannel, 100):
         oautor = m.content.author
