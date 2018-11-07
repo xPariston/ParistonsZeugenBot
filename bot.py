@@ -2832,7 +2832,7 @@ async def NewParliamentDemo(context):
                 if RangArray[count, count2] > 0:
                     sitzeliste[count2] += 1
 
-        for j,partei in enumerate(parteiliste):
+        for j,partei in enumerate(ParteiStimmenProzente):
             Sitzverteilung[partei] = int(sitzeliste[j])
 
         msg2 = "Sitzverteilung im Parlament bei %d Sitzen\n" % Gesamtsitze
