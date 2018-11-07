@@ -725,15 +725,15 @@ async def getPartyNameNormal(context):
     party = ""
 
     for roles in authorroles:
-        if "Leiter" in roles.name:
-            party = roles.name.replace("Leiter -", "")
-            party = party.strip()
-        if "Sekretär" in roles.name:
-            party = roles.name.replace("Sekretär -", "")
-            party = party.strip()
-        if "Mitglied" in roles.name:
-            party = roles.name.replace("Sekretär -", "")
-            party = party.strip()
+        if roles.name in nonpartyroles:
+            pass
+        elif "Leiter" in roles.name:
+            pass
+        elif "Sekretär" in roles.name:
+            pass
+        else:
+            party = roles.name
+
     return party
 
 
@@ -1974,6 +1974,7 @@ async def RessKauf(context):
         Ress = Ress.replace("K", ".000")
         Ress = Ress.replace(".000g", "kg")
         Ress = Ress.strip()
+
         autor = context.message.author
         authorroles = autor.roles
         autorpartei = ""
@@ -2025,24 +2026,30 @@ async def RessVerkauf(context):
         Ress = Ress.replace(".000g", "kg")
         Ress = Ress.strip()
         autor = context.message.author
-        try:
-            Party = await getPartyName(context)
-        except:
-            client.say("Du musst einer Partei angehören")
-            raise
+        authorroles = autor.roles
+        autorpartei = ""
 
-        counterchannel = discord.Object(id='501309453358989322')
-        async for n in client.logs_from(counterchannel, 100):
-            if "Verkäufe" in n.content:
-                müll,anzahl = n.content.split(":")
-                anzahl = anzahl.strip()
-                anzahl = int(anzahl)
-                anzahl = anzahl + 1
-                new_output= "Anzahl Verkäufe: " + str(anzahl)
-                await client.edit_message(n,new_output)
+        parteiliste = await getPartys()
+        for partei in parteiliste:
+            for role in authorroles:
+                if partei == role.name:
+                    autorpartei = partei
 
-        VerkaufChannel = discord.Object(id='501420255416025088')
-        await client.send_message(VerkaufChannel,"Verkauf Nr.:" + str(anzahl) + " --- Gekaufte Ressourcen: " + Ress + " --- eingereicht von: " + autor.mention +" --- Partei: " + Party + " --- Check: 0")
+        if autorpartei == "":
+            await client.say("Du musst einer Partei angehören")
+        else:
+            counterchannel = discord.Object(id='501309453358989322')
+            async for n in client.logs_from(counterchannel, 100):
+                if "Verkäufe" in n.content:
+                    müll,anzahl = n.content.split(":")
+                    anzahl = anzahl.strip()
+                    anzahl = int(anzahl)
+                    anzahl = anzahl + 1
+                    new_output= "Anzahl Verkäufe: " + str(anzahl)
+                    await client.edit_message(n,new_output)
+
+            VerkaufChannel = discord.Object(id='501420255416025088')
+            await client.send_message(VerkaufChannel,"Verkauf Nr.:" + str(anzahl) + " --- Gekaufte Ressourcen: " + Ress + " --- eingereicht von: " + autor.mention +" --- Partei: " + autorpartei + " --- Check: 0")
 
     else:
         await client.say("Du musst einen betrag und die Einheit für den Betrag angebene. Gold: G, Geld: $, Öl: bbl, Erz: kg, Diamanten: pcs, Uran: g. Beispiel: !RessKauf 32.000 pcs")
