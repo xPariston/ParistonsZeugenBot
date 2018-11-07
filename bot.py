@@ -1522,7 +1522,7 @@ async def Ja(context):
                         print (eins)
                         print (zwei)
                         if str(autor.mention) in zwei:
-                            print"Jawohl!"
+                            print("Jawohl!")
                     else:
                         await client.say("Du hast bereits abgestimmt")
                         normalbool = True
