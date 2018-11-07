@@ -1380,6 +1380,8 @@ async def RemoveVote(context):
         content = content.replace("Nr.", "")
         content = content.split("von")
         votenummer = content[0].strip()
+        print (votenummer)
+        print (nummer)
 
         if votenummer == nummer:
             print (oautor)
