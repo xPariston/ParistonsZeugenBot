@@ -1508,8 +1508,8 @@ async def Ja(context):
             votenummer = content[0].strip()
             oautormention = content[1].split(":")
             oautormention = oautormention[0].strip()
-            print(oautormention)
-            print(autor.mention)
+            print(str(oautormention))
+            print(str(autor.mention))
 
             if votenummer == nummer:
                 mentions = m.mentions
@@ -1517,6 +1517,7 @@ async def Ja(context):
                 if autor in mentions:
                     if str(oautormention) == str(autor):
                         autorcount += 1
+                        print("autorcount: ",autorcount)
                     else:
                         await client.say("Du hast bereits abgestimmt")
                 elif autorcount > 1:
