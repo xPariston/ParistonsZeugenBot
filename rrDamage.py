@@ -133,7 +133,12 @@ async def getAllStateWars(stateidlist,days):
                 print ("Remove war in allwars: ", t)
                 allwars.remove(t)
 
-        return allwars
+        warbase = "http://rivalregions.com/listed/partydamage/"
+        finwarurls = []
+        for e in allwars:
+            finwarurls.append(warbase+e)
+
+        return finwarurls
 
 async def getStateWars(stateid,days,session):
 
