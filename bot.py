@@ -1000,14 +1000,17 @@ async def StateWars(context):
             stateids.append(n)
 
         warbase= "http://rivalregions.com/listed/partydamage/"
+
+
+
         TotalWars=0
-        Totalwarurllist=[]
-        for id in stateids:
-            warlist= await rrDamage.getStateWars(id,days)
-            for war in warlist:
-                warurl= warbase + war
-                Totalwarurllist.append(warurl)
-                TotalWars+=1
+        Totalwarurllist= await rrDamage.getAllStateWars(stateids,days)
+        # for id in stateids:
+        #     warlist= await rrDamage.getStateWars(id,days)
+        #     for war in warlist:
+        #         warurl= warbase + war
+        #         Totalwarurllist.append(warurl)
+        #         TotalWars+=1
 
         GesamtDamage, partydictRawDmg, partydictPerDmg = await rrDamage.MultiWar(Totalwarurllist, parteiliste)
 

@@ -117,8 +117,26 @@ async def MultiWar(urllist,partylist):
 
         return Gesamtdamage,partydictRawDmg,partydictPerDmg
 
-async def getStateWars(stateid,days):
+async def getAllStateWars(stateidlist,days):
     async with aiohttp.ClientSession(headers=myheader) as session:
+        allwars = []
+        alldels = []
+        for id in stateidlist:
+            tempwarlist,tempdellist = await getStateWars(id,days,session)
+            for war in tempwarlist:
+                allwars.append(war)
+            for dels in tempdellist:
+                alldels.append(dels)
+
+        for t in allwars:
+            if t in alldels:
+                print ("Remove war in allwars: ", t)
+                allwars.remove(t)
+
+        return allwars
+
+async def getStateWars(stateid,days,session):
+
         regionlist = []
         StateUrl="http://rivalregions.com/listed/state/"
         url = StateUrl + stateid
@@ -147,13 +165,9 @@ async def getStateWars(stateid,days):
             for dele in tempdeletedlist:
                 dellistState.append(dele)
 
-        for t in warlistState:
-            if t in dellistState:
-                print ("Remove war in Statewars: ", t)
-                warlistState.remove(t)
 
         print("In StateWars: ",warlistState)
-        return warlistState
+        return warlistState,dellistState
 
 
 async def getRegionWars(session, days,id, adder):
