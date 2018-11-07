@@ -1231,7 +1231,7 @@ async def Vote(context):
         time= time.strftime("%d.%m.%Y %H:%M:%S")
         msg= msg.replace("!Vote ","")
         autor= context.message.author.name
-        output= "Gesetzesvorschlag Nr." + nummer +" von " + autor + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
+        output= "Gesetzesvorschlag Nr." + nummer +" von " + autor.mention + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
         newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
         #await client.add_reaction(newmsg_id,emoji='👍')
         #await client.add_reaction(newmsg_id,emoji='👎')
@@ -1270,7 +1270,7 @@ async def VoteMisstrauen(context):
         time= time.strftime("%d.%m.%Y %H:%M:%S")
         msg= "Misstrauensvotum gegen den amtierenden Präsidenten. Stimme mit Ja wenn der Präsident abgesetzt werden soll. Bei Erfolg wird eine Neuwahl eingeleitet. Während dieser Zeit bleibt der Präsident im Amt."
         autor= context.message.author.name
-        output= "Gesetzesvorschlag Misstrauensvotum Nr." + nummer +" von " + autor + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
+        output= "Gesetzesvorschlag Misstrauensvotum Nr." + nummer +" von " + autor.mention + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
         newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
         #await client.add_reaction(newmsg_id,emoji='👍')
         #await client.add_reaction(newmsg_id,emoji='👎')
@@ -1309,7 +1309,7 @@ async def Vote66(context):
         time= time.strftime("%d.%m.%Y %H:%M:%S")
         msg= msg.replace("!Vote66 ","")
         autor= context.message.author.name
-        output= "Gesetzesvorschlag Art66 Nr." + nummer +" von " + autor + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
+        output= "Gesetzesvorschlag Art66 Nr." + nummer +" von " + autor.mention + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
         newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
         #await client.add_reaction(newmsg_id,emoji='👍')
         #await client.add_reaction(newmsg_id,emoji='👎')
@@ -1348,7 +1348,7 @@ async def Vote80(context):
         time= time.strftime("%d.%m.%Y %H:%M:%S")
         msg= msg.replace("!Vote80 ","")
         autor= context.message.author.name
-        output= "Gesetzesvorschlag Art80 Nr." + nummer +" von " + autor + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
+        output= "Gesetzesvorschlag Art80 Nr." + nummer +" von " + autor.mention + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
         newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
         #await client.add_reaction(newmsg_id,emoji='👍')
         #await client.add_reaction(newmsg_id,emoji='👎')
@@ -2086,7 +2086,7 @@ async def CheckVerkauf(context):
 
 @client.command(name='CheckKauf',
                 description='AdminTeam verifiziert hiermit eingereichte Käufe.',
-                brief='AdminTeam verifiziert hiermit eingereichte Käufe. Bsp.: !CheckVerkauf 5 - Verifiziert eingereichter Verkauf Nummer 5',
+                brief='AdminTeam verifiziert hiermit eingereichte Käufe. Bsp.: !CheckKauf 5 - Verifiziert eingereichter Verkauf Nummer 5',
                 pass_context=True)
 
 async def CheckKauf(context):
@@ -2113,6 +2113,66 @@ async def CheckKauf(context):
                 await client.edit_message(n,newOutput)
                 await client.say(context.message.author.mention +  " hat Kauf Nr." + Nummer + " verifiziert")
                 break
+
+@client.command(name='DeleteVerkauf',
+                description='AdminTeam löscht hiermit eingereichte Verkäufe.',
+                brief='AdminTeam löscht hiermit eingereichte Verkäufe. Bsp.: !DeleteVerkauf 5 - Löscht eingereichter Verkauf Nummer 5',
+                pass_context=True)
+
+async def DeleteVerkauf(context):
+    author = context.message.author
+    authorroles = author.roles
+    Berechtigung = False
+
+    for role in authorroles:
+        if "AdminTeam" in role.name:
+            Berechtigung = True
+
+    if Berechtigung == False:
+        await client.say("Nur das Admin Team kann diesen Befehl ausführen")
+    else:
+        VerkaufChannel = discord.Object(id='501420255416025088')
+        msg = context.message.content.replace("!DeleteVerkauf","")
+        msg= msg.strip()
+        async for n in client.logs_from(VerkaufChannel, 100):
+            teile = n.content.split(":")
+            Nummer = teile[1].split("---")
+            Nummer = Nummer[0].strip()
+            if msg == Nummer:
+                await client.say(context.message.author.mention + " hat Kauf Nr." + Nummer + " gelöscht.\n" + n.content)
+                await client.delete_message(n)
+
+                break
+
+@client.command(name='DeleteKauf',
+                description='AdminTeam löscht hiermit eingereichte Käufe.',
+                brief='AdminTeam löscht hiermit eingereichte Käufe. Bsp.: !DeleteKauf 5 - Löscht eingereichter Verkauf Nummer 5',
+                pass_context=True)
+
+async def DeleteKauf(context):
+    author = context.message.author
+    authorroles = author.roles
+    Berechtigung = False
+
+    for role in authorroles:
+        if "AdminTeam" in role.name:
+            Berechtigung = True
+
+    if Berechtigung == False:
+        await client.say("Nur das Admin Team kann diesen Befehl ausführen")
+    else:
+        KaufChannel = discord.Object(id='501420199723925504')
+        msg = context.message.content.replace("!DeleteKauf","")
+        msg= msg.strip()
+        async for n in client.logs_from(KaufChannel, 100):
+            teile = n.content.split(":")
+            Nummer = teile[1].split("---")
+            Nummer = Nummer[0].strip()
+            if msg == Nummer:
+                await client.say(context.message.author.mention + " hat Kauf Nr." + Nummer + " gelöscht.\n"+n.content)
+                await client.delete_message(n)
+                break
+
 
 @client.command(name='DonationsExtern',
                 description='Spenden aus extrenen Käufen und Verkäufen werden hier erfasst und verrechnet.',
