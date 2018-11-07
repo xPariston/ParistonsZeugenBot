@@ -1518,12 +1518,11 @@ async def Ja(context):
                     print(str(oautormention))
                     print(str(autor.mention))
                     if str(oautormention) == str(autor.mention):
-                        for user in mentions:
-                            print("im if")
-                            print (user.mention)
-                            print (autorcount)
-                            if str(user.mention) == str(autor.mention):
-                                autorcount +=1
+                        eins,zwei = m.content.split("Ja-Stimmen:")
+                        print (eins)
+                        print (zwei)
+                        if str(autor.mention) in zwei:
+                            print"Jawohl!"
                     else:
                         await client.say("Du hast bereits abgestimmt")
                         normalbool = True
