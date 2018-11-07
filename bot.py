@@ -1522,7 +1522,7 @@ async def Ja(context):
                             print("im if")
                             print (user.mention)
                             print (autorcount)
-                            if str(user) == str(autor.mention):
+                            if str(user.mention) == str(autor.mention):
                                 autorcount +=1
                     else:
                         await client.say("Du hast bereits abgestimmt")
