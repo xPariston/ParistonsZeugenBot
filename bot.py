@@ -1353,6 +1353,39 @@ async def Vote80(context):
         #await client.add_reaction(newmsg_id,emoji='👍')
         #await client.add_reaction(newmsg_id,emoji='👎')
 
+@client.command(name='RemoveVote',
+                description='Ziehe ein Gesetzesvorschlag zurück',
+                brief='Ziehe ein Gesetzesvorschlag zurück',
+                pass_context=True)
+
+async def RemoveVote(context):
+    Berechtigung = False
+    msg = context.message.content
+    msg = msg.replace("!RemoveVote", "")
+    autor = context.message.author
+    authorroles = autor.roles
+    nummer = int(msg.strip())
+
+    präsichannel = discord.Object(id='504584939245797402')
+
+    async for m in client.logs_from(präsichannel, 100):
+        oautor = m.content.author
+        content = m.content
+        content = content.replace("Gesetzesvorschlag", "")
+        content = content.replace("Art66", "")
+        content = content.replace("Art80", "")
+        content = content.replace("Nr.", "")
+        content = content.split("von")
+        votenummer = content[0].strip()
+
+        if votenummer == nummer:
+            if oautor == autor:
+                await client.delete_message(m)
+                await client.say("Deine Abstimmung wurde zurückgezogen")
+                break
+            else:
+                await client.say("Du kannst nicht die Vorschläge anderer Leute löschen.")
+
 @client.command(name='VoteP',
                 description="PräsiWahl",
                 brief="PräsiWahl",
@@ -1468,9 +1501,19 @@ async def Ja(context):
             content = content.replace("Nr.", "")
             content = content.split("von")
             votenummer = content[0].strip()
+            oautormention = content[1].split(":")
+            oautormention = oautormention[0].strip()
+
+
             if votenummer == nummer:
                 mentions = m.mentions
+                autorcount = 0
                 if autor in mentions:
+                    if oautormention == autor:
+                        autorcount += 1
+                    else:
+                        await client.say("Du hast bereits abgestimmt")
+                elif autorcount > 1:
                     await client.say("Du hast bereits abgestimmt")
                 else:
                     output = m.content
@@ -1511,10 +1554,20 @@ async def Nein(context):
             content = content.replace("Nr.", "")
             content = content.split("von")
             votenummer = content[0].strip()
+            oautormention = content[1].split(":")
+            oautormention = oautormention[0].strip()
+
             if votenummer == nummer:
                 mentions = m.mentions
+                autorcount = 0
                 if autor in mentions:
+                    if oautormention == autor:
+                        autorcount += 1
+                    else:
+                        await client.say("Du hast bereits abgestimmt")
+                elif autorcount > 1:
                     await client.say("Du hast bereits abgestimmt")
+
                 else:
                     output = m.content
                     output1, output2 = output.split("Nein-Stimmen:")
@@ -1545,7 +1598,7 @@ async def RemoveVotes():
                 if bool == False:
                     print (content)
                     print (x.mention)
-                    newoutput = content.replace(x.mention,"")
+                    newoutput = content.replace(x.mention,x.name)
                     await client.edit_message(m,newoutput)
 
 
@@ -2485,7 +2538,7 @@ async def NewParliamentReal(context):
                 if RangArray[count, count2] > 0:
                     sitzeliste[count2] += 1
 
-        for j, partei in enumerate(parteiliste):
+        for j, partei in enumerate(ParteiStimmenProzente):
             Sitzverteilung[partei] = int(sitzeliste[j])
 
         msg2 = "Sitzverteilung im Parlament bei %d Sitzen\n" % Gesamtsitze
