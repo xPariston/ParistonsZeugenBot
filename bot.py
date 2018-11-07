@@ -1508,7 +1508,8 @@ async def Ja(context):
             votenummer = content[0].strip()
             oautormention = content[1].split(":")
             oautormention = oautormention[0].strip()
-
+            print(oautormention)
+            print(autor.mention)
 
             if votenummer == nummer:
                 mentions = m.mentions
