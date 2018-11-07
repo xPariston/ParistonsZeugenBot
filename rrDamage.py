@@ -141,7 +141,7 @@ async def getStateWars(stateid,days):
         dellistState = []
         for i in regionlist:
             adder = 0
-            tempwarlist, tempdeletedlist = getRegionWars(session,days,i,adder)
+            tempwarlist, tempdeletedlist = await getRegionWars(session,days,i,adder)
             for war in tempwarlist:
                 warlistState.append(war)
             for dele in tempdeletedlist:
@@ -235,7 +235,7 @@ async def getRegionWars(session, days,id, adder):
 
     if warcounter == 10:
         adder += 10
-        tempwarlist,tempdellist = getRegionWars(session,days,id,adder)
+        tempwarlist,tempdellist = await getRegionWars(session,days,id,adder)
         for e in tempwarlist:
             warlistState.append(e)
         for f in tempdellist:
