@@ -1369,10 +1369,10 @@ async def RemoveVote(context):
     autor = context.message.author
     nummer = int(msg.strip())
 
-    präsichannel = discord.Object(id='496295597632913410')
+    wahlchannel = discord.Object(id='496295597632913410')
 
-    async for m in client.logs_from(präsichannel, 100):
-        oautor = m.content.author
+    async for m in client.logs_from(wahlchannel, 100):
+        oautor = m.author
         content = m.content
         content = content.replace("Gesetzesvorschlag", "")
         content = content.replace("Art66", "")
