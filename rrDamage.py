@@ -137,88 +137,114 @@ async def getStateWars(stateid,days):
             id = id.strip()
             regionlist.append(id)
 
-        now = datetime.datetime.now()
-        siebenDays = now + datetime.timedelta(days=-days)
-        yesterday= now + datetime.timedelta(days=-1)
-
         warlistState = []
-        deletedWars = []
-
-        BaseUrl = "http://rivalregions.com/war/top/"
+        dellistState = []
         for i in regionlist:
-            RegionWarUrl = BaseUrl + i
-            html = await fetch(session, RegionWarUrl)
-            soup = await soup_d(html)
+            adder = 0
+            tempwarlist, tempdeletedlist = getRegionWars(session,days,i,adder)
+            for war in tempwarlist:
+                warlistState.append(war)
+            for dele in tempdeletedlist:
+                dellistState.append(dele)
 
-            print("url: ",RegionWarUrl)
-            warlist = []
-            for w in soup.find_all(attrs={"class": "list_avatar yellow pointer"}):
-                x = str(w)
-                x = x.split(" ")
-                y = x[1].split("=")
-                z = y[1].replace('"', '')
-                ids = z.split("/")
-                id = ids[2]
-                warlist.append(id)
+        for t in warlistState:
+            if t in dellistState:
+                print ("Remove war in Statewars: ", t)
+                warlistState.remove(t)
 
-
-            attacklist = []
-            count=0
-            for e in soup.find_all(attrs={"width": "190"}):
-                if count % 2 == 0:
-                    x = str(e)
-                    print (x)
-                    if "map/details/"+i in x:
-                        attacklist.append(1)
-                    else:
-                        attacklist.append(0)
-                count += 1
-
-            warcounter = 0
-            todaycounter = 0
-            datelist = []
-            for i in soup.find_all(attrs={"class": "list_avatar pointer small"}):
-                date = i.get_text()
-                try:
-                    date = datetime.datetime.strptime(date, "%d %B %Y %H:%M")
-                    if date > yesterday:
-                        todaycounter += 1
-                    else:
-                        datelist.append(date)
-
-                except:
-                    todaycounter += 1
-                    warcounter +=1
-
-            warlistState2 =[]
-            for q in datelist:
-                if q > siebenDays:
-                    warcounter += 1
-            if warcounter > 0:
-                for i in range(warcounter):
-                    if i >= todaycounter:
-                        warlistState2.append(warlist[i])
-
-            print(warlist)
-            print("AttackList: ",attacklist)
-            for count2,war in enumerate(warlist):
-                print("count2 =",count2)
-                if attacklist[count2] == 1:
-                    print("miss war", war)
-                    deletedWars.append(war)
-                else:
-                    if war in warlistState2:
-                        print("append war ", war)
-                        warlistState.append(war)
-                    else:
-                        print("war out of date", war)
-
-        for wars in deletedWars:
-            if wars in warlistState:
-                warlistState.remove(wars)
-                print("Remove from statewars: ",wars)
-        print("WarListState: ",warlistState)
+        print("In StateWars: ",warlistState)
         return warlistState
+
+
+async def getRegionWars(session, days,id, adder):
+    BaseUrl = "http://rivalregions.com/war/top/"
+    now = datetime.datetime.now()
+    siebenDays = now + datetime.timedelta(days=-days)
+    yesterday = now + datetime.timedelta(days=-1)
+    RegionWarUrl=""
+    if adder == 0:
+        RegionWarUrl = BaseUrl + id
+    else:
+        RegionWarUrl = BaseUrl + id + "/" + str(adder)
+    html = await fetch(session, RegionWarUrl)
+    soup = await soup_d(html)
+
+    print("url: ",RegionWarUrl)
+    warlist = []
+    for w in soup.find_all(attrs={"class": "list_avatar yellow pointer"}):
+        x = str(w)
+        x = x.split(" ")
+        y = x[1].split("=")
+        z = y[1].replace('"', '')
+        ids = z.split("/")
+        id = ids[2]
+        warlist.append(id)
+
+    deletedWars = []
+    attacklist = []
+    count=0
+    for e in soup.find_all(attrs={"width": "190"}):
+        if count % 2 == 0:
+            x = str(e)
+            print (x)
+            if "map/details/"+id in x:
+                attacklist.append(1)
+            else:
+                attacklist.append(0)
+        count += 1
+
+    warcounter = 0
+    todaycounter = 0
+    datelist = []
+    for i in soup.find_all(attrs={"class": "list_avatar pointer small"}):
+        date = i.get_text()
+        try:
+            date = datetime.datetime.strptime(date, "%d %B %Y %H:%M")
+            if date > yesterday:
+                todaycounter += 1
+            else:
+                datelist.append(date)
+
+        except:
+            todaycounter += 1
+            warcounter +=1
+
+    warlistState=[]
+    warlistState2 =[]
+    for q in datelist:
+        if q > siebenDays:
+            warcounter += 1
+    if warcounter > 0:
+        for i in range(warcounter):
+            if i >= todaycounter:
+                warlistState2.append(warlist[i])
+
+    print(warlist)
+    print("AttackList: ",attacklist)
+    for count2,war in enumerate(warlist):
+        print("count2 =",count2)
+        if attacklist[count2] == 1:
+            print("miss war", war)
+            deletedWars.append(war)
+        else:
+            if war in warlistState2:
+                print("append war ", war)
+                warlistState.append(war)
+            else:
+                print("war out of date", war)
+
+    if warcounter == 10:
+        adder += 10
+        tempwarlist,tempdellist = getRegionWars(session,days,id,adder)
+        for e in tempwarlist:
+            warlistState.append(e)
+        for f in tempdellist:
+            deletedWars.append(f)
+
+
+    print("WarListState: ",warlistState)
+
+    return warlistState,deletedWars
 
 async def KriegsAnalyse(url):
     async with aiohttp.ClientSession(headers=myheader) as session:
