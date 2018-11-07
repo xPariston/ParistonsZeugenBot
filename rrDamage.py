@@ -177,16 +177,16 @@ async def getStateWars(stateid,days,session):
         return warlistState,dellistState
 
 
-async def getRegionWars(session, days,id, adder):
+async def getRegionWars(session, days, regionid, adder):
     BaseUrl = "http://rivalregions.com/war/top/"
     now = datetime.datetime.now()
     siebenDays = now + datetime.timedelta(days=-days)
     yesterday = now + datetime.timedelta(days=-1)
     RegionWarUrl=""
     if adder == 0:
-        RegionWarUrl = BaseUrl + id
+        RegionWarUrl = BaseUrl + regionid
     else:
-        RegionWarUrl = BaseUrl + id + "/" + str(adder)
+        RegionWarUrl = BaseUrl + regionid + "/" + str(adder)
     html = await fetch(session, RegionWarUrl)
     soup = await soup_d(html)
 
@@ -208,7 +208,7 @@ async def getRegionWars(session, days,id, adder):
         if count % 2 == 0:
             x = str(e)
             print (x)
-            if "map/details/"+id in x:
+            if "map/details/"+ regionid in x:
                 attacklist.append(1)
             else:
                 attacklist.append(0)
@@ -256,7 +256,7 @@ async def getRegionWars(session, days,id, adder):
 
     if warcounter == 10:
         adder += 10
-        tempwarlist,tempdellist = await getRegionWars(session,days,id,adder)
+        tempwarlist,tempdellist = await getRegionWars(session,days,regionid,adder)
         for e in tempwarlist:
             warlistState.append(e)
         for f in tempdellist:
@@ -264,6 +264,7 @@ async def getRegionWars(session, days,id, adder):
 
 
     print("WarListState: ",warlistState)
+    print("DeletedWars: ", deletedWars)
 
     return warlistState,deletedWars
 
