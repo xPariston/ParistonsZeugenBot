@@ -1511,6 +1511,8 @@ async def Ja(context):
             print(str(oautormention))
             print(str(autor.mention))
 
+            normalbool = False
+
             if votenummer == nummer:
                 mentions = m.mentions
                 autorcount = 0
@@ -1521,16 +1523,18 @@ async def Ja(context):
                                 autorcount +=1
                     else:
                         await client.say("Du hast bereits abgestimmt")
+                        normalbool = True
+                if autorcount > 1:
+                    await client.say("Du hast bereits abgestimmt")
+                elif normalbool == True:
+                    pass
                 else:
-                    if autorcount > 1:
-                        await client.say("Du hast bereits abgestimmt")
-                    else:
-                        output = m.content
-                        output1, output2 = output.split("Ja-Stimmen: ")
-                        newoutput = output1 + einsatz + output2
-                        await client.edit_message(m,newoutput)
-                        await client.say("Abstimmung erfolgreich durchgeführt")
-                        break
+                    output = m.content
+                    output1, output2 = output.split("Ja-Stimmen: ")
+                    newoutput = output1 + einsatz + output2
+                    await client.edit_message(m,newoutput)
+                    await client.say("Abstimmung erfolgreich durchgeführt")
+                    break
 
 @client.command(name='Nein',
                 description='Stimme für einen Vorschlag mit Nein',
