@@ -1515,7 +1515,7 @@ async def Ja(context):
                 mentions = m.mentions
                 autorcount = 0
                 if autor in mentions:
-                    if oautormention == autor:
+                    if str(oautormention) == str(autor):
                         autorcount += 1
                     else:
                         await client.say("Du hast bereits abgestimmt")
