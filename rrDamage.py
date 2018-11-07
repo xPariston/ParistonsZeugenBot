@@ -128,6 +128,7 @@ async def getAllStateWars(stateidlist,days):
             for dels in tempdellist:
                 alldels.append(dels)
 
+        print("Alldels: ", alldels)
         for t in allwars:
             if t in alldels:
                 print ("Remove war in allwars: ", t)
