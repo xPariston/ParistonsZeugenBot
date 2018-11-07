@@ -1366,13 +1366,12 @@ async def Vote80(context):
 async def RemoveVote(context):
     msg = context.message.content
     msg = msg.replace("!RemoveVote", "")
-    autor = context.message.author
+    autormention = context.message.author.mention
     nummer = int(msg.strip())
 
     wahlchannel = discord.Object(id='496295597632913410')
 
     async for m in client.logs_from(wahlchannel, 100):
-        oautor = m.author
         content = m.content
         content = content.replace("Gesetzesvorschlag", "")
         content = content.replace("Art66", "")
@@ -1380,13 +1379,15 @@ async def RemoveVote(context):
         content = content.replace("Nr.", "")
         content = content.split("von")
         votenummer = content[0].strip()
+        oautor = content[1].split(":")
+        oautor = oautor[0].strip()
         print (votenummer)
         print (nummer)
 
         if str(votenummer) == str(nummer):
             print (oautor)
-            print (autor)
-            if oautor == autor:
+            print (autormention)
+            if oautor == autormention:
                 await client.delete_message(m)
                 await client.say("Deine Abstimmung wurde zurückgezogen")
                 break
@@ -1568,17 +1569,21 @@ async def Nein(context):
             oautormention = content[1].split(":")
             oautormention = oautormention[0].strip()
 
+            normalbool = False
+
             if votenummer == nummer:
                 mentions = m.mentions
                 autorcount = 0
                 if autor in mentions:
-                    if oautormention == autor:
-                        autorcount += 1
+                    if str(oautormention) == str(autor.mention):
+                        eins, zwei = m.content.split("Ja-Stimmen:")
+                        if str(autor.mention) in zwei:
+                            normalbool = True
                     else:
-                        await client.say("Du hast bereits abgestimmt")
-                elif autorcount > 1:
-                    await client.say("Du hast bereits abgestimmt")
+                        normalbool = True
 
+                if normalbool == True:
+                    await client.say("Du hast bereits abgestimmt")
                 else:
                     output = m.content
                     output1, output2 = output.split("Nein-Stimmen:")
