@@ -1717,7 +1717,7 @@ async def Nein(context):
                         await client.say("Du hast bereits abgestimmt")
                     else:
                         output = m.content
-                        output1, output2 = output.split("Nein-Stimmen: ")
+                        output1, output2 = output.split("Nein-Stimmen:")
                         newoutput = output1 + einsatz2 + output2
                         await client.edit_message(m, newoutput)
                         await client.say("Abstimmung erfolgreich durchgeführt")
