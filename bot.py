@@ -1490,6 +1490,7 @@ async def RemoveVote(context):
 
     async for m in client.logs_from(wahlchannel, 100):
         content = m.content
+        content = content.replace("Anonymer ", "")
         content = content.replace("Gesetzesvorschlag", "")
         content = content.replace("Art66", "")
         content = content.replace("Art80", "")
