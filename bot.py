@@ -1026,10 +1026,10 @@ async def StateWars(context):
             Msg3 += i + ": " + str(round(partydictPerDmg[i], 2)) + "%\n"
         await client.say(Msg1 + Msg2 + Msg3)
 
-# @client.command(name="AllDonations21d",
-#                 description='Analysiere alle Spenden in unseren Regionen in den letzten 21 Tagen.',
-#                 brief='Spendenanalyse aller Regionen in den letzten 21 Tagen',
-#                 pass_context=True)
+@client.command(name="AllDonations21d",
+                description='Analysiere alle Spenden in unseren Regionen in den letzten 21 Tagen.',
+                brief='Spendenanalyse aller Regionen in den letzten 21 Tagen',
+                pass_context=True)
 
 
 async def AllDonations21d(context):
@@ -2813,8 +2813,6 @@ async def NewParliamentDemo(context):
         partydon = {}
         counter = 1
         Gesamtspendenvolumen = 0
-
-        await asyncio.sleep(1)
 
         for state in stateids:
             print("Staat Nr.%d: " % counter + state)
