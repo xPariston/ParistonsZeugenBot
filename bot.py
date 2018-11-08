@@ -2742,7 +2742,7 @@ async def NewParliamentDemo2(context):
         warchannel = discord.Object(id='497356837679529994')
         listwars = []
         async for n in client.logs_from(warchannel, 100):
-            wurl = n.content.replace("#", "")
+            wurl = n.content.replace("#war/details", "listed/partydamage")
             wurl = wurl.replace("m.", "")
             listwars.append(wurl)
 
