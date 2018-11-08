@@ -1949,10 +1949,10 @@ async def vote_background_task():
 #                 brief = 'Reset vom Counter Channel',
 #                 pass_context = True)
 
-@client.command(name= "ResetParlament",
-                 description = 'Reset vom Counter Channel',
-                 brief = 'Reset vom Counter Channel',
-                 pass_context = True)
+# @client.command(name= "ResetParlament",
+#                  description = 'Reset vom Counter Channel',
+#                  brief = 'Reset vom Counter Channel',
+#                  pass_context = True)
 
 async def ResetParlament(context):
     counterchannel = discord.Object(id='497356738492629013')
