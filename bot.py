@@ -1621,7 +1621,7 @@ async def Ja(context):
         async for m in client.logs_from(vorschlagchannel, 100):
             if "Anonymer" in m.content:
                 content = m.content
-                content = content.replace("Gesetzesvorschlag", "")
+                content = content.replace("Anonymer Gesetzesvorschlag", "")
                 content = content.replace("Art66", "")
                 content = content.replace("Art80", "")
                 content = content.replace("Nr.", "")
@@ -1637,7 +1637,7 @@ async def Ja(context):
                     else:
                         output = m.content
                         output1, output2 = output.split("Ja-Stimmen: ")
-                        newoutput = output1 + einsatz + output2
+                        newoutput = output1 + einsatz2 + output2
                         await client.edit_message(m, newoutput)
                         await client.say("Abstimmung erfolgreich durchgeführt")
                         break
@@ -1702,7 +1702,7 @@ async def Nein(context):
         async for m in client.logs_from(vorschlagchannel, 100):
             if "Anonymer" in m.content:
                 content = m.content
-                content = content.replace("Gesetzesvorschlag", "")
+                content = content.replace("Anonymer Gesetzesvorschlag", "")
                 content = content.replace("Art66", "")
                 content = content.replace("Art80", "")
                 content = content.replace("Nr.", "")
@@ -1718,7 +1718,7 @@ async def Nein(context):
                     else:
                         output = m.content
                         output1, output2 = output.split("Nein-Stimmen: ")
-                        newoutput = output1 + einsatz + output2
+                        newoutput = output1 + einsatz2 + output2
                         await client.edit_message(m, newoutput)
                         await client.say("Abstimmung erfolgreich durchgeführt")
                         break
