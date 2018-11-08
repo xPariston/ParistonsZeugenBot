@@ -540,7 +540,6 @@ async def getStateDonations(stateid,partylist,profildict, marktdict, days, sessi
     # r = requests.get(url, headers=myheader)
     # r = r.content
     # soup = bs4.BeautifulSoup(r, 'html.parser')
-    print (soup.prettify())
     partydonations={}
 
     for e in soup.find_all(attrs={"class": "list_name pointer small"}):
@@ -560,14 +559,14 @@ async def getStateDonations(stateid,partylist,profildict, marktdict, days, sessi
             if p in partydonations:
                 partydonations[p] = partydonations[p] + tempdonations[p]
             else:
-                partydonations[p]=tempdonations[p]
+                partydonations[p] = tempdonations[p]
         counter+=1
 
     return partydonations
 
 async def getAllStateDonations(stateidlist, parteiliste, profildict, days, marktdict, session):
     Gesamtspendenvolumen = 0
-    partydon = []
+    partydon = {}
     counter= 1
 
     for state in stateidlist:
