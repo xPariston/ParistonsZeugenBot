@@ -532,8 +532,9 @@ async def getRegionDonations(regionid, partylist,profildict, session,marktdict, 
 async def getStateDonations(stateid,partylist,profildict, marktdict, days, session):
 
     regionlist = []
-    StateUrl = "http://rivalregions.com/listed/state/"
+    StateUrl = "rivalregions.com/listed/state/"
     url = StateUrl + stateid
+    print(url)
     html = await fetch(session, url)
     soup = await soup_d(html)
     # r = requests.get(url, headers=myheader)
