@@ -2801,6 +2801,7 @@ async def NewParliamentDemo(context):
         print(marktdict)
         parteiliste = await getPartys()
 
+
         stateschannel = discord.Object(id='497356879840935936')
         stateids = []
         async for n in client.logs_from(stateschannel, 100):
@@ -2812,6 +2813,8 @@ async def NewParliamentDemo(context):
         partydon = {}
         counter = 1
         Gesamtspendenvolumen = 0
+
+        await asyncio.sleep(1)
 
         for state in stateids:
             print("Staat Nr.%d: " % counter + state)
