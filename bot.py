@@ -1949,6 +1949,30 @@ async def vote_background_task():
 #                 brief = 'Reset vom Counter Channel',
 #                 pass_context = True)
 
+@client.command(name= "ResetParlament",
+                 description = 'Reset vom Counter Channel',
+                 brief = 'Reset vom Counter Channel',
+                 pass_context = True)
+
+async def ResetParlament(context):
+    counterchannel = discord.Object(id='497356738492629013')
+
+    await client.send_message(counterchannel, "Administration of Luxembourg: 1")
+    await client.send_message(counterchannel, "KG E.E: 2")
+    await client.send_message(counterchannel, "Vereinte Patrioten Deutschland: 1")
+    await client.send_message(counterchannel, "Nord Germanischer Bund: 8")
+    await client.send_message(counterchannel, "Deutsche Soziale Union: 0")
+    await client.send_message(counterchannel, "Demokratische Freiheitspartei: 1")
+    await client.send_message(counterchannel, "Team Austria: 5")
+    await client.send_message(counterchannel, "North Atlantic Pirates: 2")
+    await client.send_message(counterchannel, "Bund Deutscher Demokraten: 6")
+    await client.send_message(counterchannel, "Kirche des heiligen Seelöwen: 4")
+    await client.send_message(counterchannel, "Haus Sachsen-Coburg und Gotha: 2")
+    await client.send_message(counterchannel, "Haus Wittelsbach: 12")
+    await client.send_message(counterchannel, "Vereinigte Bürgerinitiative: 4")
+
+
+
 async def UpdateMarkt(context):
     Preise = await rrDamage.getMarktPreise()
     preischannel = discord.Object(id="501786454133833731")
