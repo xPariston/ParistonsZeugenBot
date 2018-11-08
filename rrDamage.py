@@ -72,75 +72,72 @@ async def RefineDamage(url,partylist,session):
 
     return Gesamtdamage,partydictRawDmg,partydictPerDmg
 
-async def MultiWar(urllist,partylist):
-    async with aiohttp.ClientSession(headers=myheader) as session:
+async def MultiWar(urllist,partylist,session):
+    urlcopy = urllist.copy()
 
-        urlcopy = urllist.copy()
+    counter1=0
+    for url in urllist:
+        counter2=0
+        for url2 in urllist:
+            if url == url2:
+                if counter1 != counter2:
+                    print ("Remove ",url)
+                    urllist.remove(url)
+            counter2 +=1
+        counter1 +=1
 
-        counter1=0
-        for url in urllist:
-            counter2=0
-            for url2 in urllist:
-                if url == url2:
-                    if counter1 != counter2:
-                        print ("Remove ",url)
-                        urllist.remove(url)
-                counter2 +=1
-            counter1 +=1
+    for url1 in urlcopy:
+        if url1 in urllist:
+                pass
+        else:
+            print(url1)
+            urllist.append(url1)
 
-        for url1 in urlcopy:
-            if url1 in urllist:
-                    pass
+    print(urllist)
+    Gesamtdamage = 0
+    partydictRawDmg = {}
+    partydictPerDmg = {}
+    print("In Multiwar. URLlist: ", urllist)
+    for x in urllist:
+        PartDamage,PartRawDmg,PartPerDmg = await RefineDamage(x,partylist,session)
+        Gesamtdamage += PartDamage
+
+        for i in PartRawDmg:
+            if i in partydictRawDmg:
+                partydictRawDmg[i] += PartRawDmg[i]
             else:
-                print(url1)
-                urllist.append(url1)
+                partydictRawDmg[i] = PartRawDmg[i]
+        print(partydictRawDmg)
 
-        print(urllist)
-        Gesamtdamage = 0
-        partydictRawDmg = {}
-        partydictPerDmg = {}
-        print("In Multiwar. URLlist: ", urllist)
-        for x in urllist:
-            PartDamage,PartRawDmg,PartPerDmg = await RefineDamage(x,partylist,session)
-            Gesamtdamage += PartDamage
+    for i in partydictRawDmg:
+        Percent = partydictRawDmg[i]/Gesamtdamage * 100
+        partydictPerDmg[i]=Percent
 
-            for i in PartRawDmg:
-                if i in partydictRawDmg:
-                    partydictRawDmg[i] += PartRawDmg[i]
-                else:
-                    partydictRawDmg[i] = PartRawDmg[i]
-            print(partydictRawDmg)
+    return Gesamtdamage,partydictRawDmg,partydictPerDmg
 
-        for i in partydictRawDmg:
-            Percent = partydictRawDmg[i]/Gesamtdamage * 100
-            partydictPerDmg[i]=Percent
+async def getAllStateWars(stateidlist,days,session):
+    allwars = []
+    alldels = []
+    for id in stateidlist:
+        tempwarlist,tempdellist = await getStateWars(id,days,session)
+        for war in tempwarlist:
+            allwars.append(war)
+        for dels in tempdellist:
+            alldels.append(dels)
 
-        return Gesamtdamage,partydictRawDmg,partydictPerDmg
+    print("Alldels: ", alldels)
+    for t in allwars:
+        if t in alldels:
+            print ("Remove war in allwars: ", t)
+            allwars.remove(t)
 
-async def getAllStateWars(stateidlist,days):
-    async with aiohttp.ClientSession(headers=myheader) as session:
-        allwars = []
-        alldels = []
-        for id in stateidlist:
-            tempwarlist,tempdellist = await getStateWars(id,days,session)
-            for war in tempwarlist:
-                allwars.append(war)
-            for dels in tempdellist:
-                alldels.append(dels)
+    allwars.sort()
+    warbase = "http://rivalregions.com/listed/partydamage/"
+    finwarurls = []
+    for e in allwars:
+        finwarurls.append(warbase+e)
 
-        print("Alldels: ", alldels)
-        for t in allwars:
-            if t in alldels:
-                print ("Remove war in allwars: ", t)
-                allwars.remove(t)
-
-        allwars.sort()
-        warbase = "http://rivalregions.com/listed/partydamage/"
-        finwarurls = []
-        for e in allwars:
-            finwarurls.append(warbase+e)
-
-        return finwarurls
+    return finwarurls
 
 async def getStateWars(stateid,days,session):
 
@@ -532,44 +529,80 @@ async def getRegionDonations(regionid, partylist,profildict, session,marktdict, 
 
     return Partydonations
 
-async def getStateDonations(stateid,partylist,profildict, marktdict, days):
+async def getStateDonations(stateid,partylist,profildict, marktdict, days, session):
 
+    regionlist = []
+    StateUrl = "http://rivalregions.com/listed/state/"
+    url = StateUrl + stateid
+    html = await fetch(session, url)
+    soup = await soup_d(html)
+    # r = requests.get(url, headers=myheader)
+    # r = r.content
+    # soup = bs4.BeautifulSoup(r, 'html.parser')
+    print (soup.prettify())
+    partydonations={}
+
+    for e in soup.find_all(attrs={"class": "list_name pointer small"}):
+        x = str(e)
+        x = x.split(" ")
+        y = x[1].split("=")
+        z = y[1].replace('"', '')
+        ids = z.split("/")
+        id = ids[2]
+
+        regionlist.append(id)
+    counter= 1
+    for region in regionlist:
+        print("region nr. %d: " %counter + region)
+        tempdonations = await getRegionDonations(region,partylist,profildict,session, marktdict, days)
+        for p in tempdonations:
+            if p in partydonations:
+                partydonations[p] = partydonations[p] + tempdonations[p]
+            else:
+                partydonations[p]=tempdonations[p]
+        counter+=1
+
+    return partydonations
+
+async def getAllStateDonations(stateidlist, parteiliste, profildict, days, marktdict, session):
+    Gesamtspendenvolumen = 0
+    partydon = []
+    counter= 1
+
+    for state in stateidlist:
+        print("Staat Nr.%d: " % counter + state)
+        tempdict = await getStateDonations(state, parteiliste, profildict, marktdict, days,session)
+        print("Staat beendet")
+        counter += 1
+        for p in tempdict:
+            Gesamtspendenvolumen = Gesamtspendenvolumen + tempdict[p]
+            if p in partydon:
+                partydon[p] = partydon[p] + tempdict[p]
+            else:
+                partydon[p] = tempdict[p]
+
+    return Gesamtspendenvolumen, partydon
+
+async def NewParliament(stateids, listwars, parteiliste, days, profildict, marktdict):
     async with aiohttp.ClientSession(headers=myheader) as session:
+        # Krieg
+        Totalwarurllist = await getAllStateWars(stateids, days , session)
 
-        regionlist = []
-        StateUrl = "http://rivalregions.com/listed/state/"
-        url = StateUrl + stateid
-        html = await fetch(session, url)
-        soup = await soup_d(html)
-        # r = requests.get(url, headers=myheader)
-        # r = r.content
-        # soup = bs4.BeautifulSoup(r, 'html.parser')
-        print (soup.prettify())
-        partydonations={}
+        for e in listwars:
+            if e not in Totalwarurllist:
+                print("Remove url aus listwars: ", e)
+                Totalwarurllist.append(e)
 
-        for e in soup.find_all(attrs={"class": "list_name pointer small"}):
-            x = str(e)
-            x = x.split(" ")
-            y = x[1].split("=")
-            z = y[1].replace('"', '')
-            ids = z.split("/")
-            id = ids[2]
+        AnzahlKriege = len(Totalwarurllist)
+        GesamtDamage, RawDmg, PerDmg = await MultiWar(Totalwarurllist, parteiliste, session)
 
-            regionlist.append(id)
-        counter= 1
-        for region in regionlist:
-            print("region nr. %d: " %counter + region)
-            tempdonations = await getRegionDonations(region,partylist,profildict,session, marktdict, days)
-            for p in tempdonations:
-                if p in partydonations:
-                    partydonations[p] = partydonations[p] + tempdonations[p]
-                else:
-                    partydonations[p]=tempdonations[p]
-            counter+=1
+        #Spenden
 
-        return partydonations
+        Gesamtspenden, Spendendict = await getAllStateDonations(stateids,parteiliste,profildict,days,marktdict,session)
 
+        #Rückgabe
 
+        return AnzahlKriege, GesamtDamage, RawDmg, PerDmg, Spendendict, Gesamtspenden
 
 
 

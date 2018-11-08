@@ -1026,6 +1026,8 @@ async def StateWars(context):
             Msg3 += i + ": " + str(round(partydictPerDmg[i], 2)) + "%\n"
         await client.say(Msg1 + Msg2 + Msg3)
 
+
+
 @client.command(name="AllDonations21d",
                 description='Analysiere alle Spenden in unseren Regionen in den letzten 21 Tagen.',
                 brief='Spendenanalyse aller Regionen in den letzten 21 Tagen',
@@ -2669,6 +2671,257 @@ async def NewParliamentReal(context):
         await client.say("Parlament wurde neu erstellt.")
         channel = discord.Object('496295550895783937')
         await client.send_message(channel,"!VoteP")
+
+@client.command(name='NewParliamentDemo2',
+                description='Simuliere neues Parlament',
+                brief='Simuliere neues Parlament',
+                pass_context=True)
+
+async def NewParliamentDemo2(context):
+    author = context.message.author
+    authorroles = author.roles
+    Berechtigung = False
+
+    for role in authorroles:
+        if "AdminTeam" in role.name:
+            Berechtigung = True
+
+    if Berechtigung == False:
+        await client.say("Nur das Admin Team kann diesen Befehl ausführen")
+    else:
+        days = 21
+        # Wahl
+        Wahlchannel = discord.Object(id='498487327484543006')
+        Stimmliste = []
+        Parteienliste = []
+
+        async for n in client.logs_from(Wahlchannel, 100):
+            parteien, stimmen = n.content.split(":")
+            parteien = parteien.strip()
+            stimmen = stimmen.strip()
+            stimmen = int(stimmen)
+            Stimmliste.append(stimmen)
+            Parteienliste.append(parteien)
+
+        msg1 = "---WAHLERGEBNISSE---\n\n"
+        msg2 = "Abgegebene Stimmen: "
+        msg3 = "Aufteilung der Stimmen: \n"
+        msg4 = "Stimmen aufgeteilt auf 40% Wahlanteil:\n"
+
+
+        Gesamtstimmen = 0
+        for i in Stimmliste:
+            Gesamtstimmen += i
+        msg2 = msg2 + str(Gesamtstimmen) + "\n"
+        ParteiStimmenProzente = {}
+        for count, partei in enumerate(Parteienliste):
+            ParteiStimmenProzente[partei] = round(Stimmliste[count] / Gesamtstimmen * 100, 2)
+            msg3 = msg3 + partei + ": " + str(ParteiStimmenProzente[partei]) + "% \n"
+        msg3 = msg3 + "\n"
+        for p in ParteiStimmenProzente:
+            ParteiStimmenProzente[p] = round(WahlProzent / 100 * ParteiStimmenProzente[p], 2)
+            msg4 = msg4 + p + ": " + str(ParteiStimmenProzente[p]) + "% \n"
+        msg4 = msg4 + "\n"
+
+        await client.say(msg1 + msg2 + msg3 + msg4 + "\n")
+
+        #Krieg
+
+        parteiliste = await getPartys()
+
+        stateschannel = discord.Object(id='497356879840935936')
+        stateids = []
+        seats = 0
+        async for n in client.logs_from(stateschannel, 100):
+            seats += 6
+            n = n.content
+            n = n.split(":")
+            n = n[1].strip()
+            stateids.append(n)
+
+        warchannel = discord.Object(id='497356837679529994')
+        listwars = []
+        async for n in client.logs_from(warchannel, 100):
+            wurl = n.content.replace("#", "")
+            wurl = wurl.replace("m.", "")
+            listwars.append(wurl)
+
+        marktdict = await readMarktPreise()
+        print(marktdict)
+
+        AnzahlKriege, GesamtDamage, RawDmg, PerDmg, partydon, Gesamtspendenvolumen = await rrDamage.NewParliament(stateids, listwars, parteiliste, days, profildict, marktdict)
+
+        print(partydon)
+        KaufChannel = discord.Object(id='501420199723925504')
+        VerkaufChannel = discord.Object(id='501420255416025088')
+
+        async for n in client.logs_from(KaufChannel, 100):
+            msg = n.content.split("---")
+            check, nummer = msg[-1].split(":")
+            nummer = nummer.strip()
+            print("nummer: ", nummer)
+            if nummer == "1":
+                müll, partei = msg[3].split(":")
+                partei = partei.strip()
+                müll, spende = msg[1].split(":")
+                spende = spende.strip()
+                print(partei, spende)
+                spende = await rrDamage.RessToMoney(spende, marktdict)
+                print("Calculation= ", spende)
+                Gesamtspendenvolumen = Gesamtspendenvolumen + spende
+                if partei in partydon:
+                    partydon[partei] = partydon[partei] + spende
+                else:
+                    partydon[partei] = spende
+
+        async for n in client.logs_from(VerkaufChannel, 100):
+            msg = n.content.split("---")
+            check, nummer = msg[-1].split(":")
+            nummer = nummer.strip()
+            if nummer == "1":
+                müll, partei = msg[3].split(":")
+                partei = partei.strip()
+                müll, spende = msg[1].split(":")
+                spende = spende.strip()
+                print(partei, spende)
+                spende = await rrDamage.RessToMoney(spende, marktdict)
+                print("Calculation= ", spende)
+                Gesamtspendenvolumen = Gesamtspendenvolumen - spende
+                if partei in partydon:
+                    partydon[partei] = partydon[partei] - spende
+                else:
+                    partydon[partei] = 0 - spende
+
+        partydictPerDmg = {}
+        for i in RawDmg:
+            partydictPerDmg[i] = RawDmg[i] / GesamtDamage * 100
+
+        Kriegssitze = partydictPerDmg
+        Msg = "\n---KRIEGSERGEBNISSE---\n\n"
+        Msg1 = "Gesamtschaden des Staatenbundes in eigenen Kriegen während der letzten %d Tagen und aus der Kriegsliste (insgesamt:%d): " % (
+        days, AnzahlKriege) + rrDamage.MakeNumber2PrettyString(GesamtDamage) + "\n\n"
+        Msg2 = "Roher Schaden der Parteien:\n"
+        Msg3 = "\nProzentualer Schaden der Parteien:\n"
+        Msg4 = "\nAufteilung der Sitze nach Schaden im Parlament (%d Prozent nach Schaden verteilen):\n" % WarProzent
+        for j in RawDmg:
+            Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(RawDmg[j]) + '\n'
+        for i in partydictPerDmg:
+            Msg3 += i + ": " + str(round(partydictPerDmg[i], 2)) + "%\n"
+
+        for s in Kriegssitze:
+            Kriegssitze[s] = Kriegssitze[s] / 100 * WarProzent
+
+        for o in Kriegssitze:
+            Msg4 += o + ": " + str(round(Kriegssitze[o], 2)) + "%\n"
+        await client.say(Msg + Msg1 + Msg2 + Msg3 + Msg4 + "\n")
+
+        # Spenden
+
+        partydonPro = {}
+        Msg = "\n---SPENDENERGEBNISSE---\n\n"
+        Msg1 = "Gesamtspenden des Staatenbundes während der letzten %d Tagen: " % days + rrDamage.MakeNumber2PrettyString(
+            Gesamtspendenvolumen) + "\n\n"
+        Msg2 = "Spendenvolumen der Parteien:\n"
+        Msg3 = "\nProzentuale Spenden der Parteien:\n"
+        for j in partydon:
+            Msg2 += j + ": " + rrDamage.MakeNumber2PrettyString(partydon[j]) + '\n'
+        for i in partydon:
+            partydonPro[i] = partydon[i] / Gesamtspendenvolumen * 100
+            Msg3 += i + ": " + str(round(partydonPro[i], 2)) + "%\n"
+
+        Spendensitze = partydonPro
+
+        Msg4 = "\nAufteilung der Sitze nach Spenden im Parlament (%d Prozent nach Spenden verteilen):\n" % SpendenProzent
+
+        for s in Spendensitze:
+            Spendensitze[s] = Spendensitze[s] / 100 * SpendenProzent
+
+        for o in Spendensitze:
+            Msg4 += o + ": " + str(round(Spendensitze[o], 2)) + "%\n"
+
+        print(Msg + Msg1 + Msg2 + Msg3 + Msg4)
+        await asyncio.shield(client.send_message(context.message.channel, Msg + Msg1 + Msg2 + Msg3 + Msg4 + "\n"))
+
+        msg = "\n\n---GESAMTERGEBNISS---\n\n"
+        msg1 = "Addierte Prozente der Parteien: \n"
+        for partei in ParteiStimmenProzente:
+            try:
+                ParteiStimmenProzente[partei] += Kriegssitze[partei]
+            except:
+                pass
+            try:
+                ParteiStimmenProzente[partei] += Spendensitze[partei]
+            except:
+                pass
+
+            msg1 = msg1 + partei + ": " + str(round(ParteiStimmenProzente[partei], 2)) + "% \n"
+        msg1 = msg1 + "\n"
+
+        # Sitzverteilung
+        Gesamtsitze = seats
+        Sitzverteilung = {}
+        AnzahlParteien = len(parteiliste)
+        SaintLoireDivisor = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5, 10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5,
+                             17.5, 18.5, 19.5, 20.5, 21.5, 22.5, 23.5, 24.5, 25.5, 26.5, 27.5, 28.5, 29.5, 30.5]
+        LengthSLD = len(SaintLoireDivisor)
+        PlatzArray = np.zeros((LengthSLD, AnzahlParteien))
+        RangArray = np.zeros((LengthSLD, AnzahlParteien))
+
+        for count, divisor in enumerate(SaintLoireDivisor):
+            for count2, Partei in enumerate(ParteiStimmenProzente):
+                PlatzArray[count, count2] = ParteiStimmenProzente[Partei] / divisor
+
+        print(PlatzArray)
+        times = Gesamtsitze
+        for i in range(times):
+            max = 0
+            maxindex1 = 0
+            maxindex2 = 0
+            for count, divisor in enumerate(SaintLoireDivisor):
+                for count2, Partei in enumerate(ParteiStimmenProzente):
+                    if PlatzArray[count, count2] > max:
+                        max = PlatzArray[count, count2]
+                        maxindex1 = count
+                        maxindex2 = count2
+            PlatzArray[maxindex1, maxindex2] = 0
+            RangArray[maxindex1, maxindex2] = i + 1
+
+        print(RangArray)
+
+        sitzeliste = np.zeros(AnzahlParteien)
+        for count, divisor in enumerate(SaintLoireDivisor):
+            for count2, Partei in enumerate(ParteiStimmenProzente):
+                if RangArray[count, count2] > 0:
+                    sitzeliste[count2] += 1
+
+        for j, partei in enumerate(ParteiStimmenProzente):
+            Sitzverteilung[partei] = int(sitzeliste[j])
+
+        msg2 = "Sitzverteilung im Parlament bei %d Sitzen\n" % Gesamtsitze
+
+        # for sitze in ParteiStimmenProzente:
+        #     Sitzverteilung[sitze] = round(Gesamtsitze / 100 * ParteiStimmenProzente[sitze])
+        #
+        # VerschenkteProzente = 0.0
+        # for sitze in ParteiStimmenProzente:
+        #     if Sitzverteilung[sitze] == 0:
+        #         VerschenkteProzente += ParteiStimmenProzente[sitze]
+
+        # print("VerschenkteProzente: ", VerschenkteProzente)
+        # AnzahlParteien = 0
+        # for sitze in ParteiStimmenProzente:
+        #     if Sitzverteilung[sitze] > 0:
+        #         AnzahlParteien += 1
+        #
+        # for sitze in ParteiStimmenProzente:
+        #     if Sitzverteilung[sitze] > 0:
+        #         ParteiStimmenProzente[sitze] += VerschenkteProzente / AnzahlParteien
+
+        for partei in Sitzverteilung:
+            msg2 = msg2 + "Sitze " + partei + ": " + str(Sitzverteilung[partei]) + "\n"
+
+        await client.say(msg + msg1 + msg2 + "\n")
+
 
 @client.command(name='NewParliamentDemo',
                 description='Simuliere neues Parlament',
