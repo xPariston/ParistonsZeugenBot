@@ -1202,7 +1202,122 @@ async def StateAndListWars(context):
         await client.say(Msg1 + Msg2 + Msg3 + Msg4)
 
 
+@client.command(name='AnonymVote',
+                description='Stelle etwas zur Wahl',
+                brief='Stelle etwas zur Wahl',
+                pass_context=True)
 
+async def AnonymVote(context):
+    author = context.message.author
+    authorroles = author.roles
+    Berechtigung = False
+    nummer=""
+
+    for role in authorroles:
+        if "Abgeordneter" in role.name:
+            Berechtigung = True
+
+    if Berechtigung == False:
+        await client.say("Nur Abgeordnete können diesen Befehl ausführen")
+    else:
+
+        nrchannel = discord.Object(id='501309453358989322')
+        async for m in client.logs_from(nrchannel,100):
+            content = m.content
+            if "Anzahl Gesetze" in content:
+                content = content.replace("Anzahl Gesetze:","")
+                nummer = int(content.strip())
+                nummer = nummer + 1
+                nummer = str(nummer)
+                await client.edit_message(m, "Anzahl Gesetze: " + nummer)
+
+        msg= context.message.content
+        time= context.message.timestamp + datetime.timedelta(hours=25)
+        time= time.strftime("%d.%m.%Y %H:%M:%S")
+        msg= msg.replace("!AnonymVote ","")
+        autor= context.message.author.name
+        output= "Anonymer Gesetzesvorschlag Nr." + nummer +" von " + author.mention + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
+        newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
+        #await client.add_reaction(newmsg_id,emoji='👍')
+        #await client.add_reaction(newmsg_id,emoji='👎')
+
+@client.command(name='AnonymVote66',
+                description='Stelle etwas zur Wahl was mit mehr als 66% bestätigt werden muss',
+                brief='Stelle etwas zur Wahl was mit mehr als 66% bestätigt werden muss',
+                pass_context=True)
+
+async def AnonymVote66(context):
+    author = context.message.author
+    authorroles = author.roles
+    Berechtigung = False
+    nummer=""
+
+    for role in authorroles:
+        if "Abgeordneter" in role.name:
+            Berechtigung = True
+
+    if Berechtigung == False:
+        await client.say("Nur Abgeordnete können diesen Befehl ausführen")
+    else:
+
+        nrchannel = discord.Object(id='501309453358989322')
+        async for m in client.logs_from(nrchannel,100):
+            content = m.content
+            if "Anzahl Gesetze" in content:
+                content = content.replace("Anzahl Gesetze:","")
+                nummer = int(content.strip())
+                nummer = nummer + 1
+                nummer = str(nummer)
+                await client.edit_message(m, "Anzahl Gesetze: " + nummer)
+
+        msg= context.message.content
+        time= context.message.timestamp + datetime.timedelta(hours=25)
+        time= time.strftime("%d.%m.%Y %H:%M:%S")
+        msg= msg.replace("!AnonymVote66 ","")
+        autor= context.message.author.name
+        output= "Anonymer Gesetzesvorschlag Art66 Nr." + nummer +" von " + author.mention + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
+        newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
+        #await client.add_reaction(newmsg_id,emoji='👍')
+        #await client.add_reaction(newmsg_id,emoji='👎')
+
+@client.command(name='AnonymVote80',
+                description="Stelle etwas zur Wahl was mit mehr als 80% bestätigt werden muss",
+                brief="Stelle etwas zur Wahl was mit mehr als 80% bestätigt werden muss",
+                pass_context=True)
+
+async def AnonymVote80(context):
+    author = context.message.author
+    authorroles = author.roles
+    Berechtigung = False
+    nummer=""
+
+    for role in authorroles:
+        if "Abgeordneter" in role.name:
+            Berechtigung = True
+
+    if Berechtigung == False:
+        await client.say("Nur Abgeordnete können diesen Befehl ausführen")
+    else:
+
+        nrchannel = discord.Object(id='501309453358989322')
+        async for m in client.logs_from(nrchannel,100):
+            content = m.content
+            if "Anzahl Gesetze" in content:
+                content = content.replace("Anzahl Gesetze:","")
+                nummer = int(content.strip())
+                nummer = nummer + 1
+                nummer = str(nummer)
+                await client.edit_message(m, "Anzahl Gesetze: " + nummer)
+
+        msg= context.message.content
+        time= context.message.timestamp + datetime.timedelta(hours=25)
+        time= time.strftime("%d.%m.%Y %H:%M:%S")
+        msg= msg.replace("!AnonymVote80 ","")
+        autor= context.message.author.name
+        output= "Anonymer Gesetzesvorschlag Art80 Nr." + nummer +" von " + author.mention + ":\n" + msg + "\nDie Wahl geht bis " + time +"\n Ja-Stimmen: \n Nein-Stimmen: \n"
+        newmsg_id = await client.send_message(client.get_channel('496295597632913410'), output)
+        #await client.add_reaction(newmsg_id,emoji='👍')
+        #await client.add_reaction(newmsg_id,emoji='👎')
 
 @client.command(name='Vote',
                 description='Stelle etwas zur Wahl',
@@ -1504,38 +1619,62 @@ async def Ja(context):
         await client.say("Nur Abgeordnete können diesen Befehl ausführen")
     else:
         async for m in client.logs_from(vorschlagchannel, 100):
-            content = m.content
-            content = content.replace("Gesetzesvorschlag","")
-            content = content.replace("Art66", "")
-            content = content.replace("Art80", "")
-            content = content.replace("Nr.", "")
-            content = content.split("von")
-            votenummer = content[0].strip()
-            oautormention = content[1].split(":")
-            oautormention = oautormention[0].strip()
+            if "Anonymer" in m.content:
+                content = m.content
+                content = content.replace("Gesetzesvorschlag", "")
+                content = content.replace("Art66", "")
+                content = content.replace("Art80", "")
+                content = content.replace("Nr.", "")
+                content = content.split("von")
+                votenummer = content[0].strip()
+                authorhash = str(hash(str(m.author.mention)))
+                einsatz2 = "Ja-Stimmen: @" + authorhash + " "
 
-            normalbool = False
+                if votenummer == nummer:
 
-            if votenummer == nummer:
-                mentions = m.mentions
-                autorcount = 0
-                if autor in mentions:
-                    if str(oautormention) == str(autor.mention):
-                        eins,zwei = m.content.split("Ja-Stimmen:")
-                        if str(autor.mention) in zwei:
-                            normalbool = True
+                    if authorhash in m.content:
+                        await client.say("Du hast bereits abgestimmt")
                     else:
-                        normalbool = True
+                        output = m.content
+                        output1, output2 = output.split("Ja-Stimmen: ")
+                        newoutput = output1 + einsatz + output2
+                        await client.edit_message(m, newoutput)
+                        await client.say("Abstimmung erfolgreich durchgeführt")
+                        break
 
-                if normalbool == True:
-                    await client.say("Du hast bereits abgestimmt")
-                else:
-                    output = m.content
-                    output1, output2 = output.split("Ja-Stimmen: ")
-                    newoutput = output1 + einsatz + output2
-                    await client.edit_message(m,newoutput)
-                    await client.say("Abstimmung erfolgreich durchgeführt")
-                    break
+            else:
+                content = m.content
+                content = content.replace("Gesetzesvorschlag","")
+                content = content.replace("Art66", "")
+                content = content.replace("Art80", "")
+                content = content.replace("Nr.", "")
+                content = content.split("von")
+                votenummer = content[0].strip()
+                oautormention = content[1].split(":")
+                oautormention = oautormention[0].strip()
+
+                normalbool = False
+
+                if votenummer == nummer:
+                    mentions = m.mentions
+                    autorcount = 0
+                    if autor in mentions:
+                        if str(oautormention) == str(autor.mention):
+                            eins,zwei = m.content.split("Ja-Stimmen:")
+                            if str(autor.mention) in zwei:
+                                normalbool = True
+                        else:
+                            normalbool = True
+
+                    if normalbool == True:
+                        await client.say("Du hast bereits abgestimmt")
+                    else:
+                        output = m.content
+                        output1, output2 = output.split("Ja-Stimmen: ")
+                        newoutput = output1 + einsatz + output2
+                        await client.edit_message(m,newoutput)
+                        await client.say("Abstimmung erfolgreich durchgeführt")
+                        break
 
 @client.command(name='Nein',
                 description='Stimme für einen Vorschlag mit Nein',
@@ -1561,38 +1700,61 @@ async def Nein(context):
         await client.say("Nur Abgeordnete können diesen Befehl ausführen")
     else:
         async for m in client.logs_from(vorschlagchannel, 100):
-            content = m.content
-            content = content.replace("Gesetzesvorschlag", "")
-            content = content.replace("Art66", "")
-            content = content.replace("Art80", "")
-            content = content.replace("Nr.", "")
-            content = content.split("von")
-            votenummer = content[0].strip()
-            oautormention = content[1].split(":")
-            oautormention = oautormention[0].strip()
+            if "Anonymer" in m.content:
+                content = m.content
+                content = content.replace("Gesetzesvorschlag", "")
+                content = content.replace("Art66", "")
+                content = content.replace("Art80", "")
+                content = content.replace("Nr.", "")
+                content = content.split("von")
+                votenummer = content[0].strip()
+                authorhash = str(hash(str(m.author.mention)))
+                einsatz2 = "Nein-Stimmen: @" + authorhash + " "
 
-            normalbool = False
+                if votenummer == nummer:
 
-            if votenummer == nummer:
-                mentions = m.mentions
-                autorcount = 0
-                if autor in mentions:
-                    if str(oautormention) == str(autor.mention):
-                        eins, zwei = m.content.split("Ja-Stimmen:")
-                        if str(autor.mention) in zwei:
-                            normalbool = True
+                    if authorhash in m.content:
+                        await client.say("Du hast bereits abgestimmt")
                     else:
-                        normalbool = True
+                        output = m.content
+                        output1, output2 = output.split("Nein-Stimmen: ")
+                        newoutput = output1 + einsatz + output2
+                        await client.edit_message(m, newoutput)
+                        await client.say("Abstimmung erfolgreich durchgeführt")
+                        break
+            else:
+                content = m.content
+                content = content.replace("Gesetzesvorschlag", "")
+                content = content.replace("Art66", "")
+                content = content.replace("Art80", "")
+                content = content.replace("Nr.", "")
+                content = content.split("von")
+                votenummer = content[0].strip()
+                oautormention = content[1].split(":")
+                oautormention = oautormention[0].strip()
 
-                if normalbool == True:
-                    await client.say("Du hast bereits abgestimmt")
-                else:
-                    output = m.content
-                    output1, output2 = output.split("Nein-Stimmen:")
-                    newoutput = output1 + einsatz + output2
-                    await client.edit_message(m,newoutput)
-                    await client.say("Abstimmung erfolgreich durchgeführt")
-                    break
+                normalbool = False
+
+                if votenummer == nummer:
+                    mentions = m.mentions
+                    autorcount = 0
+                    if autor in mentions:
+                        if str(oautormention) == str(autor.mention):
+                            eins, zwei = m.content.split("Ja-Stimmen:")
+                            if str(autor.mention) in zwei:
+                                normalbool = True
+                        else:
+                            normalbool = True
+
+                    if normalbool == True:
+                        await client.say("Du hast bereits abgestimmt")
+                    else:
+                        output = m.content
+                        output1, output2 = output.split("Nein-Stimmen:")
+                        newoutput = output1 + einsatz + output2
+                        await client.edit_message(m,newoutput)
+                        await client.say("Abstimmung erfolgreich durchgeführt")
+                        break
 
 
 async def RemoveVotes():
@@ -1604,6 +1766,21 @@ async def RemoveVotes():
         content = m.content
         mentions = m.mentions
         for x in member:
+            xhash = str(hash(str(x.mention)))
+            if xhash in m.content:
+                memberroles = x.roles
+                bool = False
+                for roles in memberroles:
+                    if "Abgeordneter" in roles.name:
+                        bool = True
+                    else:
+                        pass
+                if bool == False:
+                    print(content)
+                    print(x.mention)
+                    newoutput = content.replace("@"+xhash,"DeletedVote")
+                    await client.edit_message(m, newoutput)
+
             if x in mentions:
                 print("in mentions")
                 memberroles = x.roles
