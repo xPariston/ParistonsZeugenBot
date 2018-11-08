@@ -590,7 +590,7 @@ async def NewParliament(stateids, listwars, parteiliste, days, profildict, markt
 
         for e in listwars:
             if e not in Totalwarurllist:
-                print("Remove url aus listwars: ", e)
+                print("Füge aus listwars hinzu: ", e)
                 Totalwarurllist.append(e)
 
         AnzahlKriege = len(Totalwarurllist)
