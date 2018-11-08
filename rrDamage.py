@@ -532,7 +532,7 @@ async def getRegionDonations(regionid, partylist,profildict, session,marktdict, 
 async def getStateDonations(stateid,partylist,profildict, marktdict, days, session):
 
     regionlist = []
-    StateUrl = "rivalregions.com/listed/state/"
+    StateUrl = "www.rivalregions.com/listed/state/"
     url = StateUrl + stateid
     print(url)
     html = await fetch(session, url)
