@@ -2246,6 +2246,7 @@ async def RessKauf(context):
         Ress = Ress.replace("KK", ".000.000")
         Ress = Ress.replace("K", ".000")
         Ress = Ress.replace(".000g", "kg")
+        Ress = Ress.replace(" .000", ".000")
         Ress = Ress.strip()
 
         autor = context.message.author
